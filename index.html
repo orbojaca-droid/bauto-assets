@@ -24,6 +24,7 @@
             height: -webkit-fill-available;
             overflow: hidden;
             background-color: #1C1A17; /* El color oscuro oficial de tu login */
+            transition: background-color 0.3s ease;
         }
         iframe {
             position: fixed;
@@ -43,6 +44,14 @@
     <iframe id="app-frame"></iframe>
     <script>
         document.getElementById('app-frame').src = "https://script.google.com/macros/s/AKfycbzB6gSJwqTC7xHgzzYhR1V6nfsTJEgva83pvIvVxjb7xjvrnEjeuZGhJdv3kJpw2KA/exec?cb=" + new Date().getTime();
+
+        // Escuchar mensajes del iframe de Google para sincronizar el fondo
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'SET_BACKGROUND') {
+                document.body.style.backgroundColor = event.data.color;
+                document.documentElement.style.backgroundColor = event.data.color;
+            }
+        });
     </script>
 </body>
 </html>
