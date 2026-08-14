@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>BAUTO - Admin Suite</title>
-  <link rel="apple-touch-icon" href="https://orbojaca-droid.github.io/bauto-assets/BAUTO_180.png">
-  <link rel="icon" href="https://orbojaca-droid.github.io/bauto-assets/BAUTO_180.png" type="image/png">
+  <link rel="apple-touch-icon" href="https://orbojaca-droid.github.io/bauto-assets/LogoBAUTO_iOS.png">
+  <link rel="icon" href="https://orbojaca-droid.github.io/bauto-assets/LogoBAUTO_iOS.png" type="image/png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="BAUTO">
@@ -14,41 +14,105 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background: #1C1A17;
+      overflow: hidden;
+      background: radial-gradient(at 0% 0%, #F6F3ED 0%, #EAE5DB 50%, #DCD6C8 100%);
+    }
+    #loader {
+      position: fixed;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-family: -apple-system, sans-serif;
+      background: radial-gradient(at 0% 0%, #F6F3ED 0%, #EAE5DB 50%, #DCD6C8 100%);
+      transition: opacity 0.4s ease;
+      z-index: 2;
     }
-    img {
-      width: 72px;
-      height: 72px;
-      border-radius: 16px;
-      margin-bottom: 24px;
+    #loader.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
-    a.enter-btn {
-      display: inline-block;
-      padding: 14px 32px;
-      background: #6B7259;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
+    #loader img {
+      width: 96px;
+      height: 96px;
+      border-radius: 22px;
+      animation: pulse 1.2s infinite ease-in-out;
     }
-    p.hint {
-      color: #A9A29A;
-      font-size: 12px;
-      margin-top: 16px;
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; transform: scale(0.96); }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+    #retry-msg {
+      display: none;
+      margin-top: 20px;
       text-align: center;
-      max-width: 260px;
+      font-family: -apple-system, sans-serif;
+      color: #6B6459;
+      font-size: 13px;
+      max-width: 240px;
+    }
+    #retry-msg a {
+      color: #6B7259;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    #app-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 1;
+    }
+    #app-frame.visible {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <img src="https://orbojaca-droid.github.io/bauto-assets/BAUTO_180.png" alt="BAUTO">
-  <a class="enter-btn" href="https://script.google.com/macros/s/AKfycbzB6gSJwqTC7xHgzzYhR1V6nfsTJEgva83pvIvVxjb7xjvrnEjeuZGhJdv3kJpw2KA/exec">Entrar a BAUTO</a>
-  <p class="hint">Para el ícono correcto en la pantalla de inicio: toca Compartir → Agregar a Inicio ahora, antes de entrar.</p>
+  <div id="loader">
+    <img src="https://orbojaca-droid.github.io/bauto-assets/LogoBAUTO_iOS.png" alt="BAUTO">
+    <div id="retry-msg">No se pudo cargar la app.<br><a href="#" id="retry-link">Reintentar</a></div>
+  </div>
+  <iframe id="app-frame" src="https://script.google.com/macros/s/AKfycbzB6gSJwqTC7xHgzzYhR1V6nfsTJEgva83pvIvVxjb7xjvrnEjeuZGhJdv3kJpw2KA/exec"></iframe>
+  <script>
+    var frame = document.getElementById('app-frame');
+    var loader = document.getElementById('loader');
+    var retryMsg = document.getElementById('retry-msg');
+    var retryLink = document.getElementById('retry-link');
+    var loaded = false;
+    var timeoutId;
+
+    function armTimeout() {
+      timeoutId = setTimeout(function () {
+        if (!loaded) {
+          retryMsg.style.display = 'block';
+        }
+      }, 15000);
+    }
+
+    frame.addEventListener('load', function () {
+      loaded = true;
+      clearTimeout(timeoutId);
+      retryMsg.style.display = 'none';
+      frame.classList.add('visible');
+      loader.classList.add('hidden');
+    });
+
+    retryLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      loaded = false;
+      retryMsg.style.display = 'none';
+      frame.classList.remove('visible');
+      loader.classList.remove('hidden');
+      var src = frame.src;
+      frame.src = '';
+      frame.src = src;
+      armTimeout();
+    });
+
+    armTimeout();
+  </script>
 </body>
 </html>
