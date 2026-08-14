@@ -16,25 +16,39 @@
       height: 100%;
       background: #1C1A17;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      font-family: -apple-system, sans-serif;
     }
     img {
       width: 72px;
       height: 72px;
       border-radius: 16px;
-      animation: pulse 1.2s infinite ease-in-out;
+      margin-bottom: 24px;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 0.6; transform: scale(0.96); }
-      50% { opacity: 1; transform: scale(1.02); }
+    a.enter-btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: #6B7259;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    p.hint {
+      color: #A9A29A;
+      font-size: 12px;
+      margin-top: 16px;
+      text-align: center;
+      max-width: 260px;
     }
   </style>
 </head>
 <body>
   <img src="https://orbojaca-droid.github.io/bauto-assets/BAUTO_180.png" alt="BAUTO">
-  <script>
-    window.location.replace('https://script.google.com/macros/s/AKfycbzB6gSJwqTC7xHgzzYhR1V6nfsTJEgva83pvIvVxjb7xjvrnEjeuZGhJdv3kJpw2KA/exec');
-  </script>
+  <a class="enter-btn" href="https://script.google.com/macros/s/AKfycbzB6gSJwqTC7xHgzzYhR1V6nfsTJEgva83pvIvVxjb7xjvrnEjeuZGhJdv3kJpw2KA/exec">Entrar a BAUTO</a>
+  <p class="hint">Para el ícono correcto en la pantalla de inicio: toca Compartir → Agregar a Inicio ahora, antes de entrar.</p>
 </body>
 </html>
