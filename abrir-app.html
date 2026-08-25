@@ -15,7 +15,10 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background: radial-gradient(at 0% 0%, #F6F3ED 0%, #EAE5DB 50%, #DCD6C8 100%);
+      /* DIAGNÓSTICO TEMPORAL — rosa a propósito, para ver si este fondo se
+         asoma por algún borde. Revertir al degradado crema en cuanto el
+         usuario confirme qué ve en su iPhone. */
+      background: #FF00AA;
     }
     /* La app se mete dentro del área segura del dispositivo desde AQUÍ. Esta página es el
        documento de nivel superior: es la única que recibe valores reales de
@@ -73,7 +76,11 @@
       display: block;
       width: 100%;
       height: 100%;
-      border: none;
+      /* DIAGNÓSTICO TEMPORAL — borde lima a propósito, para ver exactamente
+         dónde termina la ventanita real contra el fondo rosa de arriba.
+         Revertir a "border: none" junto con el fondo rosa. */
+      border: 4px solid #39FF14;
+      box-sizing: border-box;
       opacity: 0;
       transition: opacity 0.4s ease;
       z-index: 1;
