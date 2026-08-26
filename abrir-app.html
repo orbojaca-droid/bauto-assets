@@ -22,12 +22,16 @@
             de este documento. Un `radial-gradient` no le sirve: no puede
             resolverlo a un color y cae a blanco — ese era el origen real del
             "rectángulo blanco arriba" que el usuario reportaba.
-         2. #F3F1EB es el color efectivo del header y del footer de la app:
-            el degradado crema del body (#EAE5DB en la franja del header) con
-            el vidrio var(--glass-bg) = rgba(255,255,255,0.45) encima. Así la
-            franja del sistema y la barra de la app son el mismo color y no se
-            ve ninguna transición. */
-      background: #F3F1EB;
+         2. #F5F3EE es el color efectivo del header: el degradado crema del body
+            con el vidrio var(--glass-bg) = rgba(255,255,255,0.45) encima,
+            evaluado en el centro de la franja del header. NO es un valor a ojo:
+            se calculó dentro del iPhone del usuario (390x797) resolviendo la
+            geometría real del radial-gradient. El header va de #F9F7F4 en el
+            borde izquierdo a #F1EEE8 en el derecho, así que el centro es el
+            único valor que puede igualar una franja de color sólido.
+            (Un primer intento con #F3F1EB quedó ~3 puntos oscuro y el usuario
+            lo notó a simple vista — de ahí que se midiera en vez de estimar.) */
+      background: #F5F3EE;
     }
     /* La app se mete dentro del área segura del dispositivo desde AQUÍ. Esta página es el
        documento de nivel superior: es la única que recibe valores reales de
