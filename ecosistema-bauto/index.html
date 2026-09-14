@@ -29,128 +29,120 @@ html,body{margin:0;padding:0;background:#EDE8E0;-webkit-font-smoothing:antialias
 a{color:var(--accent-color);text-decoration:none}
 a:hover{color:var(--accent-hover)}
 button{font:inherit;color:inherit;cursor:pointer}
+*{font-family:'Plus Jakarta Sans',sans-serif}
 @keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes fd{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
 @keyframes fi{from{opacity:0}to{opacity:1}}
 @keyframes pop{from{opacity:0;transform:scale(.84)}to{opacity:1;transform:scale(1)}}
 @keyframes popc{from{opacity:0;transform:translate(-50%,-50%) scale(.86)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-@keyframes fux{from{opacity:0;transform:translateX(-50%) translateY(14px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-@keyframes rise{from{opacity:0;transform:translateY(46%) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes setdown{from{opacity:1;transform:translateY(0)}to{opacity:.25;transform:translateY(38%)}}
+@keyframes rise{from{opacity:0;transform:translateY(20%)}to{opacity:1;transform:translateY(0)}}
+@keyframes setdown{from{opacity:1;transform:translateY(0)}to{opacity:.3;transform:translateY(18%)}}
 @keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-@keyframes ringout{0%{transform:scale(.25);opacity:0}18%{opacity:.5}100%{transform:scale(1);opacity:0}}
+@keyframes ringout{0%{transform:scale(.55);opacity:0}18%{opacity:.4}100%{transform:scale(1);opacity:0}}
 @keyframes beat{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.45);opacity:1}}
 @keyframes drift{0%,100%{transform:translate(0,0) rotate(var(--rot,0deg))}25%{transform:translate(-.4%,.8%) rotate(var(--rot,0deg))}60%{transform:translate(.5%,-.5%) rotate(var(--rot,0deg))}}
 @keyframes scatterIn{from{opacity:0;transform:translateY(10px) rotate(var(--rot,0deg)) scale(.9)}to{opacity:1;transform:translateY(0) rotate(var(--rot,0deg)) scale(1)}}
 @keyframes converge{0%{opacity:0;transform:scale(.7)}60%{opacity:0;transform:scale(.7)}100%{opacity:1;transform:scale(1)}}
 @keyframes beamOut{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-@keyframes travel{0%{left:10%}18%{left:10%}25%{left:30%}43%{left:30%}50%{left:50%}68%{left:50%}75%{left:70%}88%{left:70%}95%{left:90%}100%{left:90%}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
 </style>
 </helmet>
 
-<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2.2vmin;box-sizing:border-box;background:radial-gradient(120% 120% at 50% 0%,#F7F3EC 0%,#E7E1D7 100%);font-family:'Plus Jakarta Sans',sans-serif">
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2.2vmin;box-sizing:border-box;background:radial-gradient(120% 120% at 50% 0%,#F7F3EC 0%,#E7E1D7 100%)">
 <div style="width:100%;max-width:1520px">
 
 <div tabIndex="0" onKeyDown="{{ onKey }}" style="position:relative;width:100%;aspect-ratio:16/9;container-type:size;border-radius:28px;overflow:hidden;background:var(--bg-color);box-shadow:0 26px 70px rgba(44,44,44,.22);outline:none">
 
   <div style="position:absolute;inset:0;background:radial-gradient(90% 70% at 50% -10%,#FFFFFF 0%,rgba(255,255,255,0) 60%)"></div>
 
-  <!-- ESCENA 0 · APERTURA (patrón login: fecha real + sol/luna + identidad de proyecto) -->
+  <!-- ESCENA 0 · APERTURA — panel artístico de dos capas (patrón login BAUTO) -->
   <sc-if value="{{ s0 }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;inset:0">
-      <div style="{{ orbStyle }}"></div>
-      <div style="position:absolute;left:3.4cqw;top:3.4cqw;padding:.7cqw 1.1cqw;border-radius:1.1cqw;background:rgba(255,255,255,.55);border:1px solid var(--glass-border);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;animation:fd .6s var(--e) .3s both">
-        <span style="font-family:'Sora',sans-serif;font-size:1.5cqw;font-weight:800;color:var(--accent-color);line-height:1">{{ hoyDia }}</span>
-        <span style="font-size:.65cqw;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary)">{{ hoyMes }}</span>
+    <div style="position:absolute;inset:0;display:flex">
+      <div style="position:relative;width:50%;height:100%;overflow:hidden;background:#FFFEFB">
+        <div style="position:absolute;inset:0;background:rgba(255,255,255,.32);backdrop-filter:blur(24px);border-right:1px solid rgba(255,255,255,.55)"></div>
+        <div style="position:absolute;left:50%;top:30%;width:22cqw;height:22cqw;margin:-11cqw 0 0 -11cqw;border-radius:50%;background:radial-gradient(circle,rgba(255,90,30,.8) 0%,rgba(255,165,102,.45) 34%,rgba(255,165,102,0) 68%);animation:fi 1.4s var(--e) .2s both"></div>
+        <div style="position:absolute;left:50%;top:68%;width:16cqw;height:16cqw;margin:-8cqw 0 0 -8cqw;border-radius:50%;background:radial-gradient(circle,rgba(226,233,245,.95) 0%,rgba(180,195,220,.5) 36%,rgba(180,195,220,0) 68%);animation:fi 1.4s var(--e) .5s both"></div>
+        <div style="position:absolute;left:1.6cqw;top:1.6cqw;padding:.6cqw 1cqw;border-radius:1cqw;background:rgba(255,255,255,.6);border:1px solid var(--glass-border);display:flex;flex-direction:column;align-items:center;animation:fd .6s var(--e) .3s both">
+          <span style="font-family:'Sora',sans-serif;font-size:1.3cqw;font-weight:800;color:var(--accent-color);line-height:1">{{ hoyDia }}</span>
+          <span style="font-size:.6cqw;font-weight:700;letter-spacing:.1em;color:var(--text-secondary)">{{ hoyMes }}</span>
+        </div>
       </div>
-      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.3cqw">
-        <img src="assets/logo-bauto.png" alt="BAUTO" style="width:24cqw;animation:fi 1.2s var(--e) .5s both;position:relative" />
-        <div style="font-family:'Sora',sans-serif;font-size:1.05cqw;font-weight:700;letter-spacing:.12em;color:var(--accent-hover);animation:fu .9s var(--e) .95s both">ECOSISTEMA BAUTO</div>
-        <div style="font-size:.85cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--text-secondary);font-weight:600;animation:fu .9s var(--e) 1.15s both">Cómo funciona hoy, de punta a punta</div>
+      <div style="position:relative;width:50%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1cqw;padding:2cqw;box-sizing:border-box">
+        <img src="assets/logo-bauto.png" alt="BAUTO" style="width:17cqw;animation:fi 1.1s var(--e) .5s both" />
+        <div style="font-family:'Sora',sans-serif;font-size:.95cqw;font-weight:700;letter-spacing:.12em;color:var(--accent-hover);animation:fu .9s var(--e) .8s both">ECOSISTEMA BAUTO</div>
+        <div style="font-size:1.15cqw;font-weight:700;color:var(--text-primary);text-align:center;max-width:22cqw;line-height:1.4;animation:fu .9s var(--e) 1s both">La inteligencia detrás de cada prenda, cada venta, cada dato.</div>
+        <div style="margin-top:.8cqw;padding:.8cqw 1.2cqw;border-radius:1cqw;background:var(--bg-warm);border:1px solid var(--glass-border);text-align:center;animation:fu .9s var(--e) 1.2s both">
+          <div style="font-size:.65cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">Tienda</div>
+          <div style="font-size:.8cqw;font-weight:600;color:var(--text-modal);margin-top:.2cqw">Calle 20 # 2-36, Centro Histórico<br/>Santa Marta, Colombia</div>
+        </div>
       </div>
     </div>
   </sc-if>
 
-  <!-- ESCENA 1 · HOY (el Excel, 100% gráfico) -->
+  <!-- ESCENA 1 · ANTES / AHORA (pantalla partida, 100% gráfico) -->
   <sc-if value="{{ s1 }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;inset:0;padding:6cqw 7cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:2.6cqw">
-      <span style="align-self:flex-start;padding:.5cqw 1.1cqw;border-radius:var(--radius-pill);background:var(--color-perla);color:var(--text-secondary);font-family:'Sora',sans-serif;font-size:1cqw;font-weight:700;letter-spacing:.08em;animation:fd .5s var(--e) both">HOY</span>
-      <div style="display:flex;align-items:flex-end;justify-content:center;gap:2.6cqw;height:15cqw">
-        <sc-for list="{{ hojas }}" as="h" hint-placeholder-count="6">
-          <div style="{{ h.st }}">
-            <div style="height:.6cqw;background:rgba(28,25,23,.06);border-radius:.6cqw .6cqw 0 0"></div>
-            <div style="{{ h.grid }}">
-              <sc-for list="{{ h.cells }}" as="c" hint-placeholder-count="6">
-                <span style="{{ c }}"></span>
-              </sc-for>
+    <div style="position:absolute;inset:0;display:flex">
+      <div style="width:50%;height:100%;padding:5cqw 3cqw;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw;border-right:1px dashed rgba(28,25,23,.12)">
+        <span style="padding:.5cqw 1.1cqw;border-radius:var(--radius-pill);background:var(--color-perla);color:var(--text-secondary);font-family:'Sora',sans-serif;font-size:.95cqw;font-weight:700;letter-spacing:.08em;animation:fd .5s var(--e) both">HOY</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2cqw">
+          <sc-for list="{{ hojas }}" as="h" hint-placeholder-count="4">
+            <div style="{{ h.st }}">
+              <div style="height:.55cqw;background:rgba(28,25,23,.06);border-radius:.5cqw .5cqw 0 0"></div>
+              <div style="{{ h.grid }}">
+                <sc-for list="{{ h.cells }}" as="c" hint-placeholder-count="6">
+                  <span style="{{ c }}"></span>
+                </sc-for>
+              </div>
+              <span style="text-align:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:.72cqw;font-weight:700;color:var(--text-secondary);margin-top:.4cqw">{{ h.label }}</span>
             </div>
-            <span style="text-align:center;font-size:.78cqw;font-weight:700;color:var(--text-secondary);margin-top:.5cqw">{{ h.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="width:50%;height:100%;padding:5cqw 3cqw;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw">
+        <span style="padding:.5cqw 1.1cqw;border-radius:var(--radius-pill);background:var(--accent-color);color:#fff;font-family:'Sora',sans-serif;font-size:.95cqw;font-weight:700;letter-spacing:.08em;animation:fd .5s var(--e) both">CON BAUTO</span>
+        <div style="position:relative;width:22cqw;height:16cqw">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+            <line x1="50" y1="50" x2="18" y2="20" stroke="var(--accent-color)" stroke-width="1.4" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;animation:beamOut 1s var(--e) .5s both"/>
+            <line x1="50" y1="50" x2="82" y2="20" stroke="var(--accent-color)" stroke-width="1.4" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;animation:beamOut 1s var(--e) .65s both"/>
+            <line x1="50" y1="50" x2="18" y2="80" stroke="var(--accent-color)" stroke-width="1.4" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;animation:beamOut 1s var(--e) .8s both"/>
+            <line x1="50" y1="50" x2="82" y2="80" stroke="var(--accent-color)" stroke-width="1.4" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;animation:beamOut 1s var(--e) .95s both"/>
+          </svg>
+          <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:5.6cqw;animation:converge 1s var(--e) both">
+            <div style="width:100%;height:1.6cqw;border:1.6px solid var(--accent-color);border-radius:50%;background:var(--bg-color)"></div>
+            <div style="width:100%;height:3.2cqw;border-left:1.6px solid var(--accent-color);border-right:1.6px solid var(--accent-color);margin-top:-.8cqw"></div>
           </div>
-        </sc-for>
+          <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;z-index:1">
+            <div style="display:flex;align-items:center;justify-content:center"><div style="width:2.6cqw;height:4.6cqw;border:1.6px solid var(--text-primary);border-radius:.8cqw;background:var(--bg-color)"></div></div>
+            <div style="display:flex;align-items:center;justify-content:center"><div style="width:5cqw;height:3.4cqw;border:1.6px solid var(--text-primary);border-radius:.5cqw;background:var(--bg-color)"></div></div>
+            <div style="display:flex;align-items:center;justify-content:center"><div style="width:2.6cqw;height:4.6cqw;border:1.6px solid var(--text-primary);border-radius:.8cqw;background:var(--bg-color)"></div></div>
+            <div style="display:flex;align-items:center;justify-content:center"><div style="width:5cqw;height:3.4cqw;border:1.6px solid var(--text-primary);border-radius:.5cqw;background:var(--bg-color)"></div></div>
+          </div>
+        </div>
       </div>
+      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;width:2.6cqw;height:2.6cqw;border-radius:50%;background:var(--accent-color);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2cqw;animation:pop .5s var(--e) .3s both;box-shadow:0 6px 18px rgba(184,92,56,.4)">→</div>
     </div>
   </sc-if>
 
-  <!-- ESCENA 2 · CON BAUTO (la base compartida, 100% gráfico) -->
-  <sc-if value="{{ s2 }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;inset:0;padding:6cqw 7cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2.6cqw">
-      <span style="padding:.5cqw 1.1cqw;border-radius:var(--radius-pill);background:var(--accent-color);color:#fff;font-family:'Sora',sans-serif;font-size:1cqw;font-weight:700;letter-spacing:.08em;animation:fd .5s var(--e) both">CON BAUTO</span>
-      <div style="position:relative;width:100%;max-width:56cqw;height:17cqw">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
-          <line x1="50" y1="50" x2="18" y2="22" stroke="var(--accent-color)" stroke-width="1.4" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;animation:beamOut 1s var(--e) .5s both"/>
-          <line x1="50" y1="50" x2="82" y2="22" stroke="var(--accent-color)" stroke-width="1.4" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;animation:beamOut 1s var(--e) .65s both"/>
-          <line x1="50" y1="50" x2="18" y2="78" stroke="var(--accent-color)" stroke-width="1.4" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;animation:beamOut 1s var(--e) .8s both"/>
-          <line x1="50" y1="50" x2="82" y2="78" stroke="var(--accent-color)" stroke-width="1.4" stroke-linecap="round" pathLength="1" style="stroke-dasharray:1;animation:beamOut 1s var(--e) .95s both"/>
-        </svg>
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:8.6cqw;animation:converge 1s var(--e) both">
-          <div style="width:100%;height:2.4cqw;border:2px solid var(--accent-color);border-radius:50%;background:var(--bg-color)"></div>
-          <div style="width:100%;height:5cqw;border-left:2px solid var(--accent-color);border-right:2px solid var(--accent-color);margin-top:-1.2cqw"></div>
-          <div style="width:100%;height:2.4cqw;border:2px solid var(--accent-color);border-radius:50%;background:rgba(184,92,56,.1);margin-top:-1.2cqw"></div>
-        </div>
-        <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;z-index:1">
-          <div style="display:flex;align-items:center;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:.4cqw;animation:fu .6s var(--e) 1s both">
-            <div style="width:4.2cqw;height:7.6cqw;border:2px solid var(--text-primary);border-radius:1.1cqw;background:var(--bg-color);display:flex;align-items:flex-end;justify-content:center;padding-bottom:.5cqw"><span style="width:1cqw;height:1cqw;border-radius:50%;border:1.4px solid var(--text-primary)"></span></div>
-            <span style="font-size:.75cqw;font-weight:700;color:var(--text-secondary)">Celular</span>
-          </div></div>
-          <div style="display:flex;align-items:center;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:.4cqw;animation:fu .6s var(--e) 1.1s both">
-            <div style="width:8.4cqw;height:5.6cqw;border:2px solid var(--text-primary);border-radius:.7cqw;background:var(--bg-color)"></div>
-            <div style="width:2.4cqw;height:.6cqw;background:var(--text-primary);border-radius:.2cqw;margin-top:.2cqw"></div>
-            <span style="font-size:.75cqw;font-weight:700;color:var(--text-secondary)">Escritorio</span>
-          </div></div>
-          <div style="display:flex;align-items:center;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:.4cqw;animation:fu .6s var(--e) 1.25s both">
-            <div style="width:4.2cqw;height:7.6cqw;border:2px solid var(--text-primary);border-radius:1.1cqw;background:var(--bg-color);display:flex;align-items:flex-end;justify-content:center;padding-bottom:.5cqw"><span style="width:1cqw;height:1cqw;border-radius:50%;border:1.4px solid var(--text-primary)"></span></div>
-            <span style="font-size:.75cqw;font-weight:700;color:var(--text-secondary)">Bodega</span>
-          </div></div>
-          <div style="display:flex;align-items:center;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:.4cqw;animation:fu .6s var(--e) 1.35s both">
-            <div style="width:8.4cqw;height:5.6cqw;border:2px solid var(--text-primary);border-radius:.7cqw;background:var(--bg-color)"></div>
-            <div style="width:2.4cqw;height:.6cqw;background:var(--text-primary);border-radius:.2cqw;margin-top:.2cqw"></div>
-            <span style="font-size:.75cqw;font-weight:700;color:var(--text-secondary)">Caja</span>
-          </div></div>
-        </div>
-      </div>
-    </div>
-  </sc-if>
-
-  <!-- MAPA (escenas 3, 4, 5) -->
+  <!-- MAPA (escenas 2, 3, 4: El sistema · En acción · Protegido) -->
   <sc-if value="{{ mapOn }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;inset:0">
 
       <div style="position:absolute;left:3.4cqw;top:8.4cqw;width:22cqw;z-index:6;display:flex;flex-direction:column;gap:1cqw">
         <span style="align-self:flex-start;padding:.5cqw 1.1cqw;border-radius:var(--radius-pill);background:var(--accent-color);color:#fff;font-family:'Sora',sans-serif;font-size:1cqw;font-weight:700;letter-spacing:.08em;animation:fd .5s var(--e) both">{{ mapTag }}</span>
 
-        <sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex;flex-direction:column;gap:.45cqw;animation:fu .6s var(--e) .2s both">
-            <span style="font-size:.8cqw;letter-spacing:.18em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">Conectado con</span>
-            <div style="display:flex;flex-wrap:wrap;gap:.4cqw">
-              <sc-for list="{{ externals }}" as="x" hint-placeholder-count="6">
-                <span style="padding:.42cqw .8cqw;border-radius:var(--radius-pill);border:1px dashed rgba(28,25,23,.2);background:rgba(255,255,255,.4);font-size:.8cqw;font-weight:700;color:var(--text-secondary);white-space:nowrap">{{ x }}</span>
-              </sc-for>
+        <sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:.9cqw;animation:fu .6s var(--e) .2s both">
+            <div style="display:flex;flex-direction:column;gap:.35cqw">
+              <span style="{{ legend.nucleo }}">● Núcleo operativo</span>
+              <span style="{{ legend.db }}">● Bases de datos</span>
+              <span style="{{ legend.proceso }}">● Proceso puntual</span>
+              <span style="{{ legend.canal }}">● Canal al cliente</span>
             </div>
+            <span style="font-size:.78cqw;color:var(--text-secondary);font-weight:600">HUB rodea todo: no mueve datos, controla el acceso.</span>
           </div>
         </sc-if>
 
-        <sc-if value="{{ s4 }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex;flex-direction:column;gap:.55cqw;animation:fu .6s var(--e) .1s both">
             <sc-for list="{{ flows }}" as="f" hint-placeholder-count="4">
               <button onClick="{{ f.pick }}" style="{{ f.st }}">{{ f.name }}</button>
@@ -158,15 +150,22 @@ button{font:inherit;color:inherit;cursor:pointer}
           </div>
         </sc-if>
 
-        <sc-if value="{{ s5 }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex;flex-direction:column;gap:1cqw;animation:fu .6s var(--e) .1s both">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.45cqw">
-              <sc-for list="{{ capas }}" as="c" hint-placeholder-count="8">
-                <div style="padding:.6cqw .8cqw;border-radius:var(--radius-nav);background:rgba(184,92,56,.10);color:var(--accent-hover);font-size:.8cqw;font-weight:700;line-height:1.25">{{ c }}</div>
-              </sc-for>
+        <sc-if value="{{ s4 }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:.9cqw;animation:fu .6s var(--e) .1s both">
+            <div>
+              <span style="font-size:.75cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-hover);font-weight:700">Nivel 1 · Puerta grande</span>
+              <div style="font-size:.9cqw;color:var(--text-modal);margin-top:.3cqw">4 factores para entrar al HUB. Sesión hasta medianoche.</div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:.6cqw;width:13cqw">
-              <sc-for list="{{ beats }}" as="b" hint-placeholder-count="9">
+            <div>
+              <span style="font-size:.75cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-hover);font-weight:700">Nivel 3 · Por módulo</span>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4cqw;margin-top:.4cqw">
+                <sc-for list="{{ capas }}" as="c" hint-placeholder-count="6">
+                  <div style="padding:.55cqw .7cqw;border-radius:var(--radius-nav);background:rgba(184,92,56,.10);color:var(--accent-hover);font-size:.75cqw;font-weight:700;line-height:1.2">{{ c }}</div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:.5cqw;width:11.5cqw">
+              <sc-for list="{{ beats }}" as="b" hint-placeholder-count="8">
                 <span style="{{ b.st }}"></span>
               </sc-for>
             </div>
@@ -175,79 +174,31 @@ button{font:inherit;color:inherit;cursor:pointer}
       </div>
 
       <div style="position:absolute;left:27%;right:2%;top:4%;bottom:8%">
+        <div style="{{ hubRingStyle }}"></div>
+        <span style="{{ hubLabelStyle }}">HUB · Seguridad</span>
+
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:visible">
-          <sc-for list="{{ spokes }}" as="sp" hint-placeholder-count="9">
-            <line x1="{{ sp.x }}" y1="{{ sp.y }}" x2="50" y2="50" stroke="rgba(28,25,23,.11)" stroke-width="1" vector-effect="non-scaling-stroke"></line>
+          <sc-for list="{{ spokes }}" as="sp" hint-placeholder-count="8">
+            <line x1="{{ sp.x }}" y1="{{ sp.y }}" x2="50" y2="50" stroke="{{ sp.stroke }}" stroke-width="{{ sp.w }}" stroke-dasharray="{{ sp.dash }}" vector-effect="non-scaling-stroke"></line>
           </sc-for>
           <sc-if value="{{ flowOn }}" hint-placeholder-val="{{ true }}">
             <path d="{{ flowPath }}" fill="none" stroke="#B85C38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" pathLength="1" style="stroke-dasharray:1;animation:draw 1.7s var(--e) both"></path>
           </sc-if>
         </svg>
 
-        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;display:flex;flex-direction:column;gap:.3cqw;align-items:center;padding:1.3cqw 1.7cqw;border-radius:2cqw;background:rgba(255,255,255,.62);border:1px solid var(--glass-border);backdrop-filter:blur(25px);box-shadow:0 10px 30px var(--sombra-suave);animation:popc .7s var(--e) both">
-          <div style="width:2.6cqw;height:.9cqw;border:1.6px solid var(--accent-color);border-radius:50%;background:var(--bg-color)"></div>
-          <div style="width:2.6cqw;height:1.6cqw;border-left:1.6px solid var(--accent-color);border-right:1.6px solid var(--accent-color);margin-top:-.45cqw"></div>
+        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;display:flex;flex-direction:column;gap:.3cqw;align-items:center;padding:1.1cqw 1.5cqw;border-radius:2cqw;background:rgba(255,255,255,.72);border:1px solid var(--glass-border);backdrop-filter:blur(25px);box-shadow:0 10px 30px var(--sombra-suave);animation:popc .7s var(--e) both">
+          <div style="width:2.4cqw;height:.85cqw;border:1.6px solid var(--accent-color);border-radius:50%;background:var(--bg-color)"></div>
+          <div style="width:2.4cqw;height:1.5cqw;border-left:1.6px solid var(--accent-color);border-right:1.6px solid var(--accent-color);margin-top:-.42cqw"></div>
         </div>
 
-        <sc-for list="{{ nodes }}" as="n" hint-placeholder-count="9">
+        <sc-for list="{{ nodes }}" as="n" hint-placeholder-count="8">
           <button onClick="{{ n.pick }}" style="{{ n.st }}">
-            <span style="font-family:'Sora',sans-serif;font-size:1.02cqw;font-weight:600;line-height:1.1">{{ n.name }}</span>
-            <span style="font-size:.78cqw;color:var(--text-secondary);font-weight:600;margin-top:.22cqw">{{ n.who }}</span>
+            <span style="{{ n.nameSt }}">{{ n.name }}</span>
           </button>
         </sc-for>
 
-        <sc-if value="{{ s5 }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;inset:0;z-index:2;pointer-events:none">
-            <div style="position:absolute;left:50%;top:16%;width:52cqw;height:52cqw;margin:-26cqw 0 0 -26cqw;border-radius:50%;border:1px solid rgba(184,92,56,.4);animation:ringout 3.2s var(--e) infinite"></div>
-            <div style="position:absolute;left:50%;top:16%;width:52cqw;height:52cqw;margin:-26cqw 0 0 -26cqw;border-radius:50%;border:1px solid rgba(184,92,56,.4);animation:ringout 3.2s var(--e) 1.06s infinite"></div>
-            <div style="position:absolute;left:50%;top:16%;width:52cqw;height:52cqw;margin:-26cqw 0 0 -26cqw;border-radius:50%;border:1px solid rgba(184,92,56,.4);animation:ringout 3.2s var(--e) 2.13s infinite"></div>
-          </div>
-        </sc-if>
-      </div>
-
-      <sc-if value="{{ tip }}" hint-placeholder-val="{{ false }}">
-        <div style="position:absolute;left:39%;bottom:5cqw;z-index:9;background:var(--toast-bg);color:var(--toast-text);padding:1cqw 1.4cqw;border-radius:1.3cqw;width:38cqw;box-sizing:border-box;display:flex;gap:.9cqw;align-items:flex-start;animation:fi .35s var(--e) both;box-shadow:0 16px 40px rgba(45,39,30,.3)">
-          <span style="width:.55cqw;height:.55cqw;border-radius:50%;background:var(--color-sun-glow);margin-top:.55cqw;flex:none"></span>
-          <span style="font-size:1cqw;line-height:1.5"><b style="font-family:'Sora',sans-serif">{{ tipName }}</b> · {{ tipText }}</span>
-        </div>
-      </sc-if>
-    </div>
-  </sc-if>
-
-  <!-- ESCENA 6 · UNA DE CUATRO CAPAS: EL INVENTARIO FÍSICO -->
-  <sc-if value="{{ s6 }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;inset:0;padding:6cqw 7cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:3cqw">
-      <span style="align-self:flex-start;padding:.5cqw 1.1cqw;border-radius:var(--radius-pill);background:var(--color-perla);color:var(--text-secondary);font-family:'Sora',sans-serif;font-size:1cqw;font-weight:700;letter-spacing:.08em;animation:fd .5s var(--e) both">EN DETALLE · 1 DE 4 CAPAS</span>
-      <div style="position:relative;height:16cqw">
-        <div style="position:absolute;left:10%;right:10%;top:6.4cqw;height:1px;background:linear-gradient(90deg,rgba(28,25,23,.14),rgba(28,25,23,.06))"></div>
-        <div style="position:absolute;top:2.4cqw;width:0;animation:travel 11s var(--e) infinite">
-          <div style="width:2.2cqw;height:2.2cqw;margin-left:-1.1cqw;border-radius:50%;background:var(--accent-color);box-shadow:0 0 0 .5cqw rgba(184,92,56,.14)"></div>
-        </div>
-        <sc-for list="{{ etapas }}" as="e" hint-placeholder-count="5">
-          <div style="{{ e.st }}">
-            <span style="width:.7cqw;height:.7cqw;border-radius:50%;background:{{ e.color }};flex:none"></span>
-            <span style="font-family:'Sora',sans-serif;font-size:1.2cqw;font-weight:600">{{ e.name }}</span>
-            <span style="font-size:.82cqw;color:var(--text-secondary);font-weight:600;letter-spacing:.08em;text-transform:uppercase">{{ e.grupo }}</span>
-          </div>
-        </sc-for>
-      </div>
-    </div>
-  </sc-if>
-
-  <!-- ESCENA 7 · LAS HERRAMIENTAS -->
-  <sc-if value="{{ s7 }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;inset:0;padding:6cqw 5cqw 8.4cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw">
-      <span style="align-self:flex-start;padding:.5cqw 1.1cqw;border-radius:var(--radius-pill);background:var(--accent-color);color:#fff;font-family:'Sora',sans-serif;font-size:1cqw;font-weight:700;letter-spacing:.08em;animation:fd .5s var(--e) both">LAS HERRAMIENTAS</span>
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:.9cqw;flex:1;min-height:0">
-        <sc-for list="{{ modules }}" as="m" hint-placeholder-count="9">
-          <button onClick="{{ m.open }}" style="{{ m.st }}">
-            <div style="display:flex;align-items:center;gap:.6cqw">
-              <span style="width:1.7cqw;height:1.7cqw;border-radius:50%;border:1px solid var(--circle-border);background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:.82cqw;font-weight:700;color:var(--accent-color);flex:none">{{ m.n }}</span>
-              <span style="font-family:'Sora',sans-serif;font-size:1.2cqw;font-weight:700">{{ m.name }}</span>
-            </div>
-            <div style="font-size:.74cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">{{ m.who }}</div>
-            <div style="font-size:.9cqw;line-height:1.45;color:var(--text-modal);text-wrap:pretty">{{ m.one }}</div>
-          </button>
+        <sc-for list="{{ satellites }}" as="x" hint-placeholder-count="6">
+          <span style="{{ x.st }}">{{ x.label }}</span>
         </sc-for>
       </div>
     </div>
@@ -290,8 +241,8 @@ button{font:inherit;color:inherit;cursor:pointer}
     </div>
   </sc-if>
 
-  <!-- ESCENA 8 · CIERRE / INVITACIÓN -->
-  <sc-if value="{{ s8 }}" hint-placeholder-val="{{ true }}">
+  <!-- ESCENA 5 · CIERRE / INVITACIÓN -->
+  <sc-if value="{{ s5 }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqw">
       <div style="{{ orbSetStyle }}"></div>
       <img src="assets/logo-bauto.png" alt="BAUTO" style="width:20cqw;animation:fi 1.1s var(--e) .3s both;position:relative" />
@@ -306,12 +257,14 @@ button{font:inherit;color:inherit;cursor:pointer}
           <div style="width:2cqw;height:1.3cqw;border-left:1.4px solid var(--accent-color);border-right:1.4px solid var(--accent-color);margin-top:-.35cqw"></div>
         </div>
       </div>
-      <button onClick="{{ restart }}" style="margin-top:.6cqw;height:3.2cqw;padding:0 1.8cqw;border-radius:var(--radius-pill);border:1px solid transparent;background:var(--accent-color);color:#fff;font-size:1cqw;font-weight:700;animation:fu .9s var(--e) 1.2s both">Ver otra vez</button>
+      <button onClick="{{ restart }}" style="margin-top:.6cqw;height:3.2cqw;padding:0 1.8cqw;border-radius:var(--radius-pill);border:1px solid transparent;background:var(--accent-color);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:1cqw;font-weight:700;animation:fu .9s var(--e) 1.2s both">Ver otra vez</button>
     </div>
   </sc-if>
 
   <!-- CHROME: progreso + navegación tipo reproductor -->
-  <img src="assets/logo-bauto.png" alt="BAUTO" style="position:absolute;left:3cqw;top:3cqw;width:7.4cqw;z-index:30;opacity:.82" />
+  <sc-if value="{{ chromeLogo }}" hint-placeholder-val="{{ true }}">
+    <img src="assets/logo-bauto.png" alt="BAUTO" style="position:absolute;left:3cqw;top:3cqw;width:7.4cqw;z-index:30;opacity:.82" />
+  </sc-if>
 
   <div style="position:absolute;left:0;right:0;bottom:0;height:.35cqw;background:rgba(28,25,23,.08);z-index:31">
     <div style="{{ progressStyle }}"></div>
@@ -336,160 +289,139 @@ button{font:inherit;color:inherit;cursor:pointer}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:760},&quot;cielo&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Amanece al abrir, anochece al cerrar&quot;,&quot;Según la hora real&quot;,&quot;Siempre de día&quot;,&quot;Siempre de noche&quot;],&quot;default&quot;:&quot;Amanece al abrir, anochece al cerrar&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Presentación&quot;},&quot;flujoAuto&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Presentación&quot;}}">
 const SC = [
-  {n:'Apertura'}, {n:'Hoy'}, {n:'Con BAUTO'}, {n:'El sistema'}, {n:'En acción'},
-  {n:'Protegido'}, {n:'En detalle'}, {n:'Las herramientas'}, {n:'Cierre'}
+  {n:'Apertura'}, {n:'Antes / Ahora'}, {n:'El sistema'}, {n:'En acción'}, {n:'Protegido'}, {n:'Cierre'}
 ];
 
 const HOJAS = [
   {label:'Stock', rot:-3, err:false}, {label:'Ventas', rot:2, err:true},
-  {label:'Producción', rot:-2, err:false}, {label:'Clientes', rot:3, err:false},
-  {label:'Envíos', rot:-4, err:false}, {label:'Caja', rot:1, err:true}
+  {label:'Producción', rot:-2, err:false}, {label:'Caja', rot:1, err:true}
 ];
 
+// tier: 'nucleo' (Platform, AppBauto — leen/escriben todo el tiempo),
+// 'db' (Stock, Ventas, Producción — son las bases, con panel lateral),
+// 'proceso' (QR, Catalogue — tocan la base en un punto puntual),
+// 'canal' (Agente — puente hacia el cliente, afuera del sistema)
 const NODES = [
-  {id:'hub', name:'HUB', who:'Seguridad · Salud', x:50, y:16, fn:'La puerta única y el tablero de salud de todo el ecosistema.'},
-  {id:'plat', name:'Platform', who:'Caja · Dinero', x:75.7, y:24, fn:'La consola central: vender, ver stock por etapa, mover prendas y auditar.'},
-  {id:'app', name:'AppBauto', who:'Celular · Inventario', x:89.4, y:44.1, fn:'Escanear, contar y conciliar el inventario físico desde el teléfono.'},
-  {id:'stock', name:'Stock', who:'Base · Inventario', x:84.6, y:67, fn:'Diagnosticar, alertar, ingresar, mover y conciliar desde adentro de la base.'},
-  {id:'ventas', name:'Ventas', who:'Gerencia · Dinero', x:63.7, y:81.9, fn:'Entender las ventas y cerrar cuentas: gráficos, comisiones, despachos.'},
-  {id:'cat', name:'Catalogue', who:'Web · Inventario', x:36.3, y:81.9, fn:'Que la web muestre solo lo que hay en tienda, sin que nadie la toque.'},
-  {id:'agente', name:'Agente', who:'Cliente · Personas', x:15.4, y:67, fn:'Atender clientes por WhatsApp con existencias reales y la voz de la marca.'},
-  {id:'prod', name:'Producción', who:'Taller · Decisiones', x:10.6, y:44.1, fn:'Costear cada diseño y convertir un lote fabricado en inventario real.'},
-  {id:'qr', name:'QR', who:'Etiquetado · Inventario', x:24.3, y:24, fn:'Imprimir la identidad física de cada prenda: referencia y talla.'}
+  {id:'plat', tier:'nucleo', name:'Platform', x:75.7, y:24, fn:'La consola central: vender, ver stock por etapa, mover prendas y auditar.',
+   dest:['Punto de venta con recibo','Matriz Bodega vs Tienda','Mover entre las 5 etapas']},
+  {id:'app', tier:'nucleo', name:'AppBauto', x:89.4, y:44.1, fn:'Escanear, contar y conciliar el inventario físico desde el teléfono.',
+   dest:['Escáner continuo','Consolidar conteo','Cotizador de envíos']},
+  {id:'stock', tier:'db', name:'Stock', x:84.6, y:67, fn:'La base del inventario, con un panel que diagnostica, alerta y mueve.',
+   dest:['Diagnóstico y auto-reparación','Alertas de stock mínimo','Corte → Confección → Alistamiento → Bodega → Tienda']},
+  {id:'ventas', tier:'db', name:'Ventas', x:63.7, y:81.9, fn:'La base de las ventas, con un panel de gráficos y liquidaciones.',
+   dest:['Tendencia plurianual','Liquidación por asesor','Despacho comercial']},
+  {id:'prod', tier:'db', name:'Producción', x:10.6, y:44.1, fn:'La base de compras y costeo, con un panel que aprueba lotes.',
+   dest:['Compra de tela','Costeo y precio sugerido','Lotes por talla']},
+  {id:'cat', tier:'proceso', name:'Catalogue', x:36.3, y:81.9, fn:'Publica la web pública en el momento exacto en que algo cambia.',
+   dest:['Redactar con IA en tono BAUTO','Publicar solo si algo cambió','Sincronizar stock']},
+  {id:'qr', tier:'proceso', name:'QR', x:24.3, y:24, fn:'Imprime la identidad física de cada prenda en el momento del lote.',
+   dest:['Cuatro modos de etiqueta','Hoja de 15 stickers','Márgenes con guía']},
+  {id:'agente', tier:'canal', name:'Agente', x:15.4, y:67, fn:'El puente con el cliente: WhatsApp con existencias reales.',
+   dest:['Respuestas con stock en vivo','Simulador de pruebas','Monitor de leads']}
 ];
 
-const EXT = ['Web pública','WhatsApp','Inteligencia artificial','Envíos','Alertas','Correo'];
+const SATELLITES = [
+  {near:'agente', label:'WhatsApp', dx:-6, dy:-7},
+  {near:'agente', label:'IA', dx:-9, dy:2},
+  {near:'cat', label:'Web pública', dx:0, dy:9},
+  {near:'app', label:'Envíos', dx:8, dy:-3},
+  {near:'plat', label:'Correo', dx:6, dy:-8},
+  {near:'stock', label:'Alertas', dx:9, dy:4}
+];
 
 const FLOWS = [
-  {name:'Lanzamiento de colección', d:'M10.6 44.1 L24.3 24 L50 50 L36.3 81.9'},
-  {name:'Venta omnicanal', d:'M75.7 24 L50 50 L84.6 67 L36.3 81.9'},
-  {name:'Auditoría y conciliación', d:'M75.7 24 L50 50 L89.4 44.1 L50 50'},
-  {name:'Cliente en WhatsApp', d:'M15.4 67 Q42 54 50 50 Q36 63 15.4 67'}
+  {name:'Lanzamiento de colección', seq:['prod','qr','cat']},
+  {name:'Venta omnicanal', seq:['plat','stock','cat']},
+  {name:'Auditoría y conciliación', seq:['plat','app']},
+  {name:'Cliente en WhatsApp', seq:['agente']}
 ];
 
-const CAPAS = ['Puerta de 4 factores','Pases de un solo uso','Dos pasos por correo','Ubicación autorizada','Excepciones de viaje','Apagado central','Protección de paneles','Salud del sistema'];
+const CAPAS = ['Pase de un toque','Ubicación autorizada','Sesión de horas','Apagado central','Ocultar y proteger','Latido constante'];
 
-const ETAPAS = [
-  {name:'Corte', grupo:'Producción', color:'#5E8B9D', x:10},
-  {name:'Confección', grupo:'Producción', color:'#6E6E6E', x:30},
-  {name:'Alistamiento', grupo:'Producción', color:'#A89078', x:50},
-  {name:'Bodega', grupo:'Ubicación', color:'#8A6E9B', x:70},
-  {name:'Tienda', grupo:'Ubicación', color:'#D4A24E', x:90}
-];
-
-const MODULES = [
-  {id:'prod', name:'Producción', who:'Taller', capa:'Decisiones', one:'Costear cada diseño y convertir un lote fabricado en inventario real.',
-   dest:['Compra de tela','Costeo y precio sugerido','Lotes por talla'],
-   donde:'Encargado de producción; panel lateral en la hoja de Producción.',
-   inter:'Aprobar lote siembra las unidades en Corte y dispara la reconstrucción de la web; puede abrir QR con las referencias del lote ya cargadas.',
-   ext:'Ninguno directo.', seg:'Pase de un solo uso aprobado desde el celular; panel protegido y ocultamiento automático.',
-   auto:'Descuento de metros de tela al registrar el lote; redespliegue web al aprobar.',
-   vis:'Captura del botón Aprobar lote y la estación Corte sumando unidades'},
-  {id:'qr', name:'QR', who:'Etiquetado', capa:'Inventario', one:'Imprimir la identidad física de cada prenda: etiqueta térmica con referencia y talla.',
-   dest:['Cuatro modos de etiqueta','Hoja de 15 stickers','Márgenes con guía'],
-   donde:'Taller y bodega; app web de escritorio.',
-   inter:'Lee referencias, precios y existencias de la base central; recibe los lotes desde Producción.',
-   ext:'Ninguno: la hoja se arma en el navegador y no se guarda en ningún lado.',
-   seg:'Pase de un solo uso, ubicación autorizada y sesión de seis horas.',
-   auto:'Autocompletado de precio y nombre; validación de cada referencia contra la base.',
-   vis:'Captura de la etiqueta impresa y la hoja 3×5 llenándose'},
-  {id:'plat', name:'Platform', who:'Caja y administración', capa:'Dinero', one:'La consola central: vender, ver el stock por etapa, mover prendas y auditar.',
-   dest:['Punto de venta con recibo','Matriz Bodega vs Tienda','Mover entre las 5 etapas'],
-   donde:'Cajero o administrador; app web en escritorio o tableta en la tienda.',
-   inter:'Escribe ventas, movimientos e inconsistencias con bloqueo de seguridad; es la librería que comparten los demás módulos; el Modo Naranja abre el flujo de auditoría.',
-   ext:'Correo para recibos, alertas de stock crítico, asistente de consultas y mapa de despachos.',
-   seg:'Login universal en dos pasos; recibe el apagado central.',
-   auto:'Descuento atómico al vender; alertas de stock crítico; recibo por correo.',
-   vis:'Captura del punto de venta y la matriz de stock'},
-  {id:'app', name:'AppBauto', who:'Tienda, en el celular', capa:'Inventario', one:'Escanear, contar y conciliar el inventario físico desde el teléfono.',
-   dest:['Escáner continuo','Consolidar conteo','Cotizador de envíos'],
-   donde:'Bodeguero o auditor; app instalada en el celular.',
-   inter:'Escribe conteos y ajustes en la base central, dispara la reconstrucción de la web y aprueba con un toque los pases de los otros módulos.',
-   ext:'Servicio de fletes y recibo compartible por WhatsApp.',
-   seg:'Login en dos pasos, ubicación autorizada y apagado central; el dueño aprueba desde aquí.',
-   auto:'Cálculo de diferencias al consolidar; registro automático en movimientos.',
-   vis:'Captura del hero sol/luna y la pantalla de Auditoría'},
-  {id:'stock', name:'Stock', who:'Panel de la base central', capa:'Inventario', one:'Cuidar la base central desde adentro: diagnosticar, alertar, ingresar, mover y conciliar.',
-   dest:['Diagnóstico y auto-reparación','Alertas de stock mínimo','Ingreso y movimiento de lotes'],
-   donde:'Administrador; panel lateral en la base central.',
-   inter:'Es el vigía de la base: detecta cambios en Tienda y le pide a Catalogue reconstruir la web.',
-   ext:'Ninguno directo.', seg:'Pase de un solo uso; ocultar todo y re-protección cada cinco minutos.',
-   auto:'Espera de tres minutos para agrupar varias ventas en una sola reconstrucción.',
-   vis:'Captura de la cuenta regresiva y el panel de Diagnóstico'},
-  {id:'ventas', name:'Ventas', who:'Panel de ventas', capa:'Dinero', one:'Entender las ventas y cerrar cuentas: gráficos, comisiones y despachos.',
-   dest:['Tendencia plurianual','Liquidación por asesor','Despacho comercial'],
-   donde:'Gerencia y administración; panel lateral en la hoja de Ventas.',
-   inter:'Lee el histórico de ventas y escribe métricas y liquidaciones.',
-   ext:'Guías de transporte y correo para recibos.',
-   seg:'Pase de un solo uso; panel protegido y ocultamiento automático.',
-   auto:'Tablas y gráficos generados en un clic.',
-   vis:'Captura del gráfico de tendencia y la liquidación'},
-  {id:'cat', name:'Catalogue', who:'Web pública', capa:'Inventario', one:'Que la web muestre solo lo que hay en tienda, con textos de marca, sin que nadie la toque.',
-   dest:['Redactar con IA en tono BAUTO','Publicar solo si algo cambió','Sincronizar stock'],
-   donde:'Marketing y e-commerce; gestor de escritorio más el sitio público.',
-   inter:'Lee las existencias activas y lo despiertan Producción, AppBauto y Stock.',
-   ext:'Publicación del sitio, redacción con IA y confirmación por alerta.',
-   seg:'Pase de un solo uso; reporta su salud por categorías.',
-   auto:'Reconstrucción tras cada cambio comercial y comparación de versión para no publicar de más.',
-   vis:'Captura del gestor y la página pública ocultando la última unidad'},
-  {id:'agente', name:'Agente', who:'Cliente en WhatsApp', capa:'Personas', one:'Atender clientes por WhatsApp con existencias reales y la voz de la marca.',
-   dest:['Respuestas con stock en vivo','Simulador de pruebas','Monitor de leads'],
-   donde:'Clientes en WhatsApp y el equipo en un centro de mando de escritorio.',
-   inter:'Consulta la base central en tiempo real y valida su pase contra el HUB.',
-   ext:'WhatsApp, inteligencia artificial en cascada y cotización de envío solo si el cliente pregunta.',
-   seg:'Pase de un solo uso, deduplicación de mensajes y clave guardada de forma segura.',
-   auto:'Envío del flyer de medios de pago; entrega a una persona con tiempo de espera.',
-   vis:'Captura de una conversación sin datos de cliente y el simulador'},
-  {id:'hub', name:'HUB', who:'Seguridad · cierre', capa:'Salud', one:'La puerta única y el tablero de salud de todo el ecosistema.',
-   dest:['Puerta de 4 factores','Aprobación con un toque','Cuadrícula y radar de salud'],
-   donde:'El dueño; app web de escritorio con aprobación desde el celular.',
-   inter:'Emite los pases a los demás módulos, apaga Platform y AppBauto a distancia y recibe los latidos.',
-   ext:'Correo para los códigos de acceso.',
-   seg:'Es la seguridad: cuatro factores, excepciones de viaje y apagado central.',
-   auto:'Latido de cada módulo y sesiones que expiran a medianoche.',
-   vis:'Captura de la cuadrícula de puntos y el dock de círculos'}
-];
+const MODULE_EXTRA = {
+  prod:{who:'Taller · Base de producción', ext:'Ninguno directo.', seg:'Pase de un solo uso aprobado desde el celular; panel protegido y ocultamiento automático.', auto:'Descuento de metros de tela al registrar el lote; redespliegue web al aprobar.', vis:'Captura del botón Aprobar lote y la estación Corte sumando unidades'},
+  qr:{who:'Etiquetado · Proceso puntual', ext:'Ninguno: la hoja se arma en el navegador y no se guarda en ningún lado.', seg:'Pase de un solo uso, ubicación autorizada y sesión de seis horas.', auto:'Autocompletado de precio y nombre; validación de cada referencia contra la base.', vis:'Captura de la etiqueta impresa y la hoja 3×5 llenándose'},
+  plat:{who:'Caja · Núcleo operativo', ext:'Correo para recibos, alertas de stock crítico y mapa de despachos.', seg:'Login universal en dos pasos; recibe el apagado central.', auto:'Descuento atómico al vender; alertas de stock crítico; recibo por correo.', vis:'Captura del punto de venta y la matriz de stock'},
+  app:{who:'Celular · Núcleo operativo', ext:'Servicio de fletes y recibo compartible por WhatsApp.', seg:'Login en dos pasos, ubicación autorizada y apagado central; el dueño aprueba desde aquí.', auto:'Cálculo de diferencias al consolidar; registro automático en movimientos.', vis:'Captura del hero sol/luna y la pantalla de Auditoría'},
+  stock:{who:'Base de inventario', ext:'Ninguno directo.', seg:'Pase de un solo uso; ocultar todo y re-protección cada cinco minutos.', auto:'Espera de tres minutos para agrupar varias ventas en una sola reconstrucción.', vis:'Captura de la cuenta regresiva, el panel de Diagnóstico y el recorrido de las 5 etapas'},
+  ventas:{who:'Base de ventas', ext:'Guías de transporte y correo para recibos.', seg:'Pase de un solo uso; panel protegido y ocultamiento automático.', auto:'Tablas y gráficos generados en un clic.', vis:'Captura del gráfico de tendencia y la liquidación'},
+  cat:{who:'Web pública · Proceso puntual', ext:'Publicación del sitio, redacción con IA y confirmación por alerta.', seg:'Pase de un solo uso; reporta su salud por categorías.', auto:'Reconstrucción tras cada cambio comercial y comparación de versión para no publicar de más.', vis:'Captura del gestor y la página pública ocultando la última unidad'},
+  agente:{who:'Cliente en WhatsApp · Canal', ext:'WhatsApp, inteligencia artificial en cascada y cotización de envío solo si el cliente pregunta.', seg:'Pase de un solo uso, deduplicación de mensajes y clave guardada de forma segura.', auto:'Envío del flyer de medios de pago; entrega a una persona con tiempo de espera.', vis:'Captura de una conversación sin datos de cliente y el simulador'}
+};
 
 const DIAS = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
 const MESES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
 
 class Component extends DCLogic {
-  state = {i:0, flow:0, open:null, tip:null, auto:this.props.flujoAuto !== false};
+  state = {i:0, flow:0, open:null, auto:this.props.flujoAuto !== false};
 
   componentDidMount(){
     this.t = setInterval(() => {
-      if (this.state.i === 4 && this.state.auto) this.setState(s => ({flow:(s.flow+1)%4}));
+      if (this.state.i === 3 && this.state.auto) this.setState(s => ({flow:(s.flow+1)%4}));
     }, 5200);
     this.esc = (ev) => { if (ev.key === 'Escape') this.setState({open:null}); };
     window.addEventListener('keydown', this.esc);
   }
   componentWillUnmount(){ clearInterval(this.t); window.removeEventListener('keydown', this.esc); }
 
-  go(n){ const i = Math.max(0, Math.min(SC.length-1, n)); this.setState({i, open:null, tip:null}); }
+  go(n){ const i = Math.max(0, Math.min(SC.length-1, n)); this.setState({i, open:null}); }
+
+  tierColor(t){ return t==='nucleo' ? 'var(--accent-color)' : t==='db' ? 'var(--accent-hover)' : t==='proceso' ? 'var(--color-gris-piedra)' : 'var(--text-secondary)'; }
 
   render_nodeStyle(n, active, dim){
-    return {position:'absolute', left:n.x+'%', top:n.y+'%', transform:'translate(-50%,-50%)', zIndex:4,
+    const isNucleo = n.tier === 'nucleo', isProceso = n.tier === 'proceso';
+    const scale = isNucleo ? 1.14 : (isProceso ? .86 : 1);
+    return {position:'absolute', left:n.x+'%', top:n.y+'%', transform:'translate(-50%,-50%) scale('+scale+')', zIndex:4,
       width:'10.4cqw', minHeight:'4.4cqw', padding:'.75cqw .85cqw', boxSizing:'border-box',
       display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center',
-      borderRadius:'2.3cqw', background: active ? 'rgba(184,92,56,.14)' : 'rgba(255,255,255,.5)',
-      border:'1px solid '+(active ? 'rgba(184,92,56,.55)' : 'var(--circle-border)'),
-      backdropFilter:'blur(20px)', boxShadow: active ? '0 0 2cqw rgba(184,92,56,.25)' : '0 4px 14px rgba(44,44,44,.08)',
-      opacity: dim ? .38 : 1, transition:'all .42s cubic-bezier(.22,.61,.36,1)',
+      borderRadius:'2.3cqw',
+      background: active ? 'rgba(184,92,56,.14)' : (n.tier==='db' ? 'rgba(160,79,47,.07)' : 'rgba(255,255,255,.5)'),
+      border: (isProceso ? '1.5px dashed ' : '1px solid ') + (active ? 'rgba(184,92,56,.6)' : (n.tier==='db' ? 'rgba(160,79,47,.35)' : 'var(--circle-border)')),
+      backdropFilter:'blur(20px)', boxShadow: active ? '0 0 2cqw rgba(184,92,56,.25)' : (isNucleo ? '0 6px 18px rgba(44,44,44,.1)' : '0 4px 14px rgba(44,44,44,.08)'),
+      opacity: dim ? .4 : 1, transition:'all .42s cubic-bezier(.22,.61,.36,1)',
       animation:'popc .55s cubic-bezier(.22,.61,.36,1) both', animationDelay:(n._d||0)+'s'};
   }
 
   renderVals(){
     const s = this.state, i = s.i;
-    const mapOn = i >= 3 && i <= 5;
+    const mapOn = i >= 2 && i <= 4;
     const flow = FLOWS[s.flow];
-    const openM = s.open ? MODULES.find(m => m.id === s.open) : null;
+    const openM = s.open ? {...NODES.find(n => n.id === s.open), ...MODULE_EXTRA[s.open]} : null;
+
+    const NODEMAP = {}; NODES.forEach(n => NODEMAP[n.id] = n);
 
     const nodes = NODES.map((n, k) => {
-      const hl = i === 5 ? n.id === 'hub' : (i === 4 ? this.inFlow(n.id) : s.tip === n.id);
-      const dim = i === 5 && n.id !== 'hub';
-      return {...n, _d:k*0.06, pick:() => this.setState({tip: s.tip === n.id ? null : n.id, open:null}),
-        st:this.render_nodeStyle({...n, _d:k*0.06}, hl, dim)};
+      const hl = i === 4 ? false : (i === 3 ? flow.seq.indexOf(n.id) >= 0 : false);
+      return {...n, _d:k*0.06,
+        pick:() => this.setState({open:n.id}),
+        st:this.render_nodeStyle({...n, _d:k*0.06}, hl, false),
+        nameSt:{fontFamily:"'Sora',sans-serif", fontSize:(n.tier==='nucleo'?'1.05cqw':'.92cqw'), fontWeight: n.tier==='nucleo'?700:600, lineHeight:1.1, color: n.tier==='db' ? 'var(--accent-hover)' : 'var(--text-primary)'}};
     });
+
+    const spokes = NODES.map(n => {
+      const inFlow = i === 3 && flow.seq.indexOf(n.id) >= 0;
+      const w = n.tier==='nucleo' ? 2.2 : (n.tier==='db' ? 1.8 : 1);
+      return {x:n.x, y:n.y,
+        stroke: inFlow ? 'rgba(184,92,56,.5)' : (n.tier==='proceso' ? 'rgba(28,25,23,.14)' : 'rgba(28,25,23,.16)'),
+        w: inFlow ? w+0.6 : w,
+        dash: n.tier==='proceso' ? '3,3' : 'none'};
+    });
+
+    const satellites = i === 2 ? SATELLITES.map(sat => {
+      const base = NODEMAP[sat.near];
+      return {label:sat.label, st:{position:'absolute', left:(base.x+sat.dx)+'%', top:(base.y+sat.dy)+'%', transform:'translate(-50%,-50%)',
+        padding:'.32cqw .65cqw', borderRadius:'999px', border:'1px dashed rgba(28,25,23,.22)', background:'rgba(255,255,255,.55)',
+        fontSize:'.68cqw', fontWeight:700, color:'var(--text-secondary)', whiteSpace:'nowrap', zIndex:2,
+        animation:'fi .6s var(--e) 1.2s both'}};
+    }) : [];
+
+    const flowPath = (() => {
+      const ids = flow.seq;
+      if (ids.length === 1){ const a = NODEMAP[ids[0]]; return 'M 50 50 L '+a.x+' '+a.y; }
+      let d = 'M '+NODEMAP[ids[0]].x+' '+NODEMAP[ids[0]].y;
+      for (let k=1;k<ids.length;k++){ d += ' L 50 50 L '+NODEMAP[ids[k]].x+' '+NODEMAP[ids[k]].y; }
+      return d;
+    })();
 
     const flows = FLOWS.map((f, k) => ({name:f.name, pick:() => this.setState({flow:k, auto:false}),
       st:{textAlign:'left', padding:'.62cqw 1.1cqw', borderRadius:'999px', fontSize:'.92cqw', fontWeight:700,
@@ -499,70 +431,63 @@ class Component extends DCLogic {
         transition:'all .3s cubic-bezier(.22,.61,.36,1)'}}));
 
     const beats = NODES.map((n, k) => ({st:{width:'1.05cqw', height:'1.05cqw', borderRadius:'50%',
-      background: k === 5 ? 'var(--warning-color)' : 'var(--success-color)',
+      background: k === 3 ? 'var(--warning-color)' : 'var(--success-color)',
       animation:'beat 1.8s ease-in-out infinite', animationDelay:(k*0.16)+'s', display:'block'}}));
 
-    const etapas = ETAPAS.map((e, k) => ({name:e.name, grupo:e.grupo, color:e.color,
-      st:{position:'absolute', left:e.x+'%', top:'7.4cqw', transform:'translateX(-50%)',
-        display:'flex', flexDirection:'column', alignItems:'center', gap:'.4cqw',
-        animation:'fux .6s cubic-bezier(.22,.61,.36,1) both', animationDelay:(0.2+k*0.12)+'s'}}));
-
-    const modules = MODULES.map((m, k) => ({n:k+1, name:m.name, who:m.who+' · '+m.capa, one:m.one,
-      open:() => this.setState({open:m.id}),
-      st:{textAlign:'left', display:'flex', flexDirection:'column', gap:'.42cqw', justifyContent:'center',
-        minHeight:0, overflow:'hidden', padding:'1cqw 1.3cqw', borderRadius:'2cqw', background:'var(--glass-bg)',
-        border:'1px solid var(--glass-border)', backdropFilter:'blur(25px)',
-        boxShadow:'0 6px 20px rgba(44,44,44,.07)', transition:'all .35s cubic-bezier(.22,.61,.36,1)',
-        animation:'fu .5s cubic-bezier(.22,.61,.36,1) both', animationDelay:(0.1+k*0.05)+'s'}}));
+    const legend = {
+      nucleo:{color:'var(--accent-color)', fontSize:'.85cqw', fontWeight:700},
+      db:{color:'var(--accent-hover)', fontSize:'.85cqw', fontWeight:700},
+      proceso:{color:'var(--color-gris-piedra)', fontSize:'.85cqw', fontWeight:700},
+      canal:{color:'var(--text-secondary)', fontSize:'.85cqw', fontWeight:700}
+    };
 
     const hojas = HOJAS.map((h, k) => {
       const cells = Array.from({length:6}, (_, ci) => {
         const isErr = h.err && ci === 4;
         return 'background:'+(isErr ? 'rgba(220,38,38,.16)' : 'var(--bg-warm)')+
-          ';border:1px solid '+(isErr ? 'var(--danger-color)' : 'var(--line, rgba(28,25,23,.08))')+
-          ';border-radius:.25cqw';
+          ';border:1px solid '+(isErr ? 'var(--danger-color)' : 'rgba(28,25,23,.08)')+
+          ';border-radius:.2cqw';
       });
       return {label:h.label, cells,
-        grid:'display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:.25cqw;padding:.4cqw;flex:1',
-        st:{'--rot':h.rot+'deg', width:'7.4cqw', height:'9.4cqw', display:'flex', flexDirection:'column',
-          background:'#fff', border:'1px solid rgba(28,25,23,.1)', borderRadius:'.9cqw',
+        grid:'display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:.2cqw;padding:.35cqw;flex:1',
+        st:{'--rot':h.rot+'deg', width:'7cqw', height:'8.6cqw', display:'flex', flexDirection:'column',
+          background:'#fff', border:'1px solid rgba(28,25,23,.1)', borderRadius:'.8cqw',
           boxShadow:'0 8px 20px rgba(44,44,44,.08)', transform:'rotate('+h.rot+'deg)',
-          animation:'scatterIn .6s cubic-bezier(.22,.61,.36,1) '+(k*0.08)+'s both, drift '+(5+k*0.3)+'s ease-in-out '+(k*0.2)+'s infinite'}};
+          animation:'scatterIn .6s cubic-bezier(.22,.61,.36,1) '+(k*0.1)+'s both, drift '+(5+k*0.3)+'s ease-in-out '+(k*0.2)+'s infinite'}};
     });
 
     const now = new Date();
     const hoyDia = String(now.getDate()).padStart(2,'0');
     const hoyMes = DIAS[now.getDay()]+' · '+MESES[now.getMonth()];
 
-    const cielo = this.props.cielo ?? 'Amanece al abrir, anochece al cerrar';
-    const h = now.getHours();
-    const isNight = cielo === 'Siempre de noche' ? true
-      : cielo === 'Siempre de día' ? false
-      : cielo === 'Según la hora real' ? (h < 6 || h >= 18)
-      : i === 8;
-    const orb = (setting) => ({position:'absolute', left:'50%', top:'50%', width:'40cqw', height:'40cqw',
-      marginLeft:'-20cqw', marginTop:'-24cqw', borderRadius:'50%', pointerEvents:'none',
-      background: isNight
-        ? 'radial-gradient(circle at 50% 50%, rgba(226,233,245,.95) 0%, rgba(180,195,220,.45) 34%, rgba(180,195,220,0) 68%)'
-        : 'radial-gradient(circle at 50% 50%, rgba(255,90,30,.85) 0%, rgba(255,165,102,.5) 30%, rgba(255,165,102,0) 66%)',
+    const orb = (setting) => ({position:'absolute', left:'50%', top:'50%', width:'34cqw', height:'34cqw',
+      marginLeft:'-17cqw', marginTop:'-20cqw', borderRadius:'50%', pointerEvents:'none',
+      background:'radial-gradient(circle at 50% 50%, rgba(255,90,30,.5) 0%, rgba(180,195,220,.4) 55%, rgba(180,195,220,0) 72%)',
       animation:(setting ? 'setdown 3.4s' : 'rise 2.6s')+' cubic-bezier(.22,.61,.36,1) both'});
 
-    const tipNode = s.tip ? NODES.find(n => n.id === s.tip) : null;
     const crit = openM ? [
-      {k:'Quién y dónde', v:openM.donde}, {k:'Interoperabilidad', v:openM.inter},
       {k:'Servicios externos', v:openM.ext}, {k:'Seguridad', v:openM.seg},
       {k:'Automatismos', v:openM.auto}
     ] : [];
 
+    const hubRadiusPct = 46;
+    const hubRingStyle = {position:'absolute', left:'50%', top:'50%', width:hubRadiusPct*2+'cqw', height:hubRadiusPct*2+'cqw',
+      marginLeft:(-hubRadiusPct)+'cqw', marginTop:(-hubRadiusPct)+'cqw', borderRadius:'50%',
+      border:'1.5px dashed rgba(184,92,56,.35)', zIndex:0, pointerEvents:'none',
+      animation: i===4 ? 'ringout 3.2s var(--e) infinite' : 'none'};
+    const hubLabelStyle = {position:'absolute', left:'50%', top:'calc(50% - '+hubRadiusPct+'cqw)', transform:'translate(-50%,-50%)',
+      padding:'.4cqw .9cqw', borderRadius:'999px', background:'var(--bg-color)', border:'1px dashed rgba(184,92,56,.4)',
+      color:'var(--accent-hover)', fontSize:'.78cqw', fontWeight:700, zIndex:5, whiteSpace:'nowrap'};
+
     return {
-      s0:i===0, s1:i===1, s2:i===2, s3:i===3, s4:i===4, s5:i===5, s6:i===6, s7:i===7, s8:i===8, mapOn,
-      orbStyle:orb(false), orbSetStyle:orb(true), hoyDia, hoyMes, hojas,
-      mapTag: i===3 ? 'EL SISTEMA' : (i===4 ? 'EN ACCIÓN' : 'PROTEGIDO'),
-      spokes:NODES.map(n => ({x:n.x, y:n.y})),
-      nodes, externals:EXT, flows, beats, etapas, modules, capas:CAPAS,
-      flowOn: i===4, flowPath:flow.d,
-      tip:!!tipNode && i===3, tipName:tipNode ? tipNode.name : '', tipText:tipNode ? tipNode.fn : '',
-      det:!!openM, detName:openM?openM.name:'', detWho:openM?openM.who:'', detOne:openM?openM.one:'',
+      s0:i===0, s1:i===1, s2:i===2, s3:i===3, s4:i===4, s5:i===5, mapOn,
+      chromeLogo: i>0 && i<5,
+      orbSetStyle:orb(true), hoyDia, hoyMes, hojas,
+      mapTag: i===2 ? 'EL SISTEMA' : (i===3 ? 'EN ACCIÓN' : 'PROTEGIDO'),
+      spokes, nodes, satellites, flows, beats, capas:CAPAS, legend,
+      hubRingStyle, hubLabelStyle,
+      flowOn: i===3, flowPath,
+      det:!!openM, detName:openM?openM.name:'', detWho:openM?openM.who:'', detOne:openM?openM.fn:'',
       detDest:openM?openM.dest:[], detCriterios:crit, detVis:openM?openM.vis:'',
       detSlot:openM?('cap-'+openM.id):'cap',
       sceneLabel:(i+1)+' / '+SC.length+' · '+SC[i].n,
@@ -571,11 +496,6 @@ class Component extends DCLogic {
       close:() => this.setState({open:null}),
       onKey:(ev) => { if (ev.key === 'ArrowRight') this.go(i+1); if (ev.key === 'ArrowLeft') this.go(i-1); }
     };
-  }
-
-  inFlow(id){
-    const map = [['prod','qr','cat'],['plat','stock','cat'],['plat','app'],['agente']];
-    return map[this.state.flow].indexOf(id) >= 0;
   }
 }
 
