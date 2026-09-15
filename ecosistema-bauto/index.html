@@ -43,7 +43,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes beat{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.45);opacity:1}}
 @keyframes beatColor{0%,100%{opacity:.55}50%{opacity:1}}
 .material-symbols-outlined{font-variation-settings:'opsz' 24;line-height:1;user-select:none}
-@keyframes tipIn{from{opacity:0;transform:translate(-50%,-4px)}to{opacity:1;transform:translate(-50%,0)}}
 @keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(184,92,56,0)}50%{box-shadow:0 0 0 .6cqw rgba(184,92,56,.14)}}
 @keyframes spinCW{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes spinCCW{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
@@ -146,15 +145,24 @@ button{font:inherit;color:inherit;cursor:pointer}
                 <div style="{{ p.counterSt }}">
                   <button onClick="{{ p.pick }}" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="{{ p.dotSt }}">
                     <span class="material-symbols-outlined" style="{{ p.iconSt }}">{{ p.icon }}</span>
+                    <span style="{{ p.siglaSt }}">{{ p.sigla }}</span>
                   </button>
-                  <sc-if value="{{ p.showTip }}">
-                    <div style="{{ p.labelSt }}">{{ p.name }}</div>
-                  </sc-if>
                 </div>
               </div>
             </sc-for>
           </div>
         </sc-for>
+
+        <div style="position:absolute;left:0;bottom:0;max-width:44cqmin;padding:.9cqmin 1.1cqmin;border-radius:1cqmin;
+          background:var(--color-perla);border:1px solid rgba(28,25,23,.08)">
+          <div style="font-size:.72cqmin;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:.4cqmin">Convenciones</div>
+          <sc-for list="{{ siglasLegend }}" as="lv" hint-placeholder-count="5">
+            <div style="font-size:.78cqmin;line-height:1.6;color:var(--text-primary)">
+              <b style="color:var(--accent-hover)">{{ lv.label }}</b> — {{ lv.text }}
+            </div>
+          </sc-for>
+          <div style="font-size:.72cqmin;line-height:1.5;color:var(--text-secondary);margin-top:.4cqmin;font-style:italic">El centro es la base; el anillo 3 es el panel que la gestiona.</div>
+        </div>
       </div>
     </div>
   </sc-if>
@@ -407,6 +415,15 @@ const RINGS = [
   {r:30, dur:76, dir:'cw',  planets:[{id:'stock', name:'Panel Stock'},{id:'ventas', name:'Panel Ventas'},{id:'prod', name:'Panel Producción'}]},
   {r:38, dur:100, dir:'ccw', planets:[{id:'hub', name:'HUB'}]}
 ];
+// Íconos reales del HUB (0. HUB/index.html) — mismo glifo que ya usa cada proyecto en producción.
+const ICONS = {plat:'timeline', app:'smartphone', cat:'storefront', qr:'qr_code_2',
+  agente:'smart_toy', prod:'precision_manufacturing', stock:'inventory_2',
+  ventas:'point_of_sale', hub:'shield'};
+// Siglas de 3 letras (decisión del usuario: consistencia visual por encima del 1:1 con el HUB,
+// que usa PLAT/PROD de 4). El resto sí coincide exacto con el HUB real.
+const SIGLAS = {plat:'PLA', app:'APP', cat:'CAT', qr:'QR', agente:'AGT', prod:'PRO', stock:'STK', ventas:'VTA', hub:'HUB'};
+// Orden plano de los 9 planetas (anillo por anillo) para el recorrido automático.
+const TOUR_IDS = RINGS.flatMap(ring => ring.planets.map(p => p.id));
 
 // Pines (tier: nucleo = trabaja sin parar, proceso = interviene en un solo momento, canal = atiende al cliente)
 const APPS = [
@@ -541,16 +558,23 @@ const MODULES = [
 ];
 
 class Component extends DCLogic {
-  state = {i:0, flow:0, open:null, hoverRing:null, auto:this.props.flujoAuto !== false};
+  state = {i:0, flow:0, open:null, hoverRing:null, hoverId:null, tourIdx:0, auto:this.props.flujoAuto !== false};
 
   componentDidMount(){
     this.t = setInterval(() => {
       if (this.state.i === 3 && this.state.auto) this.setState(s => ({flow:(s.flow+1)%4}));
     }, 5200);
+    // Recorrido automático de los planetas de la escena "El cambio": uno a la vez,
+    // cada 2.4s, sigue solo mientras nadie esté interactuando a mano (hoverId null).
+    this.tourTimer = setInterval(() => {
+      if (this.state.i === 1 && this.state.hoverId == null){
+        this.setState(s => ({tourIdx:(s.tourIdx+1) % TOUR_IDS.length}));
+      }
+    }, 2400);
     this.esc = (ev) => { if (ev.key === 'Escape') this.setState({open:null}); };
     window.addEventListener('keydown', this.esc);
   }
-  componentWillUnmount(){ clearInterval(this.t); window.removeEventListener('keydown', this.esc); }
+  componentWillUnmount(){ clearInterval(this.t); clearInterval(this.tourTimer); window.removeEventListener('keydown', this.esc); }
 
   go(n){ const i = Math.max(0, Math.min(SC.length-1, n)); this.setState({i, open:null, hoverRing:null}); }
 
@@ -670,14 +694,23 @@ class Component extends DCLogic {
     // --- Escena "El cambio": sistema solar (derecha) ---
     const maxR = RINGS[RINGS.length-1].r;
     const centerSt = {position:'absolute', left:'50%', top:'50%', width:'0', height:'0'};
+    // Los 3 círculos entrelazados (no en triángulo separado): un radio de centro
+    // más chico que el propio radio del círculo hace que se superpongan entre sí,
+    // como un diagrama de Venn, para leerse como interrelacionados. La etiqueta
+    // se ancla en un radio mayor, sobre el mismo ángulo, para no quedar tapada.
     const centerDbs = CENTER_DBS.map((name, k) => {
-      const ang = (-90 + k*120) * Math.PI/180, cr = 5.5;
+      const ang = (-90 + k*120) * Math.PI/180, cr = 2.1, labelR = 7.2;
       return {name,
-        wrapSt:{position:'absolute', left:(cr*Math.cos(ang))+'cqmin', top:(cr*Math.sin(ang))+'cqmin', transform:'translate(-50%,-50%)',
-          display:'flex', flexDirection:'column', alignItems:'center', gap:'.3cqmin', animation:'popc .5s var(--e) '+(k*0.08)+'s both'},
-        dotSt:{width:'9cqmin', height:'9cqmin', borderRadius:'50%', background:'rgba(184,92,56,.1)',
-          border:'1.5px solid rgba(184,92,56,.4)', animation:'beatColor 2.4s ease-in-out '+(k*0.3)+'s infinite'},
-        labelSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.05cqmin', fontWeight:700, color:'var(--accent-hover)', whiteSpace:'nowrap'}};
+        wrapSt:{position:'absolute', left:0, top:0, width:0, height:0},
+        dotSt:{position:'absolute', left:(cr*Math.cos(ang))+'cqmin', top:(cr*Math.sin(ang))+'cqmin',
+          transform:'translate(-50%,-50%)', width:'6cqmin', height:'6cqmin', borderRadius:'50%',
+          background:'rgba(184,92,56,.16)', border:'1.5px solid rgba(184,92,56,.45)',
+          mixBlendMode:'multiply', zIndex:k+1,
+          animation:'popc .5s var(--e) '+(k*0.08)+'s both, beatColor 2.4s ease-in-out '+(k*0.3)+'s infinite'},
+        labelSt:{position:'absolute', left:(labelR*Math.cos(ang))+'cqmin', top:(labelR*Math.sin(ang))+'cqmin',
+          transform:'translate(-50%,-50%)', zIndex:10,
+          fontFamily:"'Sora',sans-serif", fontSize:'1.05cqmin', fontWeight:700, color:'var(--accent-hover)',
+          whiteSpace:'nowrap', animation:'popc .5s var(--e) '+(k*0.08)+'s both'}};
     });
 
     // Profundidad en el mismo plano cenital (sin 3D): sombra y saturación decrecen
@@ -695,11 +728,15 @@ class Component extends DCLogic {
       {shadow:'0 1px 2px rgba(28,25,23,.08)', filter:'saturate(.72) brightness(1.07)', ring:'rgba(28,25,23,.06)',
         highlight:'radial-gradient(circle at 38% 32%, rgba(255,255,255,.32), rgba(255,255,255,0) 55%)'}
     ];
-    // Íconos reales del HUB (0. HUB/index.html) — mismo glifo que ya usa cada
-    // proyecto en producción, para no inventar un set nuevo.
-    const ICONS = {plat:'timeline', app:'smartphone', cat:'storefront', qr:'qr_code_2',
-      agente:'smart_toy', prod:'precision_manufacturing', stock:'inventory_2',
-      ventas:'point_of_sale', hub:'shield'};
+    // Cuadro de convenciones: explica cada sigla agrupada por nivel (centro = base,
+    // anillo 3 = panel que la gestiona), en vez de un tooltip por planeta.
+    const siglasLegend = [
+      {label:'Centro', text:'Bases de datos (núcleo): Producción · Ventas · Stock'},
+      {label:'Anillo 1', text: RINGS[0].planets.map(p => SIGLAS[p.id]+' '+p.name).join(' · ')},
+      {label:'Anillo 2', text: RINGS[1].planets.map(p => SIGLAS[p.id]+' '+p.name).join(' · ')},
+      {label:'Anillo 3', text: 'Paneles inteligentes: '+RINGS[2].planets.map(p => SIGLAS[p.id]+' '+p.name).join(' · ')},
+      {label:'Anillo 4', text: RINGS[3].planets.map(p => SIGLAS[p.id]+' '+p.name).join(' · ')}
+    ];
     const orbitRings = RINGS.map((ring, ri) => {
       const n = ring.planets.length;
       const depth = DEPTH[ri] || DEPTH[DEPTH.length-1];
@@ -709,41 +746,32 @@ class Component extends DCLogic {
       const planets = ring.planets.map((p, pi) => {
         const ang = (-90 + pi*(360/n)) * Math.PI/180;
         const x = ring.r * Math.cos(ang), y = ring.r * Math.sin(ang);
-        const hovered = s.hoverRing === ri; // resalta todo el anillo activo, sutil
-        const showTip = s.hoverId === p.id;
+        // "Su turno": el recorrido automático (TOUR_IDS[tourIdx]) o el hover/tap
+        // manual, el que gane. El manual siempre pausa el recorrido (ver timer).
+        const active = s.hoverId === p.id || (s.hoverId == null && TOUR_IDS[s.tourIdx] === p.id);
         return {
           name: p.name,
           icon: ICONS[p.id] || 'circle',
-          showTip,
-          // Tap 1: solo muestra el nombre (no abre nada). Tap 2 sobre el mismo
-          // planeta: ya abre la ficha. En mouse, el hover ya dejó el nombre
-          // visible, así que el primer click abre directo.
-          pick: (ev) => {
-            if (s.hoverId !== p.id){ this.setState({hoverRing: ri, hoverId: p.id}); return; }
-            this.explode(p.id, ev && ev.currentTarget);
-          },
+          sigla: SIGLAS[p.id] || '',
+          pick: (ev) => this.explode(p.id, ev && ev.currentTarget),
           enter: () => this.setState({hoverRing: ri, hoverId: p.id}),
           leave: () => this.setState({hoverRing: null, hoverId: null}),
           slotSt:{position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%) translate('+x+'cqmin,'+y+'cqmin)'},
           counterSt:{position:'relative', animation: counterAnim, animationPlayState: paused ? 'paused' : 'running',
             display:'flex', flexDirection:'column', alignItems:'center'},
           dotSt:{width:'6.5cqmin', height:'6.5cqmin', borderRadius:'50%', border:'none', padding:0, cursor:'pointer',
-            display:'flex', alignItems:'center', justifyContent:'center',
-            backgroundColor: hovered ? 'var(--accent-color)' : 'rgba(255,255,255,.85)',
-            backgroundImage: hovered ? 'none' : depth.highlight,
-            border:'1.5px solid '+(hovered ? 'var(--accent-color)' : 'var(--circle-border)'),
-            boxShadow: hovered ? '0 0 2.4cqmin rgba(184,92,56,.35)' : depth.shadow,
+            display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'.15cqmin',
+            backgroundColor: active ? 'var(--accent-color)' : 'rgba(28,25,23,.05)',
+            backgroundImage: active ? 'none' : depth.highlight,
+            border:'1.5px solid '+(active ? 'var(--accent-color)' : 'rgba(28,25,23,.16)'),
+            boxShadow: active ? '0 0 2.4cqmin rgba(184,92,56,.35)' : depth.shadow,
             filter: depth.filter,
-            animation:'beatColor 2.2s ease-in-out '+(pi*0.25)+'s infinite',
-            transition:'background-color .25s var(--e), border-color .25s var(--e), box-shadow .25s var(--e)'},
-          iconSt:{fontSize:'3.1cqmin', color: hovered ? '#fff' : 'var(--accent-hover)', pointerEvents:'none',
-            transition:'color .25s var(--e)'},
-          labelSt:{position:'absolute', bottom:'calc(100% + .6cqmin)', left:'50%',
-            transform:'translate(-50%,0)', pointerEvents:'none', whiteSpace:'nowrap', zIndex:6,
-            padding:'.35cqmin .8cqmin', borderRadius:'999px', background:'var(--card-bg,#fff)',
-            border:'1px solid rgba(28,25,23,.1)', boxShadow:'0 3px 10px rgba(28,25,23,.12)',
-            fontFamily:"'Sora',sans-serif", fontSize:'1.02cqmin', fontWeight:700,
-            color:'var(--accent-hover)', animation:'tipIn .16s var(--e) both'}
+            transition:'background-color .45s var(--e), border-color .45s var(--e), box-shadow .45s var(--e)'},
+          iconSt:{fontSize:'2.7cqmin', color: active ? '#fff' : 'var(--text-secondary)', pointerEvents:'none',
+            opacity: active ? 1 : .7, transition:'color .45s var(--e), opacity .45s var(--e)'},
+          siglaSt:{fontFamily:"'Sora',sans-serif", fontSize:'.85cqmin', fontWeight:700, letterSpacing:'.02em',
+            color: active ? 'rgba(255,255,255,.9)' : 'var(--text-secondary)', pointerEvents:'none',
+            opacity: active ? 1 : .65, transition:'color .45s var(--e), opacity .45s var(--e)'}
         };
       });
       return {
@@ -808,7 +836,7 @@ class Component extends DCLogic {
       s0:i===0, s1:i===1, s2:i===2, s3:i===3, s4:i===4, s5:i===5, s6:i===6, s7:i===7, mapOn,
       chromeLogoOn: i!==0 && i!==7,
       orbStyle:orb(false), orbSetStyle:orb(true),
-      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings,
+      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings, siglasLegend,
       mapEyebrow: i===2 ? 'El sistema' : (i===3 ? 'En acción' : 'La protección'),
       mapTitle: i===2 ? 'La cadena de producción, de punta a punta.'
         : (i===3 ? 'Cuatro formas en que algo dispara todo lo demás.' : 'Una puerta. Ocho candados.'),
