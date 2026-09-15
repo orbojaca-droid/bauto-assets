@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@1,600&display=swap" rel="stylesheet">
 <script src="./image-slot.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <style>
 :root{
 --accent-color:#B85C38;--accent-hover:#A04F2F;--bg-color:#FAF9F6;--bg-warm:#F6F3ED;
@@ -40,6 +41,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @keyframes beat{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.45);opacity:1}}
 @keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(184,92,56,0)}50%{box-shadow:0 0 0 .6cqw rgba(184,92,56,.14)}}
+@keyframes spinCW{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes spinCCW{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes excelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes travel{0%{left:10%}18%{left:10%}25%{left:30%}43%{left:30%}50%{left:50%}68%{left:50%}75%{left:70%}88%{left:70%}95%{left:90%}100%{left:90%}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
 </style>
@@ -74,24 +78,73 @@ button{font:inherit;color:inherit;cursor:pointer}
   <!-- ESCENA 1 · PESO VS AIRE -->
   <sc-if value="{{ s1 }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;left:6cqw;top:6cqw;right:6cqw">
-      <div style="font-size:1cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">EL CAMBIO</div>
-      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">Un solo hilo enredado. Nueve hebras ordenadas.</div>
+      <div style="font-size:1cqw;letter-spacing:.02em;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">El cambio</div>
+      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">Un archivo con pestañas. Un sistema con órbitas.</div>
     </div>
 
-    <svg viewBox="0 0 100 56.25" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
-      <path d="{{ spiralPath }}" pathLength="1" fill="none" stroke="var(--color-gris-piedra)" stroke-width=".28" stroke-linecap="round" vector-effect="non-scaling-stroke" style="animation:draw 1.6s var(--e) both;stroke-dasharray:1;stroke-dashoffset:1"></path>
-      <sc-for list="{{ threadLines }}" as="l" hint-placeholder-count="9">
-        <path d="{{ l.d }}" fill="none" stroke="var(--circle-border)" stroke-width=".22" vector-effect="non-scaling-stroke" style="{{ l.st }}"></path>
-      </sc-for>
-    </svg>
+    <div style="position:absolute;left:0;top:14cqw;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;padding:2cqw 3cqw 2cqw 6cqw;box-sizing:border-box">
+      <div style="width:100%;max-width:34cqw;background:#fff;border:1px solid rgba(28,25,23,.1);border-radius:1.4cqw;box-shadow:0 10px 30px rgba(44,44,44,.08);overflow:hidden;animation:excelIn .6s var(--e) .15s both">
+        <div style="padding:.9cqw 1.1cqw;border-bottom:1px solid rgba(28,25,23,.08);display:flex;align-items:center;gap:.5cqw">
+          <span style="width:1.1cqw;height:1.1cqw;border-radius:.3cqw;background:var(--success-color);flex:none"></span>
+          <span style="font-family:'Sora',sans-serif;font-size:.85cqw;font-weight:700;color:var(--text-primary)">Costeo.xlsx</span>
+        </div>
+        <div style="padding:.6cqw 1.1cqw;border-bottom:1px solid rgba(28,25,23,.08);display:flex;align-items:center;gap:.6cqw;background:var(--bg-warm)">
+          <span style="font-size:.7cqw;font-weight:700;color:var(--text-secondary)">fx</span>
+          <span style="font-size:.72cqw;color:var(--text-modal);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">=BUSCARV(A2;Stock!B:D;3)</span>
+        </div>
+        <div style="padding:.9cqw 1.1cqw;display:flex;flex-direction:column;gap:.35cqw">
+          <div style="display:grid;grid-template-columns:1.1cqw repeat(4,1fr);gap:.35cqw">
+            <span></span>
+            <sc-for list="{{ excelCols }}" as="col" hint-placeholder-count="4">
+              <span style="text-align:center;font-size:.62cqw;font-weight:700;color:var(--text-secondary)">{{ col }}</span>
+            </sc-for>
+          </div>
+          <sc-for list="{{ excelRows }}" as="row" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:1.1cqw repeat(4,1fr);gap:.35cqw">
+              <span style="font-size:.62cqw;font-weight:700;color:var(--text-secondary);align-self:center">{{ row.n }}</span>
+              <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="4">
+                <span style="{{ cell }}"></span>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:.3cqw;padding:.7cqw 1.1cqw;border-top:1px solid rgba(28,25,23,.08);background:var(--bg-warm)">
+          <sc-for list="{{ excelTabs }}" as="tab" hint-placeholder-count="4">
+            <span style="{{ tab.st }}">{{ tab.name }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
 
-    <span style="position:absolute;left:14%;top:64%;font-size:.68cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--color-gris-piedra);font-weight:700;animation:fi .6s var(--e) .3s both">Antes</span>
-    <span style="position:absolute;left:63%;top:8%;font-size:.68cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fi .6s var(--e) .9s both">Ahora</span>
+    <div style="position:absolute;right:0;top:14cqw;bottom:0;width:50%;container-type:size;padding:1cqw 3cqw 1cqw 1cqw;box-sizing:border-box">
+      <div style="position:relative;width:100%;height:100%">
+        <sc-for list="{{ orbitRings }}" as="ring" hint-placeholder-count="4">
+          <div style="{{ ring.circleSt }}"></div>
+        </sc-for>
 
-    <sc-for list="{{ threadDots }}" as="p" hint-placeholder-count="9">
-      <div style="{{ p.dotSt }}"></div>
-      <div style="{{ p.labelSt }}">{{ p.name }}</div>
-    </sc-for>
+        <div style="{{ centerSt }}">
+          <sc-for list="{{ centerDbs }}" as="db" hint-placeholder-count="3">
+            <div style="{{ db.wrapSt }}">
+              <div style="{{ db.dotSt }}"></div>
+              <div style="{{ db.labelSt }}">{{ db.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-for list="{{ orbitRings }}" as="ring" hint-placeholder-count="4">
+          <div style="{{ ring.spinSt }}">
+            <sc-for list="{{ ring.planets }}" as="p" hint-placeholder-count="3">
+              <div style="{{ p.slotSt }}">
+                <div style="{{ p.counterSt }}">
+                  <button onClick="{{ p.pick }}" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="{{ p.dotSt }}"></button>
+                  <div style="{{ p.labelSt }}">{{ p.name }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
   </sc-if>
 
   <!-- ESCENAS 2-4 · EL FLUJO -->
@@ -100,7 +153,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 
       <div style="padding:6cqw 6cqw 0;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw;flex:none">
         <div>
-          <div style="font-size:1cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">{{ mapEyebrow }}</div>
+          <div style="font-size:1cqw;letter-spacing:.02em;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">{{ mapEyebrow }}</div>
           <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;line-height:1.15;color:var(--text-primary);max-width:60cqw;text-wrap:pretty;margin-top:.5cqw;animation:fu .6s var(--e) .08s both">{{ mapTitle }}</div>
         </div>
 
@@ -190,7 +243,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   <sc-if value="{{ s5 }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;inset:0;padding:6cqw 6cqw 13cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw">
       <div style="flex:none">
-        <div style="font-size:1cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">EN DETALLE</div>
+        <div style="font-size:1cqw;letter-spacing:.02em;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">En detalle</div>
         <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">El viaje de una prenda</div>
       </div>
       <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:4cqw">
@@ -220,7 +273,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <div style="position:absolute;inset:0;padding:6cqw 6cqw 6cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:2cqw">
         <div>
-          <div style="font-size:1cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">LAS HERRAMIENTAS</div>
+          <div style="font-size:1cqw;letter-spacing:.02em;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">Las herramientas</div>
           <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">En el orden del viaje de la prenda</div>
         </div>
         <div style="font-size:.92cqw;color:var(--text-secondary);font-weight:600;padding-bottom:.5cqw">Toca una tarjeta para abrirla</div>
@@ -325,18 +378,22 @@ const SC = [
   {n:'Seguridad'}, {n:'El viaje de la prenda'}, {n:'Los nueve módulos'}, {n:'Cierre'}
 ];
 
-const MASA_EXCEL = 'Costeo Tela $/m Total Diseño Mano obra Margen Lote12 Lote13 Lote14 =SUMA(B2:B9) Stock Ref Talla Corte Confec Bodega Tienda SKU014 SKU022 SKU031 $48.200 $52.000 #DIV/0 =SI(D4<5;"Bajo";"OK") Ventas Fecha Asesor Total Comisión Cliente Envío Ene Feb Mar 12% 8% 15% =PROMEDIO(C:C) Dimensiones Ref Busto Cintura Cadera Largo Talla S M L XL =BUSCARV(A2;Stock;3) Costo Precio Color Stock crítico Formato condicional Hoja1 Hoja2 Hoja3 Hoja4 #REF! =CONCATENAR(A1;" ";B1) copiar pegar copiar pegar copiar pegar sin guardar versión final v2 v3 definitivo_bueno.xlsx';
+const EXCEL_COLS = ['A','B','C','D'];
+const EXCEL_ROWS = [
+  {n:1, fills:[0,0,0,0]}, {n:2, fills:[0,1,0,0]}, {n:3, fills:[0,0,0,2]},
+  {n:4, fills:[0,0,1,0]}, {n:5, fills:[0,0,0,0]}
+];
+const EXCEL_TABS = ['Ingreso insumos','Costeo','Stock','Lista de precios'];
+const EXCEL_ACTIVE_TAB = 1;
 
-const PIEZAS_AHORA = [
-  {name:'Escritorio', x:70, y:9},
-  {name:'Celular', x:63, y:15},
-  {name:'Bases separadas', x:80, y:16},
-  {name:'Seguridad', x:57, y:23},
-  {name:'WhatsApp', x:85, y:24},
-  {name:'Envíos', x:64, y:31},
-  {name:'Liquidaciones', x:81, y:32},
-  {name:'QR', x:59, y:39},
-  {name:'Catálogo', x:74, y:40}
+// Sistema solar de la escena "El cambio": centro = las 3 bases (no giran, no se tocan);
+// 4 órbitas concéntricas, radio y duración crecientes hacia afuera (más lejos, más lento).
+const CENTER_DBS = ['Producción', 'Ventas', 'Stock'];
+const RINGS = [
+  {r:14, dur:32, dir:'cw',  planets:[{id:'plat', name:'Platform'},{id:'app', name:'AppBAUTO'}]},
+  {r:22, dur:52, dir:'ccw', planets:[{id:'cat', name:'Catálogo'},{id:'agente', name:'Agente'},{id:'qr', name:'QR'}]},
+  {r:30, dur:76, dir:'cw',  planets:[{id:'stock', name:'Panel Stock'},{id:'ventas', name:'Panel Ventas'},{id:'prod', name:'Panel Producción'}]},
+  {r:38, dur:100, dir:'ccw', planets:[{id:'hub', name:'HUB'}]}
 ];
 
 // Pines (tier: nucleo = trabaja sin parar, proceso = interviene en un solo momento, canal = atiende al cliente)
@@ -472,7 +529,7 @@ const MODULES = [
 ];
 
 class Component extends DCLogic {
-  state = {i:0, flow:0, open:null, auto:this.props.flujoAuto !== false};
+  state = {i:0, flow:0, open:null, hoverRing:null, auto:this.props.flujoAuto !== false};
 
   componentDidMount(){
     this.t = setInterval(() => {
@@ -483,7 +540,21 @@ class Component extends DCLogic {
   }
   componentWillUnmount(){ clearInterval(this.t); window.removeEventListener('keydown', this.esc); }
 
-  go(n){ const i = Math.max(0, Math.min(SC.length-1, n)); this.setState({i, open:null}); }
+  go(n){ const i = Math.max(0, Math.min(SC.length-1, n)); this.setState({i, open:null, hoverRing:null}); }
+
+  // Clic en un planeta: estallido con GSAP (si cargó desde CDN; si no, abre directo)
+  // y al terminar abre la misma ficha de detalle que ya usan los demás módulos.
+  explode(id, el){
+    if (window.gsap && el){
+      window.gsap.timeline()
+        .to(el, {scale:1.55, duration:.22, ease:'back.out(2.2)'})
+        .to(el, {boxShadow:'0 0 3cqmin rgba(184,92,56,.6)', duration:.18}, '<')
+        .to(el, {scale:1, boxShadow:'0 0 0 rgba(184,92,56,0)', duration:.22, ease:'power2.in'}, '+=.05')
+        .call(() => this.setState({open:id}));
+    } else {
+      this.setState({open:id});
+    }
+  }
 
   pinStyle(n, active, dim, d){
     const tierBg = n.tier === 'nucleo' ? (active?'rgba(184,92,56,.16)':'rgba(184,92,56,.09)')
@@ -568,32 +639,72 @@ class Component extends DCLogic {
       background: k === 5 ? 'var(--warning-color)' : 'var(--success-color)',
       animation:'beat 1.8s ease-in-out infinite', animationDelay:(k*0.16)+'s', display:'block'}}));
 
-    // espiral: un hilo enredado que se desenrolla en una recta hacia el punto de origen del abanico
-    const cx = 22, cy = 28, fanX = 40, fanY = 28;
-    let spiralPath = '';
-    const turns = 2.6, steps = 70;
-    for (let k = 0; k <= steps; k++) {
-      const t = (k/steps) * turns * 2 * Math.PI;
-      const r = 0.5 + 0.34 * t;
-      const x = cx + r * Math.cos(t), y = cy + r * Math.sin(t);
-      spiralPath += (k === 0 ? 'M ' : 'L ') + x.toFixed(2) + ' ' + y.toFixed(2) + ' ';
-    }
-    spiralPath += 'L ' + fanX + ' ' + fanY;
-
-    const threadLines = PIEZAS_AHORA.map((p, k) => ({
-      d:'M '+fanX+' '+fanY+' Q '+(fanX+(p.x-fanX)*0.5)+' '+fanY+' '+p.x+' '+p.y,
-      st:{animation:'fi .7s var(--e) '+(0.9+k*0.08)+'s both'}
+    // --- Escena "El cambio": Excel (izquierda) ---
+    const excelCols = EXCEL_COLS;
+    const excelRows = EXCEL_ROWS.map(row => ({
+      n: row.n,
+      cells: row.fills.map(f => {
+        const bg = f === 1 ? 'rgba(220,38,38,.14)' : (f === 2 ? 'rgba(202,138,4,.16)' : 'var(--bg-warm)');
+        const bd = f === 1 ? 'var(--danger-color)' : (f === 2 ? 'var(--warning-color)' : 'rgba(28,25,23,.08)');
+        return 'height:.85cqw;border-radius:.2cqw;background:'+bg+';border:1px solid '+bd;
+      })
+    }));
+    const excelTabs = EXCEL_TABS.map((name, k) => ({
+      name,
+      st: {padding:'.32cqw .7cqw', borderRadius:'999px', fontSize:'.68cqw', fontWeight:700,
+        background: k === EXCEL_ACTIVE_TAB ? 'var(--accent-color)' : 'transparent',
+        color: k === EXCEL_ACTIVE_TAB ? '#fff' : 'var(--text-secondary)'}
     }));
 
-    const threadDots = PIEZAS_AHORA.map((p, k) => ({
-      name:p.name,
-      dotSt:{position:'absolute', left:p.x+'%', top:(p.y/56.25*100)+'%', width:'.42cqw', height:'.42cqw',
-        marginLeft:'-.21cqw', marginTop:'-.21cqw', borderRadius:'50%', background:'var(--accent-color)',
-        animation:'pop .4s var(--e) '+(1.3+k*0.08)+'s both'},
-      labelSt:{position:'absolute', left:(p.x+1.4)+'%', top:(p.y/56.25*100)+'%', transform:'translateY(-50%)',
-        fontFamily:"'Sora',sans-serif", fontSize:'.78cqw', fontWeight:700, color:'var(--text-primary)', whiteSpace:'nowrap',
-        animation:'fu .4s var(--e) '+(1.35+k*0.08)+'s both'}
-    }));
+    // --- Escena "El cambio": sistema solar (derecha) ---
+    const maxR = RINGS[RINGS.length-1].r;
+    const centerSt = {position:'absolute', left:'50%', top:'50%', width:'0', height:'0'};
+    const centerDbs = CENTER_DBS.map((name, k) => {
+      const ang = (-90 + k*120) * Math.PI/180, cr = 5.5;
+      return {name,
+        wrapSt:{position:'absolute', left:(cr*Math.cos(ang))+'cqmin', top:(cr*Math.sin(ang))+'cqmin', transform:'translate(-50%,-50%)',
+          display:'flex', flexDirection:'column', alignItems:'center', gap:'.3cqmin', animation:'popc .5s var(--e) '+(k*0.08)+'s both'},
+        dotSt:{width:'6.5cqmin', height:'6.5cqmin', borderRadius:'50%', background:'rgba(184,92,56,.1)',
+          border:'1.5px solid rgba(184,92,56,.4)', animation:'beat 2.4s ease-in-out '+(k*0.3)+'s infinite'},
+        labelSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.05cqmin', fontWeight:700, color:'var(--accent-hover)', whiteSpace:'nowrap'}};
+    });
+
+    const orbitRings = RINGS.map((ring, ri) => {
+      const n = ring.planets.length;
+      const paused = s.hoverRing === ri || !!openM;
+      const spinAnim = (ring.dir === 'cw' ? 'spinCW' : 'spinCCW')+' '+ring.dur+'s linear infinite';
+      const counterAnim = (ring.dir === 'cw' ? 'spinCCW' : 'spinCW')+' '+ring.dur+'s linear infinite';
+      const planets = ring.planets.map((p, pi) => {
+        const ang = (-90 + pi*(360/n)) * Math.PI/180;
+        const x = ring.r * Math.cos(ang), y = ring.r * Math.sin(ang);
+        const hovered = s.hoverRing === ri; // resalta todo el anillo activo, sutil
+        return {
+          name: p.name,
+          pick: (ev) => this.explode(p.id, ev && ev.currentTarget),
+          enter: () => this.setState({hoverRing: ri}),
+          leave: () => this.setState({hoverRing: null}),
+          slotSt:{position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%) translate('+x+'cqmin,'+y+'cqmin)'},
+          counterSt:{animation: counterAnim, animationPlayState: paused ? 'paused' : 'running',
+            display:'flex', flexDirection:'column', alignItems:'center', gap:'.3cqmin'},
+          dotSt:{width:'6.5cqmin', height:'6.5cqmin', borderRadius:'50%', border:'none', padding:0, cursor:'pointer',
+            background: hovered ? 'var(--accent-color)' : 'rgba(255,255,255,.75)',
+            border:'1.5px solid '+(hovered ? 'var(--accent-color)' : 'var(--circle-border)'),
+            boxShadow: hovered ? '0 0 2.4cqmin rgba(184,92,56,.35)' : '0 2px 8px rgba(44,44,44,.08)',
+            transform: hovered ? 'scale(1.18)' : 'scale(1)',
+            animation:'beat 2.2s ease-in-out '+(pi*0.25)+'s infinite',
+            transition:'background .25s var(--e), border-color .25s var(--e), box-shadow .25s var(--e), transform .25s var(--e)'},
+          labelSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.05cqmin', fontWeight: hovered?700:600,
+            color: hovered ? 'var(--accent-hover)' : 'var(--text-primary)', whiteSpace:'nowrap', transition:'color .25s var(--e)'}
+        };
+      });
+      return {
+        planets,
+        circleSt:{position:'absolute', left:'50%', top:'50%', width:(ring.r*2)+'cqmin', height:(ring.r*2)+'cqmin',
+          marginLeft:(-ring.r)+'cqmin', marginTop:(-ring.r)+'cqmin', borderRadius:'50%',
+          border:'1px dashed rgba(28,25,23,.14)'},
+        spinSt:{position:'absolute', inset:0, animation:spinAnim, animationPlayState: paused ? 'paused' : 'running'}
+      };
+    });
 
     const etapas = ETAPAS.map((e, k) => ({name:e.name, grupo:e.grupo, color:e.color,
       st:{position:'absolute', left:e.x+'%', top:'7.4cqw', transform:'translateX(-50%)',
@@ -648,8 +759,8 @@ class Component extends DCLogic {
       s0:i===0, s1:i===1, s2:i===2, s3:i===3, s4:i===4, s5:i===5, s6:i===6, s7:i===7, mapOn,
       chromeLogoOn: i!==0 && i!==7,
       orbStyle:orb(false), orbSetStyle:orb(true),
-      spiralPath, threadLines, threadDots,
-      mapEyebrow: i===2 ? 'EL SISTEMA' : (i===3 ? 'EN ACCIÓN' : 'LA PROTECCIÓN'),
+      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings,
+      mapEyebrow: i===2 ? 'El sistema' : (i===3 ? 'En acción' : 'La protección'),
       mapTitle: i===2 ? 'La cadena de producción, de punta a punta.'
         : (i===3 ? 'Cuatro formas en que algo dispara todo lo demás.' : 'Una puerta. Ocho candados.'),
       conns, bases, apps, stages, hubFrameStyle, hubLabelStyle, openHub:() => this.setState({open:'hub'}),
