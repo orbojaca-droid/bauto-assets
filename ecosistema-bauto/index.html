@@ -40,6 +40,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes setdown{from{opacity:1;transform:translateY(0)}to{opacity:.25;transform:translateY(38%)}}
 @keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @keyframes beat{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.45);opacity:1}}
+@keyframes beatColor{0%,100%{opacity:.55}50%{opacity:1}}
 @keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(184,92,56,0)}50%{box-shadow:0 0 0 .6cqw rgba(184,92,56,.14)}}
 @keyframes spinCW{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes spinCCW{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
@@ -668,7 +669,7 @@ class Component extends DCLogic {
         wrapSt:{position:'absolute', left:(cr*Math.cos(ang))+'cqmin', top:(cr*Math.sin(ang))+'cqmin', transform:'translate(-50%,-50%)',
           display:'flex', flexDirection:'column', alignItems:'center', gap:'.3cqmin', animation:'popc .5s var(--e) '+(k*0.08)+'s both'},
         dotSt:{width:'6.5cqmin', height:'6.5cqmin', borderRadius:'50%', background:'rgba(184,92,56,.1)',
-          border:'1.5px solid rgba(184,92,56,.4)', animation:'beat 2.4s ease-in-out '+(k*0.3)+'s infinite'},
+          border:'1.5px solid rgba(184,92,56,.4)', animation:'beatColor 2.4s ease-in-out '+(k*0.3)+'s infinite'},
         labelSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.05cqmin', fontWeight:700, color:'var(--accent-hover)', whiteSpace:'nowrap'}};
     });
 
@@ -693,7 +694,7 @@ class Component extends DCLogic {
             background: hovered ? 'var(--accent-color)' : 'rgba(255,255,255,.75)',
             border:'1.5px solid '+(hovered ? 'var(--accent-color)' : 'var(--circle-border)'),
             boxShadow: hovered ? '0 0 2.4cqmin rgba(184,92,56,.35)' : '0 2px 8px rgba(44,44,44,.08)',
-            animation:'beat 2.2s ease-in-out '+(pi*0.25)+'s infinite',
+            animation:'beatColor 2.2s ease-in-out '+(pi*0.25)+'s infinite',
             transition:'background .25s var(--e), border-color .25s var(--e), box-shadow .25s var(--e)'},
           labelSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.05cqmin', fontWeight: hovered?700:600,
             color: hovered ? 'var(--accent-hover)' : 'var(--text-primary)', whiteSpace:'nowrap', transition:'color .25s var(--e)'}
