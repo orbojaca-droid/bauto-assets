@@ -79,14 +79,18 @@ button{font:inherit;color:inherit;cursor:pointer}
   <sc-if value="{{ s1 }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;left:6cqw;top:6cqw;right:6cqw">
       <div style="font-size:1cqw;letter-spacing:.02em;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">El cambio</div>
-      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">Un archivo con pestañas. Un sistema con órbitas.</div>
+      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">Antes, un solo Excel. Ahora, un sistema solo.</div>
     </div>
 
-    <div style="position:absolute;left:0;top:14cqw;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;padding:2cqw 3cqw 2cqw 6cqw;box-sizing:border-box">
+    <div style="position:absolute;left:50%;top:14cqw;bottom:2cqw;width:1px;border-left:1px dashed rgba(28,25,23,.14)"></div>
+    <span style="position:absolute;left:6cqw;top:14cqw;padding:.4cqw 1cqw;border-radius:999px;background:var(--color-perla);color:var(--text-secondary);font-size:.75cqw;font-weight:700;letter-spacing:.06em;text-transform:uppercase;animation:fi .5s var(--e) .2s both">Antes</span>
+    <span style="position:absolute;left:52%;top:14cqw;padding:.4cqw 1cqw;border-radius:999px;background:var(--accent-color);color:#fff;font-size:.75cqw;font-weight:700;letter-spacing:.06em;text-transform:uppercase;animation:fi .5s var(--e) .2s both">Ahora</span>
+
+    <div style="position:absolute;left:0;top:17cqw;bottom:0;width:50%;display:flex;align-items:center;justify-content:center;padding:2cqw 3cqw 2cqw 6cqw;box-sizing:border-box">
       <div style="width:100%;max-width:34cqw;background:#fff;border:1px solid rgba(28,25,23,.1);border-radius:1.4cqw;box-shadow:0 10px 30px rgba(44,44,44,.08);overflow:hidden;animation:excelIn .6s var(--e) .15s both">
         <div style="padding:.9cqw 1.1cqw;border-bottom:1px solid rgba(28,25,23,.08);display:flex;align-items:center;gap:.5cqw">
           <span style="width:1.1cqw;height:1.1cqw;border-radius:.3cqw;background:var(--success-color);flex:none"></span>
-          <span style="font-family:'Sora',sans-serif;font-size:.85cqw;font-weight:700;color:var(--text-primary)">Costeo.xlsx</span>
+          <span style="font-family:'Sora',sans-serif;font-size:.85cqw;font-weight:700;color:var(--text-primary)">MATRIZ BAUTO 2026.xlsx</span>
         </div>
         <div style="padding:.6cqw 1.1cqw;border-bottom:1px solid rgba(28,25,23,.08);display:flex;align-items:center;gap:.6cqw;background:var(--bg-warm)">
           <span style="font-size:.7cqw;font-weight:700;color:var(--text-secondary)">fx</span>
@@ -116,7 +120,7 @@ button{font:inherit;color:inherit;cursor:pointer}
       </div>
     </div>
 
-    <div style="position:absolute;right:0;top:14cqw;bottom:0;width:50%;container-type:size;padding:1cqw 3cqw 1cqw 1cqw;box-sizing:border-box">
+    <div style="position:absolute;right:0;top:17cqw;bottom:0;width:50%;container-type:size;padding:1cqw 3cqw 1cqw 1cqw;box-sizing:border-box">
       <div style="position:relative;width:100%;height:100%">
         <sc-for list="{{ orbitRings }}" as="ring" hint-placeholder-count="4">
           <div style="{{ ring.circleSt }}"></div>
@@ -547,9 +551,8 @@ class Component extends DCLogic {
   explode(id, el){
     if (window.gsap && el){
       window.gsap.timeline()
-        .to(el, {scale:1.55, duration:.22, ease:'back.out(2.2)'})
-        .to(el, {boxShadow:'0 0 3cqmin rgba(184,92,56,.6)', duration:.18}, '<')
-        .to(el, {scale:1, boxShadow:'0 0 0 rgba(184,92,56,0)', duration:.22, ease:'power2.in'}, '+=.05')
+        .to(el, {backgroundColor:'#B85C38', borderColor:'#B85C38', boxShadow:'0 0 2.4cqmin rgba(184,92,56,.5)', duration:.2, ease:'power2.out'})
+        .to(el, {backgroundColor:'rgba(255,255,255,.75)', borderColor:'rgba(184,92,56,.25)', boxShadow:'0 0 0 rgba(184,92,56,0)', duration:.22, ease:'power2.in'}, '+=.08')
         .call(() => this.setState({open:id}));
     } else {
       this.setState({open:id});
@@ -690,9 +693,8 @@ class Component extends DCLogic {
             background: hovered ? 'var(--accent-color)' : 'rgba(255,255,255,.75)',
             border:'1.5px solid '+(hovered ? 'var(--accent-color)' : 'var(--circle-border)'),
             boxShadow: hovered ? '0 0 2.4cqmin rgba(184,92,56,.35)' : '0 2px 8px rgba(44,44,44,.08)',
-            transform: hovered ? 'scale(1.18)' : 'scale(1)',
             animation:'beat 2.2s ease-in-out '+(pi*0.25)+'s infinite',
-            transition:'background .25s var(--e), border-color .25s var(--e), box-shadow .25s var(--e), transform .25s var(--e)'},
+            transition:'background .25s var(--e), border-color .25s var(--e), box-shadow .25s var(--e)'},
           labelSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.05cqmin', fontWeight: hovered?700:600,
             color: hovered ? 'var(--accent-hover)' : 'var(--text-primary)', whiteSpace:'nowrap', transition:'color .25s var(--e)'}
         };
