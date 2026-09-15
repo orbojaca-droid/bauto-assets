@@ -73,7 +73,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 
   <!-- ESCENA 1 · PESO VS AIRE -->
   <sc-if value="{{ s1 }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;left:8cqw;top:6.4cqw;font-family:'Sora',sans-serif;font-weight:700;font-size:1.7cqw;color:var(--text-primary);animation:fd .6s var(--e) both">Un solo hilo enredado. Nueve hebras ordenadas.</div>
+    <div style="position:absolute;left:6cqw;top:6cqw;right:6cqw">
+      <div style="font-size:1cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">EL CAMBIO</div>
+      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">Un solo hilo enredado. Nueve hebras ordenadas.</div>
+    </div>
 
     <svg viewBox="0 0 100 56.25" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
       <path d="{{ spiralPath }}" pathLength="1" fill="none" stroke="var(--color-gris-piedra)" stroke-width=".28" stroke-linecap="round" vector-effect="non-scaling-stroke" style="animation:draw 1.6s var(--e) both;stroke-dasharray:1;stroke-dashoffset:1"></path>
@@ -95,12 +98,11 @@ button{font:inherit;color:inherit;cursor:pointer}
   <sc-if value="{{ mapOn }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;inset:0;display:flex;flex-direction:column">
 
-      <div style="padding:5.6cqw 6cqw 0;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw;flex:none">
-        <div style="display:flex;align-items:center;gap:.6cqw;animation:fd .5s var(--e) both">
-          <span style="width:1.5cqw;height:2px;background:var(--accent-color);border-radius:2px;flex:none"></span>
-          <span style="font-size:.98cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700">{{ mapEyebrow }}</span>
+      <div style="padding:6cqw 6cqw 0;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw;flex:none">
+        <div>
+          <div style="font-size:1cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">{{ mapEyebrow }}</div>
+          <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;line-height:1.15;color:var(--text-primary);max-width:60cqw;text-wrap:pretty;margin-top:.5cqw;animation:fu .6s var(--e) .08s both">{{ mapTitle }}</div>
         </div>
-        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.5cqw;line-height:1.15;color:var(--text-primary);max-width:60cqw;text-wrap:pretty;animation:fu .6s var(--e) .08s both">{{ mapTitle }}</div>
 
         <sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:1.05cqw;line-height:1.55;color:var(--text-modal);max-width:60cqw;text-wrap:pretty;animation:fu .6s var(--e) .2s both">Tres bases de datos sostienen la cadena. Encima, dos núcleos trabajan sin parar &mdash;<b>Platform</b> y <b>AppBauto</b>&mdash;, dos herramientas puntuales intervienen en un solo momento &mdash;<b>QR</b> y <b>Catalogue</b>&mdash;, y un canal atiende al cliente por fuera de todo &mdash;<b>Agente</b>. Toca cualquiera para abrir su detalle.</div>
@@ -186,11 +188,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 
   <!-- ESCENA 5 · EL VIAJE DE LA PRENDA -->
   <sc-if value="{{ s5 }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;inset:0;padding:7cqw 7cqw 13cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:4cqw">
-      <div>
-        <div style="font-size:1.05cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">Momento 1 · Escena 5</div>
-        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:3cqw;color:var(--text-primary);margin-top:.6cqw;animation:fu .7s var(--e) .1s both">El viaje de una prenda</div>
+    <div style="position:absolute;inset:0;padding:6cqw 6cqw 13cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw">
+      <div style="flex:none">
+        <div style="font-size:1cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">EN DETALLE</div>
+        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">El viaje de una prenda</div>
       </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:4cqw">
       <div style="position:relative;height:16cqw">
         <div style="position:absolute;left:10%;right:10%;top:6.4cqw;height:1px;background:linear-gradient(90deg,rgba(28,25,23,.14),rgba(28,25,23,.06))"></div>
         <div style="position:absolute;top:5.3cqw;width:0;animation:travel 11s var(--e) infinite">
@@ -208,16 +211,17 @@ button{font:inherit;color:inherit;cursor:pointer}
         <div style="flex:1;font-size:1.25cqw;line-height:1.65;color:var(--text-modal);text-wrap:pretty;animation:fu .7s var(--e) .35s both">Las tres primeras etapas son producción: algo que todavía se está haciendo. Las dos últimas son ubicaciones: algo que ya está guardado o a la venta.</div>
         <div style="flex:1;font-size:1.05cqw;line-height:1.6;color:var(--text-secondary);text-wrap:pretty;animation:fu .7s var(--e) .5s both">El color de cada etapa identifica, nunca alarma: aparece como punto de leyenda o franja, jamás tiñendo el fondo de un dato.</div>
       </div>
+      </div>
     </div>
   </sc-if>
 
-  <!-- ESCENA 6 · LOS NUEVE MÓDULOS -->
+  <!-- ESCENA 6 · LOS OCHO MÓDULOS -->
   <sc-if value="{{ s6 }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;inset:0;padding:6.2cqw 5cqw 6cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw">
+    <div style="position:absolute;inset:0;padding:6cqw 6cqw 6cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:2cqw">
         <div>
-          <div style="font-size:1.05cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">Momento 2 · Los ocho módulos</div>
-          <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.5cqw;color:var(--text-primary);margin-top:.4cqw;animation:fu .7s var(--e) .1s both">En el orden del viaje de la prenda</div>
+          <div style="font-size:1cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">LAS HERRAMIENTAS</div>
+          <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">En el orden del viaje de la prenda</div>
         </div>
         <div style="font-size:.92cqw;color:var(--text-secondary);font-weight:600;padding-bottom:.5cqw">Toca una tarjeta para abrirla</div>
       </div>
@@ -645,7 +649,7 @@ class Component extends DCLogic {
       chromeLogoOn: i!==0 && i!==7,
       orbStyle:orb(false), orbSetStyle:orb(true),
       spiralPath, threadLines, threadDots,
-      mapEyebrow: i===2 ? 'Momento 1 · Escena 2' : (i===3 ? 'Momento 1 · Escena 3' : 'Momento 1 · Escena 4'),
+      mapEyebrow: i===2 ? 'EL SISTEMA' : (i===3 ? 'EN ACCIÓN' : 'LA PROTECCIÓN'),
       mapTitle: i===2 ? 'La cadena de producción, de punta a punta.'
         : (i===3 ? 'Cuatro formas en que algo dispara todo lo demás.' : 'Una puerta. Ocho candados.'),
       conns, bases, apps, stages, hubFrameStyle, hubLabelStyle, openHub:() => this.setState({open:'hub'}),
