@@ -159,16 +159,15 @@ button{font:inherit;color:inherit;cursor:pointer}
           </div>
         </sc-for>
 
-        <div style="position:absolute;left:0;bottom:0;max-width:44cqmin;padding:.9cqmin 1.1cqmin;border-radius:1cqmin;
-          background:var(--color-perla);border:1px solid rgba(28,25,23,.08)">
-          <div style="font-size:.72cqmin;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:.4cqmin">Convenciones</div>
-          <sc-for list="{{ siglasLegend }}" as="lv" hint-placeholder-count="5">
-            <div style="font-size:.78cqmin;line-height:1.6;color:var(--text-primary)">
-              <b style="color:var(--accent-hover)">{{ lv.label }}</b> — {{ lv.text }}
-            </div>
-          </sc-for>
-          <div style="font-size:.72cqmin;line-height:1.5;color:var(--text-secondary);margin-top:.4cqmin;font-style:italic">El centro es la base; el anillo 3 es el panel que la gestiona.</div>
-        </div>
+        <sc-if value="{{ flowCaption }}">
+          <div style="position:absolute;left:0;right:0;top:4.4cqmin;text-align:center">
+            <sc-if value="{{ flowCaption.sigla }}">
+              <span style="display:inline-block;padding:.15cqmin .6cqmin;border-radius:.6cqmin;background:rgba(184,92,56,.12);color:var(--accent-hover);font-family:'Sora',sans-serif;font-size:1.8cqmin;font-weight:700;margin-right:.5cqmin">{{ flowCaption.sigla }}</span>
+            </sc-if>
+            <b style="font-family:'Sora',sans-serif;font-size:2.55cqmin;font-weight:700;color:var(--text-primary)">{{ flowCaption.name }}</b>
+            <span style="font-size:2.1cqmin;color:var(--text-secondary)"> — {{ flowCaption.role }}</span>
+          </div>
+        </sc-if>
       </div>
     </div>
   </sc-if>
@@ -751,7 +750,7 @@ class Component extends DCLogic {
           animation:'popc .5s var(--e) '+(k*0.08)+'s both'},
         labelSt:{position:'absolute', left:(labelR*Math.cos(ang))+'cqmin', top:(labelR*Math.sin(ang))+'cqmin',
           transform:'translate(-50%,-50%)', zIndex:10,
-          fontFamily:"'Sora',sans-serif", fontSize:'1.05cqmin', fontWeight:700,
+          fontFamily:"'Sora',sans-serif", fontSize:'1.8cqmin', fontWeight:700,
           color: lvl ? 'var(--accent-hover)' : 'var(--text-secondary)', opacity: lvl ? 1 : .55,
           whiteSpace:'nowrap', transition:'color .45s var(--e), opacity .45s var(--e)',
           animation:'popc .5s var(--e) '+(k*0.08)+'s both'}};
@@ -772,24 +771,28 @@ class Component extends DCLogic {
       {shadow:'0 1px 2px rgba(28,25,23,.08)', filter:'saturate(.72) brightness(1.07)', ring:'rgba(28,25,23,.06)',
         highlight:'radial-gradient(circle at 38% 32%, rgba(255,255,255,.32), rgba(255,255,255,0) 55%)'}
     ];
-    // Cuadro de convenciones: explica cada sigla agrupada por nivel (centro = base,
-    // anillo 3 = panel que la gestiona), en vez de un tooltip por planeta.
     const flowPills = FLOWS_S1.map((f, fi) => ({
       name:f.name,
       pick: () => { clearTimeout(this.flowTimer); this.setState({s1FlowIdx:fi, s1StepIdx:-1}); this.flowTimer = setTimeout(this.stepFlowS1, S1_ENSEMBLE_HOLD); },
-      st:{padding:'.32cqmin .8cqmin', borderRadius:'999px', border:'none', cursor:'pointer',
-        fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:'.72cqmin', fontWeight:700,
+      st:{padding:'.55cqmin 1.15cqmin', borderRadius:'999px', border:'none', cursor:'pointer',
+        fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:'1.8cqmin', fontWeight:700,
         background: fi === s.s1FlowIdx ? 'var(--accent-color)' : 'var(--color-perla)',
         color: fi === s.s1FlowIdx ? '#fff' : 'var(--text-secondary)',
         transition:'background .25s var(--e), color .25s var(--e)'}
     }));
-    const siglasLegend = [
-      {label:'Centro', text:'Bases de datos (núcleo): Producción · Ventas · Stock'},
-      {label:'Anillo 1', text: RINGS[0].planets.map(p => SIGLAS[p.id]+' '+p.name).join(' · ')},
-      {label:'Anillo 2', text: RINGS[1].planets.map(p => SIGLAS[p.id]+' '+p.name).join(' · ')},
-      {label:'Anillo 3', text: 'Paneles inteligentes: '+RINGS[2].planets.map(p => SIGLAS[p.id]+' '+p.name).join(' · ')},
-      {label:'Anillo 4', text: RINGS[3].planets.map(p => SIGLAS[p.id]+' '+p.name).join(' · ')}
-    ];
+    // Leyenda dinámica: en vez de un cuadro fijo con las 9 siglas, muestra solo la
+    // del protagonista actual del flujo — reutiliza el texto ya escrito en MODULES
+    // (who) y BASES (sub), cero contenido nuevo.
+    const BASE_BY_CENTER_ID = {dbprod:'bprod', dbstock:'binv', dbventas:'bventas'};
+    const flowCaption = (() => {
+      if (!flowProtoId) return null;
+      if (SIGLAS[flowProtoId]){
+        const m = MODULES.find(x => x.id === flowProtoId);
+        return m ? {sigla:SIGLAS[flowProtoId], name:m.name, role:m.who} : null;
+      }
+      const b = BASES.find(x => x.id === BASE_BY_CENTER_ID[flowProtoId]);
+      return b ? {sigla:null, name:b.name, role:b.sub} : null;
+    })();
     const orbitRings = RINGS.map((ring, ri) => {
       const n = ring.planets.length;
       const depth = DEPTH[ri] || DEPTH[DEPTH.length-1];
@@ -813,7 +816,7 @@ class Component extends DCLogic {
           slotSt:{position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%) translate('+x+'cqmin,'+y+'cqmin)'},
           counterSt:{position:'relative', animation: counterAnim, animationPlayState: paused ? 'paused' : 'running',
             display:'flex', flexDirection:'column', alignItems:'center'},
-          dotSt:{width:'6.5cqmin', height:'6.5cqmin', borderRadius:'50%', border:'none', padding:0, cursor:'pointer',
+          dotSt:{width:'7.5cqmin', height:'7.5cqmin', borderRadius:'50%', border:'none', padding:0, cursor:'pointer',
             display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'.15cqmin',
             backgroundColor: lvl === 'proto' ? 'var(--accent-color)' : (lvl === 'set' ? 'rgba(184,92,56,.28)' : 'rgba(28,25,23,.05)'),
             backgroundImage: lvl ? 'none' : depth.highlight,
@@ -823,7 +826,7 @@ class Component extends DCLogic {
             transition:'background-color .45s var(--e), border-color .45s var(--e), box-shadow .45s var(--e)'},
           iconSt:{fontSize:'2.7cqmin', color: lvl === 'proto' ? '#fff' : (lvl === 'set' ? 'var(--accent-hover)' : 'var(--text-secondary)'),
             pointerEvents:'none', opacity: lvl ? 1 : .7, transition:'color .45s var(--e), opacity .45s var(--e)'},
-          siglaSt:{fontFamily:"'Sora',sans-serif", fontSize:'.85cqmin', fontWeight:700, letterSpacing:'.02em',
+          siglaSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.8cqmin', fontWeight:700, letterSpacing:'.02em',
             color: lvl === 'proto' ? 'rgba(255,255,255,.9)' : (lvl === 'set' ? 'var(--accent-hover)' : 'var(--text-secondary)'),
             pointerEvents:'none', opacity: lvl ? 1 : .65, transition:'color .45s var(--e), opacity .45s var(--e)'}
         };
@@ -890,7 +893,7 @@ class Component extends DCLogic {
       s0:i===0, s1:i===1, s2:i===2, s3:i===3, s4:i===4, s5:i===5, s6:i===6, s7:i===7, mapOn,
       chromeLogoOn: i!==0 && i!==7,
       orbStyle:orb(false), orbSetStyle:orb(true),
-      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings, siglasLegend, flowPills,
+      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings, flowCaption, flowPills,
       mapEyebrow: i===2 ? 'El sistema' : (i===3 ? 'En acción' : 'La protección'),
       mapTitle: i===2 ? 'La cadena de producción, de punta a punta.'
         : (i===3 ? 'Cuatro formas en que algo dispara todo lo demás.' : 'Una puerta. Ocho candados.'),
