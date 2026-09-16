@@ -131,6 +131,15 @@ button{font:inherit;color:inherit;cursor:pointer}
           </sc-for>
         </div>
 
+        <div style="position:absolute;left:0;right:0;top:3.6cqmin;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;z-index:20">
+          <sc-for list="{{ flowSteps }}" as="fs" hint-placeholder-count="6">
+            <span style="{{ fs.st }}">{{ fs.name }}</span>
+            <sc-if value="{{ fs.showArrow }}">
+              <span style="{{ fs.arrowSt }}">→</span>
+            </sc-if>
+          </sc-for>
+        </div>
+
         <sc-for list="{{ orbitRings }}" as="ring" hint-placeholder-count="4">
           <div style="{{ ring.circleSt }}"></div>
         </sc-for>
@@ -406,7 +415,7 @@ const EXCEL_ACTIVE_TAB = 1;
 // 4 órbitas concéntricas, radio y duración crecientes hacia afuera (más lejos, más lento).
 const CENTER_DBS = [{id:'dbprod', name:'Producción', sigla:'BPR'}, {id:'dbventas', name:'Ventas', sigla:'BVT'}, {id:'dbstock', name:'Stock', sigla:'BST'}];
 // Flujos reales de negocio sobre el sistema solar (entradas alternativas + recorrido
-// compartido). Los ids de "entries"/"path" referencian planetas (RINGS) o bases (CENTER_DBS).
+// compartido). Los ids de "entries"/"path" referencian planetas de los anillos o bases.
 const FLOWS_S1 = [
   {name:'Venta omnicanal', entries:['agente','app','plat'], path:['dbstock','dbventas','ventas']},
   {name:'Auditoría inventario', entries:['plat','app'], path:['dbstock','cat']},
@@ -418,7 +427,7 @@ const FLOWS_S1 = [
 // solo en 'interlude' las órbitas vuelven a girar libres, sin nada encendido.
 const S1_ENSEMBLE_HOLD = 1400, S1_STEP_HOLD = 2000, S1_CLOSE_HOLD = 1200, S1_INTERLUDE = 2500;
 
-const RINGS = [
+const ORBIT_RINGS = [
   {r:14, dur:32, dir:'cw',  planets:[{id:'prod', name:'Panel Producción'},{id:'stock', name:'Panel Stock'},{id:'ventas', name:'Panel Ventas'}]},
   {r:22, dur:52, dir:'ccw', planets:[{id:'cat', name:'Catálogo'},{id:'qr', name:'QR'}]},
   {r:30, dur:76, dir:'cw',  planets:[{id:'agente', name:'Agente'},{id:'plat', name:'Platform'},{id:'app', name:'AppBAUTO'}]},
@@ -688,6 +697,26 @@ class Component extends DCLogic {
     // Las órbitas se congelan por completo mientras el flujo está contando su
     // historia (ensemble/step/close); solo respiran libres en 'interlude'.
     const flowFreeze = !flowIsIdle;
+    // Riel lineal: solo los nombres de los proyectos que toca el flujo activo, en
+    // orden, sincronizado con el mismo nivel (gris/claro/protagonista) que ya
+    // gobierna los planetas — nada de descripciones, solo el recorrido.
+    // Nombres legibles de cada nodo (planeta o base), para el riel lineal del flujo.
+    const NODE_NAMES = {};
+    ORBIT_RINGS.forEach(r => r.planets.forEach(p => { NODE_NAMES[p.id] = p.name; }));
+    CENTER_DBS.forEach(d => { NODE_NAMES[d.id] = 'Base '+d.name; });
+    const flowSteps = flowIsIdle ? [] : flowSeqS1.map((id, si) => {
+      const lvl = s1Level(id);
+      return {
+        name: NODE_NAMES[id] || id,
+        showArrow: si < flowSeqS1.length - 1,
+        st:{fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:'1.8cqmin',
+          fontWeight: lvl === 'proto' ? 700 : 600,
+          color: lvl === 'proto' ? 'var(--accent-hover)' : (lvl === 'set' ? 'rgba(184,92,56,.55)' : 'var(--text-secondary)'),
+          opacity: lvl ? 1 : .5,
+          transition:'color .3s var(--e), opacity .3s var(--e)'},
+        arrowSt:{fontSize:'1.6cqmin', color:'var(--text-secondary)', opacity:.4, margin:'0 .35cqmin'}
+      };
+    });
 
     const apps = APPS.map((n, k) => ({...n, pick:pickFn(n.id),
       subColor: n.tier==='nucleo' ? 'var(--accent-hover)' : 'var(--text-secondary)',
@@ -741,7 +770,7 @@ class Component extends DCLogic {
     }));
 
     // --- Escena "El cambio": sistema solar (derecha) ---
-    const maxR = RINGS[RINGS.length-1].r;
+    const maxR = ORBIT_RINGS[ORBIT_RINGS.length-1].r;
     const centerSt = {position:'absolute', left:'50%', top:'50%', width:'0', height:'0'};
     // Los 3 círculos entrelazados (no en triángulo separado): un radio de centro
     // más chico que el propio radio del círculo hace que se superpongan entre sí,
@@ -790,7 +819,7 @@ class Component extends DCLogic {
         color: fi === s.s1FlowIdx ? '#fff' : 'var(--text-secondary)',
         transition:'background .25s var(--e), color .25s var(--e)'}
     }));
-    const orbitRings = RINGS.map((ring, ri) => {
+    const orbitRings = ORBIT_RINGS.map((ring, ri) => {
       const n = ring.planets.length;
       const depth = DEPTH[ri] || DEPTH[DEPTH.length-1];
       const paused = s.hoverRing === ri || !!openM || flowFreeze;
@@ -890,7 +919,7 @@ class Component extends DCLogic {
       s0:i===0, s1:i===1, s2:i===2, s3:i===3, s4:i===4, s5:i===5, s6:i===6, s7:i===7, mapOn,
       chromeLogoOn: i!==0 && i!==7,
       orbStyle:orb(false), orbSetStyle:orb(true),
-      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings, flowPills,
+      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings, flowPills, flowSteps,
       mapEyebrow: i===2 ? 'El sistema' : (i===3 ? 'En acción' : 'La protección'),
       mapTitle: i===2 ? 'La cadena de producción, de punta a punta.'
         : (i===3 ? 'Cuatro formas en que algo dispara todo lo demás.' : 'Una puerta. Ocho candados.'),
