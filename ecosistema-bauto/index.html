@@ -133,19 +133,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 
         <div style="position:absolute;left:0;right:0;top:3.6cqmin;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5cqmin;z-index:20">
           <sc-for list="{{ flowRail }}" as="rg" hint-placeholder-count="4">
-            <sc-if value="{{ rg.isGroup }}">
-              <span style="{{ rg.groupSt }}">
-                <sc-for list="{{ rg.items }}" as="it" hint-placeholder-count="3">
-                  <span style="{{ it.st }}">{{ it.name }}</span>
-                  <sc-if value="{{ it.showDot }}">
-                    <span style="{{ rg.dotSepSt }}">·</span>
-                  </sc-if>
-                </sc-for>
-              </span>
-            </sc-if>
-            <sc-if value="{{ rg.isSingle }}">
-              <span style="{{ rg.st }}">{{ rg.name }}</span>
-            </sc-if>
+            <span style="{{ rg.capsuleSt }}">
+              <sc-for list="{{ rg.items }}" as="it" hint-placeholder-count="3">
+                <span style="{{ it.st }}">{{ it.name }}</span>
+                <sc-if value="{{ it.showDot }}">
+                  <span style="{{ it.dotSepSt }}">·</span>
+                </sc-if>
+              </sc-for>
+            </span>
             <sc-if value="{{ rg.showArrow }}">
               <span style="{{ rg.arrowSt }}">→</span>
             </sc-if>
@@ -726,27 +721,28 @@ class Component extends DCLogic {
     // Riel del flujo activo: las entradas alternativas van juntas en una sola
     // cápsula punteada (se muestran a la vez, son opciones, no una secuencia);
     // el resto del recorrido sigue como pasos sueltos unidos por flechas.
+    // Cada paso del flujo (una alternativa sola, o varias juntas) va en la misma
+    // cápsula punteada; la cápsula entera "se enciende" según su nivel — nunca
+    // un paso pelado sin cápsula y otro con ella.
     const nameSt = (lvl) => ({fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:'1.8cqmin',
       fontWeight: lvl === 'proto' ? 700 : 600,
-      color: lvl === 'proto' ? 'var(--accent-hover)' : (lvl === 'set' ? 'rgba(184,92,56,.55)' : 'var(--text-secondary)'),
-      opacity: lvl ? 1 : .5, whiteSpace:'nowrap',
-      transition:'color .3s var(--e), opacity .3s var(--e)'});
+      color: lvl === 'proto' ? '#fff' : (lvl === 'set' ? 'var(--accent-hover)' : 'var(--text-secondary)'),
+      whiteSpace:'nowrap', transition:'color .3s var(--e)'});
     const arrowSt = {fontSize:'1.5cqmin', color:'var(--text-secondary)', opacity:.4};
-    const dotSepSt = {fontSize:'1.3cqmin', color:'var(--text-secondary)', opacity:.45};
-    const groupSt = {display:'inline-flex', alignItems:'center', gap:'.4cqmin',
+    const capsuleSt = (lvl) => ({display:'inline-flex', alignItems:'center', gap:'.4cqmin',
       padding:'.3cqmin .8cqmin', borderRadius:'.9cqmin',
-      border:'1px dashed rgba(184,92,56,.35)', background:'rgba(184,92,56,.05)'};
-    const flowRail = flowIsIdle ? [] : (() => {
-      const rail = [];
-      if (flowS1.entries.length){
-        const items = flowS1.entries.map((id, ei, arr) => ({
-          name: NODE_NAMES[id] || id, st: nameSt(s1Level(id)), showDot: ei < arr.length - 1
-        }));
-        rail.push({isGroup:true, items, groupSt});
-      }
-      flowS1.path.forEach(id => rail.push({isGroup:false, isSingle:true, name: NODE_NAMES[id] || id, st: nameSt(s1Level(id))}));
-      return rail.map((r, ri) => ({...r, showArrow: ri < rail.length - 1, arrowSt, dotSepSt}));
-    })();
+      border:'1px dashed '+(lvl === 'proto' ? 'var(--accent-color)' : 'rgba(184,92,56,.35)'),
+      background: lvl === 'proto' ? 'var(--accent-color)' : (lvl === 'set' ? 'rgba(184,92,56,.12)' : 'rgba(28,25,23,.03)'),
+      opacity: lvl ? 1 : .6, transition:'background .3s var(--e), border-color .3s var(--e), opacity .3s var(--e)'});
+    const dotSepSt = (lvl) => ({fontSize:'1.3cqmin', color: lvl === 'proto' ? 'rgba(255,255,255,.7)' : 'var(--text-secondary)', opacity: lvl === 'proto' ? 1 : .45});
+    const flowRail = flowIsIdle ? [] : flowGroupsS1.map((group, gi) => {
+      const levels = group.map(s1Level);
+      const capLvl = levels.indexOf('proto') >= 0 ? 'proto' : (levels.indexOf('set') >= 0 ? 'set' : null);
+      const items = group.map((id, ei, arr) => ({
+        name: NODE_NAMES[id] || id, st: nameSt(s1Level(id)), showDot: ei < arr.length - 1, dotSepSt: dotSepSt(capLvl)
+      }));
+      return {items, capsuleSt: capsuleSt(capLvl), showArrow: gi < flowGroupsS1.length - 1, arrowSt};
+    });
 
     const apps = APPS.map((n, k) => ({...n, pick:pickFn(n.id),
       subColor: n.tier==='nucleo' ? 'var(--accent-hover)' : 'var(--text-secondary)',
