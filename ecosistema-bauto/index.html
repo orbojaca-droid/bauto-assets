@@ -750,7 +750,7 @@ class Component extends DCLogic {
     const centerDbs = CENTER_DBS.map((db, k) => {
       const ang = (-90 + k*120) * Math.PI/180, cr = 2.1, labelR = 7.2;
       const lvl = s1Level(db.id);
-      return {name: db.sigla+' '+db.name,
+      return {name: db.sigla,
         wrapSt:{position:'absolute', left:0, top:0, width:0, height:0},
         dotSt:{position:'absolute', left:(cr*Math.cos(ang))+'cqmin', top:(cr*Math.sin(ang))+'cqmin',
           transform:'translate(-50%,-50%)', width:'6cqmin', height:'6cqmin', borderRadius:'50%',
