@@ -159,15 +159,6 @@ button{font:inherit;color:inherit;cursor:pointer}
           </div>
         </sc-for>
 
-        <sc-if value="{{ flowCaption }}">
-          <div style="position:absolute;left:0;right:0;top:4.4cqmin;text-align:center">
-            <sc-if value="{{ flowCaption.sigla }}">
-              <span style="display:inline-block;padding:.15cqmin .6cqmin;border-radius:.6cqmin;background:rgba(184,92,56,.12);color:var(--accent-hover);font-family:'Sora',sans-serif;font-size:1.8cqmin;font-weight:700;margin-right:.5cqmin">{{ flowCaption.sigla }}</span>
-            </sc-if>
-            <b style="font-family:'Sora',sans-serif;font-size:2.55cqmin;font-weight:700;color:var(--text-primary)">{{ flowCaption.name }}</b>
-            <span style="font-size:2.1cqmin;color:var(--text-secondary)"> — {{ flowCaption.role }}</span>
-          </div>
-        </sc-if>
       </div>
     </div>
   </sc-if>
@@ -413,7 +404,7 @@ const EXCEL_ACTIVE_TAB = 1;
 
 // Sistema solar de la escena "El cambio": centro = las 3 bases (no giran, no se tocan);
 // 4 órbitas concéntricas, radio y duración crecientes hacia afuera (más lejos, más lento).
-const CENTER_DBS = [{id:'dbprod', name:'Producción'}, {id:'dbventas', name:'Ventas'}, {id:'dbstock', name:'Stock'}];
+const CENTER_DBS = [{id:'dbprod', name:'Producción', sigla:'BPR'}, {id:'dbventas', name:'Ventas', sigla:'BVT'}, {id:'dbstock', name:'Stock', sigla:'BST'}];
 // Flujos reales de negocio sobre el sistema solar (entradas alternativas + recorrido
 // compartido). Los ids de "entries"/"path" referencian planetas (RINGS) o bases (CENTER_DBS).
 const FLOWS_S1 = [
@@ -422,12 +413,15 @@ const FLOWS_S1 = [
   {name:'Lanzamiento de colección', entries:[], path:['prod','dbprod','stock','dbstock','qr','cat']},
   {name:'Movimientos de inventario', entries:[], path:['stock','dbstock','cat']}
 ];
-const S1_ENSEMBLE_HOLD = 1000, S1_STEP_HOLD = 700;
+// Timing lento a propósito: el flujo debe poder leerse de corrido. Mientras un
+// flujo está activo (ensemble/step/close) TODO el sistema solar se congela;
+// solo en 'interlude' las órbitas vuelven a girar libres, sin nada encendido.
+const S1_ENSEMBLE_HOLD = 1400, S1_STEP_HOLD = 2000, S1_CLOSE_HOLD = 1200, S1_INTERLUDE = 2500;
 
 const RINGS = [
-  {r:14, dur:32, dir:'cw',  planets:[{id:'plat', name:'Platform'},{id:'app', name:'AppBAUTO'}]},
-  {r:22, dur:52, dir:'ccw', planets:[{id:'cat', name:'Catálogo'},{id:'agente', name:'Agente'},{id:'qr', name:'QR'}]},
-  {r:30, dur:76, dir:'cw',  planets:[{id:'stock', name:'Panel Stock'},{id:'ventas', name:'Panel Ventas'},{id:'prod', name:'Panel Producción'}]},
+  {r:14, dur:32, dir:'cw',  planets:[{id:'prod', name:'Panel Producción'},{id:'stock', name:'Panel Stock'},{id:'ventas', name:'Panel Ventas'}]},
+  {r:22, dur:52, dir:'ccw', planets:[{id:'cat', name:'Catálogo'},{id:'qr', name:'QR'}]},
+  {r:30, dur:76, dir:'cw',  planets:[{id:'agente', name:'Agente'},{id:'plat', name:'Platform'},{id:'app', name:'AppBAUTO'}]},
   {r:38, dur:100, dir:'ccw', planets:[{id:'hub', name:'HUB'}]}
 ];
 // Íconos reales del HUB (0. HUB/index.html) — mismo glifo que ya usa cada proyecto en producción.
@@ -571,23 +565,34 @@ const MODULES = [
 ];
 
 class Component extends DCLogic {
-  state = {i:0, flow:0, open:null, hoverRing:null, hoverId:null, s1FlowIdx:0, s1StepIdx:-1, auto:this.props.flujoAuto !== false};
+  state = {i:0, flow:0, open:null, hoverRing:null, hoverId:null, s1FlowIdx:0, s1StepIdx:-1, s1Phase:'ensemble', auto:this.props.flujoAuto !== false};
 
-  // Máquina de estados de los flujos de negocio de la escena "El cambio":
-  // -1 = todo el flujo encendido en terracota claro (conjunto), 0..N-1 = ese nodo
-  // es el protagonista (terracota pleno). Al llegar al último, pasa al siguiente flujo.
-  // Se pausa mientras el usuario interactúa a mano (hoverId) o si no está en escena 1.
+  // Máquina de estados de los flujos de negocio de la escena "El cambio", en 4 fases:
+  // 'ensemble' (todo el flujo en terracota claro, órbitas congeladas) -> 'step'
+  // (protagonista actual en terracota pleno, uno a la vez, órbitas congeladas) ->
+  // 'close' (se sostiene el último paso un poco más) -> 'interlude' (todo apagado,
+  // las órbitas giran libres) -> siguiente flujo. Se pausa por completo mientras el
+  // usuario interactúa a mano (hoverId) o si no está en escena 1.
   stepFlowS1 = () => {
     const s = this.state;
     if (s.i !== 1){ this.flowTimer = setTimeout(this.stepFlowS1, 500); return; }
     if (s.hoverId != null){ this.flowTimer = setTimeout(this.stepFlowS1, 300); return; }
     const flow = FLOWS_S1[s.s1FlowIdx];
     const seq = flow.entries.length ? flow.entries.concat(flow.path) : flow.path;
-    if (s.s1StepIdx < seq.length - 1){
+    if (s.s1Phase === 'ensemble'){
+      this.setState({s1Phase:'step', s1StepIdx:0});
+      this.flowTimer = setTimeout(this.stepFlowS1, S1_STEP_HOLD);
+    } else if (s.s1Phase === 'step' && s.s1StepIdx < seq.length - 1){
       this.setState({s1StepIdx: s.s1StepIdx + 1});
       this.flowTimer = setTimeout(this.stepFlowS1, S1_STEP_HOLD);
+    } else if (s.s1Phase === 'step'){
+      this.setState({s1Phase:'close'});
+      this.flowTimer = setTimeout(this.stepFlowS1, S1_CLOSE_HOLD);
+    } else if (s.s1Phase === 'close'){
+      this.setState({s1Phase:'interlude', s1StepIdx:-1});
+      this.flowTimer = setTimeout(this.stepFlowS1, S1_INTERLUDE);
     } else {
-      this.setState({s1FlowIdx: (s.s1FlowIdx + 1) % FLOWS_S1.length, s1StepIdx: -1});
+      this.setState({s1FlowIdx:(s.s1FlowIdx+1) % FLOWS_S1.length, s1Phase:'ensemble', s1StepIdx:-1});
       this.flowTimer = setTimeout(this.stepFlowS1, S1_ENSEMBLE_HOLD);
     }
   };
@@ -671,13 +676,18 @@ class Component extends DCLogic {
     // claro) o null (reposo, gris). El hover/tap manual siempre gana como 'proto'.
     const flowS1 = FLOWS_S1[s.s1FlowIdx];
     const flowSeqS1 = flowS1.entries.length ? flowS1.entries.concat(flowS1.path) : flowS1.path;
-    const flowProtoId = s.s1StepIdx >= 0 ? flowSeqS1[s.s1StepIdx] : null;
+    const flowIsIdle = s.s1Phase === 'interlude';
+    const flowProtoId = (!flowIsIdle && s.s1StepIdx >= 0) ? flowSeqS1[s.s1StepIdx] : null;
     const s1Level = (id) => {
       if (s.hoverId === id) return 'proto';
+      if (flowIsIdle) return null;
       if (id === flowProtoId) return 'proto';
       if (flowSeqS1.indexOf(id) >= 0) return 'set';
       return null;
     };
+    // Las órbitas se congelan por completo mientras el flujo está contando su
+    // historia (ensemble/step/close); solo respiran libres en 'interlude'.
+    const flowFreeze = !flowIsIdle;
 
     const apps = APPS.map((n, k) => ({...n, pick:pickFn(n.id),
       subColor: n.tier==='nucleo' ? 'var(--accent-hover)' : 'var(--text-secondary)',
@@ -740,7 +750,7 @@ class Component extends DCLogic {
     const centerDbs = CENTER_DBS.map((db, k) => {
       const ang = (-90 + k*120) * Math.PI/180, cr = 2.1, labelR = 7.2;
       const lvl = s1Level(db.id);
-      return {name:db.name,
+      return {name: db.sigla+' '+db.name,
         wrapSt:{position:'absolute', left:0, top:0, width:0, height:0},
         dotSt:{position:'absolute', left:(cr*Math.cos(ang))+'cqmin', top:(cr*Math.sin(ang))+'cqmin',
           transform:'translate(-50%,-50%)', width:'6cqmin', height:'6cqmin', borderRadius:'50%',
@@ -773,30 +783,17 @@ class Component extends DCLogic {
     ];
     const flowPills = FLOWS_S1.map((f, fi) => ({
       name:f.name,
-      pick: () => { clearTimeout(this.flowTimer); this.setState({s1FlowIdx:fi, s1StepIdx:-1}); this.flowTimer = setTimeout(this.stepFlowS1, S1_ENSEMBLE_HOLD); },
+      pick: () => { clearTimeout(this.flowTimer); this.setState({s1FlowIdx:fi, s1StepIdx:-1, s1Phase:'ensemble'}); this.flowTimer = setTimeout(this.stepFlowS1, S1_ENSEMBLE_HOLD); },
       st:{padding:'.55cqmin 1.15cqmin', borderRadius:'999px', border:'none', cursor:'pointer',
         fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:'1.8cqmin', fontWeight:700,
         background: fi === s.s1FlowIdx ? 'var(--accent-color)' : 'var(--color-perla)',
         color: fi === s.s1FlowIdx ? '#fff' : 'var(--text-secondary)',
         transition:'background .25s var(--e), color .25s var(--e)'}
     }));
-    // Leyenda dinámica: en vez de un cuadro fijo con las 9 siglas, muestra solo la
-    // del protagonista actual del flujo — reutiliza el texto ya escrito en MODULES
-    // (who) y BASES (sub), cero contenido nuevo.
-    const BASE_BY_CENTER_ID = {dbprod:'bprod', dbstock:'binv', dbventas:'bventas'};
-    const flowCaption = (() => {
-      if (!flowProtoId) return null;
-      if (SIGLAS[flowProtoId]){
-        const m = MODULES.find(x => x.id === flowProtoId);
-        return m ? {sigla:SIGLAS[flowProtoId], name:m.name, role:m.who} : null;
-      }
-      const b = BASES.find(x => x.id === BASE_BY_CENTER_ID[flowProtoId]);
-      return b ? {sigla:null, name:b.name, role:b.sub} : null;
-    })();
     const orbitRings = RINGS.map((ring, ri) => {
       const n = ring.planets.length;
       const depth = DEPTH[ri] || DEPTH[DEPTH.length-1];
-      const paused = s.hoverRing === ri || !!openM;
+      const paused = s.hoverRing === ri || !!openM || flowFreeze;
       const spinAnim = (ring.dir === 'cw' ? 'spinCW' : 'spinCCW')+' '+ring.dur+'s linear infinite';
       const counterAnim = (ring.dir === 'cw' ? 'spinCCW' : 'spinCW')+' '+ring.dur+'s linear infinite';
       const planets = ring.planets.map((p, pi) => {
@@ -816,7 +813,7 @@ class Component extends DCLogic {
           slotSt:{position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%) translate('+x+'cqmin,'+y+'cqmin)'},
           counterSt:{position:'relative', animation: counterAnim, animationPlayState: paused ? 'paused' : 'running',
             display:'flex', flexDirection:'column', alignItems:'center'},
-          dotSt:{width:'7.5cqmin', height:'7.5cqmin', borderRadius:'50%', border:'none', padding:0, cursor:'pointer',
+          dotSt:{width:'6.5cqmin', height:'6.5cqmin', borderRadius:'50%', border:'none', padding:0, cursor:'pointer',
             display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'.15cqmin',
             backgroundColor: lvl === 'proto' ? 'var(--accent-color)' : (lvl === 'set' ? 'rgba(184,92,56,.28)' : 'rgba(28,25,23,.05)'),
             backgroundImage: lvl ? 'none' : depth.highlight,
@@ -826,7 +823,7 @@ class Component extends DCLogic {
             transition:'background-color .45s var(--e), border-color .45s var(--e), box-shadow .45s var(--e)'},
           iconSt:{fontSize:'2.7cqmin', color: lvl === 'proto' ? '#fff' : (lvl === 'set' ? 'var(--accent-hover)' : 'var(--text-secondary)'),
             pointerEvents:'none', opacity: lvl ? 1 : .7, transition:'color .45s var(--e), opacity .45s var(--e)'},
-          siglaSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.8cqmin', fontWeight:700, letterSpacing:'.02em',
+          siglaSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.5cqmin', fontWeight:700, letterSpacing:'.02em',
             color: lvl === 'proto' ? 'rgba(255,255,255,.9)' : (lvl === 'set' ? 'var(--accent-hover)' : 'var(--text-secondary)'),
             pointerEvents:'none', opacity: lvl ? 1 : .65, transition:'color .45s var(--e), opacity .45s var(--e)'}
         };
@@ -893,7 +890,7 @@ class Component extends DCLogic {
       s0:i===0, s1:i===1, s2:i===2, s3:i===3, s4:i===4, s5:i===5, s6:i===6, s7:i===7, mapOn,
       chromeLogoOn: i!==0 && i!==7,
       orbStyle:orb(false), orbSetStyle:orb(true),
-      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings, flowCaption, flowPills,
+      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings, flowPills,
       mapEyebrow: i===2 ? 'El sistema' : (i===3 ? 'En acción' : 'La protección'),
       mapTitle: i===2 ? 'La cadena de producción, de punta a punta.'
         : (i===3 ? 'Cuatro formas en que algo dispara todo lo demás.' : 'Una puerta. Ocho candados.'),
