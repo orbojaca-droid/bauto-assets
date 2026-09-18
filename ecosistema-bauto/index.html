@@ -1130,6 +1130,7 @@ class Component extends DCLogic {
               display:'flex', flexDirection:'column', alignItems:'center', gap:'.55cqmin'},
             bornSt:{animation: born ? 'bornIn .55s '+E+' '+delay.toFixed(2)+'s both' : 'none', display:'flex', flexDirection:'column', alignItems:'center', gap:'.55cqmin'},
             dotSt:{width:'6.5cqmin', height:'6.5cqmin', borderRadius:'50%', border:'none', padding:0, cursor:'pointer',
+              pointerEvents:'auto',
               display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'.15cqmin',
               backgroundColor: hot ? 'var(--accent-color)' : 'rgba(255,255,255,.88)',
               backgroundImage: hot ? 'none' : depth.highlight,
@@ -1151,9 +1152,9 @@ class Component extends DCLogic {
         return {
           planets,
           circleSt:{position:'absolute', left:'50%', top:'50%', width:(ring.r*2)+'cqmin', height:(ring.r*2)+'cqmin',
-            marginLeft:(-ring.r)+'cqmin', marginTop:(-ring.r)+'cqmin', borderRadius:'50%',
+            marginLeft:(-ring.r)+'cqmin', marginTop:(-ring.r)+'cqmin', borderRadius:'50%', pointerEvents:'none',
             border:'1px dashed '+depth.ring, animation: born ? 'fi .7s '+E+' '+(0.1+ri*0.08)+'s both' : 'none'},
-          spinSt:{position:'absolute', inset:0, animation:spinAnim, animationPlayState: paused ? 'paused' : 'running'}
+          spinSt:{position:'absolute', inset:0, pointerEvents:'none', animation:spinAnim, animationPlayState: paused ? 'paused' : 'running'}
         };
       });
       return {centerDbs, orbitRings};
