@@ -46,6 +46,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(184,92,56,0)}50%{box-shadow:0 0 0 .6cqw rgba(184,92,56,.14)}}
 @keyframes spinCW{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes spinCCW{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes cardIn{from{opacity:0;transform:translate(-50%,-48%) scale(.97)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes bornIn{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
+@keyframes slideL{from{opacity:0;transform:translateX(1.2cqw)}to{opacity:1;transform:none}}
 @keyframes excelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes travel{0%{left:10%}18%{left:10%}25%{left:30%}43%{left:30%}50%{left:50%}68%{left:50%}75%{left:70%}88%{left:70%}95%{left:90%}100%{left:90%}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
@@ -125,28 +128,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 
     <div style="position:absolute;right:0;top:17cqw;bottom:0;width:50%;container-type:size;padding:1cqw 3cqw 1cqw 1cqw;box-sizing:border-box">
       <div style="position:relative;width:100%;height:100%">
-        <div style="position:absolute;left:0;top:0;right:0;display:flex;flex-wrap:wrap;gap:.4cqmin;justify-content:center;z-index:20">
-          <sc-for list="{{ flowPills }}" as="fp" hint-placeholder-count="4">
-            <button onClick="{{ fp.pick }}" style="{{ fp.st }}">{{ fp.name }}</button>
-          </sc-for>
-        </div>
-
-        <div style="position:absolute;left:0;right:0;top:3.6cqmin;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5cqmin;z-index:20">
-          <sc-for list="{{ flowRail }}" as="rg" hint-placeholder-count="4">
-            <span style="{{ rg.capsuleSt }}">
-              <sc-for list="{{ rg.items }}" as="it" hint-placeholder-count="3">
-                <span style="{{ it.st }}">{{ it.name }}</span>
-                <sc-if value="{{ it.showDot }}">
-                  <span style="{{ it.dotSepSt }}">·</span>
-                </sc-if>
-              </sc-for>
-            </span>
-            <sc-if value="{{ rg.showArrow }}">
-              <span style="{{ rg.arrowSt }}">→</span>
-            </sc-if>
-          </sc-for>
-        </div>
-
         <sc-for list="{{ orbitRings }}" as="ring" hint-placeholder-count="4">
           <div style="{{ ring.circleSt }}"></div>
         </sc-for>
@@ -165,10 +146,15 @@ button{font:inherit;color:inherit;cursor:pointer}
             <sc-for list="{{ ring.planets }}" as="p" hint-placeholder-count="3">
               <div style="{{ p.slotSt }}">
                 <div style="{{ p.counterSt }}">
-                  <button onClick="{{ p.pick }}" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="{{ p.dotSt }}">
-                    <span class="material-symbols-outlined" style="{{ p.iconSt }}">{{ p.icon }}</span>
-                    <span style="{{ p.siglaSt }}">{{ p.sigla }}</span>
-                  </button>
+                  <div style="{{ p.bornSt }}">
+                    <button onClick="{{ p.pick }}" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="{{ p.dotSt }}">
+                      <span class="material-symbols-outlined" style="{{ p.iconSt }}">{{ p.icon }}</span>
+                      <span style="{{ p.siglaSt }}">{{ p.sigla }}</span>
+                    </button>
+                    <sc-if value="{{ p.showName }}">
+                      <div style="{{ p.nameSt }}">{{ p.name }}</div>
+                    </sc-if>
+                  </div>
                 </div>
               </div>
             </sc-for>
@@ -176,6 +162,21 @@ button{font:inherit;color:inherit;cursor:pointer}
         </sc-for>
 
       </div>
+    </div>
+
+    <div style="position:absolute;left:6cqw;bottom:3.2cqw;display:flex;align-items:baseline;gap:.6cqw;animation:fu .6s var(--e) 1.5s both">
+      <span style="font-family:'Sora',sans-serif;font-size:1.7cqw;font-weight:700;color:var(--text-secondary)">1</span>
+      <span style="font-size:.85cqw;font-weight:700;color:var(--text-secondary);letter-spacing:.04em">archivo</span>
+      <span style="font-size:.85cqw;color:rgba(28,25,23,.3);margin:0 .2cqw">·</span>
+      <span style="font-family:'Sora',sans-serif;font-size:1.7cqw;font-weight:700;color:var(--text-secondary)">4</span>
+      <span style="font-size:.85cqw;font-weight:700;color:var(--text-secondary);letter-spacing:.04em">pestañas</span>
+    </div>
+    <div style="position:absolute;left:52%;bottom:3.2cqw;display:flex;align-items:baseline;gap:.6cqw;animation:fu .6s var(--e) 1.7s both">
+      <span style="font-family:'Sora',sans-serif;font-size:1.7cqw;font-weight:700;color:var(--accent-color)">3</span>
+      <span style="font-size:.85cqw;font-weight:700;color:var(--accent-hover);letter-spacing:.04em">bases</span>
+      <span style="font-size:.85cqw;color:rgba(184,92,56,.4);margin:0 .2cqw">·</span>
+      <span style="font-family:'Sora',sans-serif;font-size:1.7cqw;font-weight:700;color:var(--accent-color)">9</span>
+      <span style="font-size:.85cqw;font-weight:700;color:var(--accent-hover);letter-spacing:.04em">piezas, cada una con un solo trabajo</span>
     </div>
   </sc-if>
 
@@ -409,65 +410,216 @@ button{font:inherit;color:inherit;cursor:pointer}
     </div>
   </sc-if>
 
-  <!-- CAPA · LOS NUEVE MÓDULOS (a demanda, desde cualquier escena) -->
+  <!-- CAPA · LOS NUEVE MÓDULOS (el sistema solar en grande, girando, con nombres) -->
   <sc-if value="{{ modGridOn }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;inset:0;z-index:18;background:rgba(247,244,238,.96);backdrop-filter:blur(14px);padding:5cqw 6cqw 6cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw;animation:fi .3s var(--e) both">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:2cqw">
+    <div style="position:absolute;inset:0;z-index:18;background:rgba(247,244,238,.94);backdrop-filter:blur(14px);animation:fi .35s var(--e) both">
+      <div style="position:absolute;left:6cqw;top:5cqw;right:6cqw;display:flex;align-items:flex-start;justify-content:space-between;gap:2cqw;z-index:3">
         <div>
-          <div style="font-size:1cqw;letter-spacing:.02em;color:var(--accent-color);font-weight:700">Las herramientas</div>
-          <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;color:var(--text-primary);margin-top:.5cqw">Nueve piezas, cada una hace un solo trabajo</div>
+          <div style="font-size:1cqw;letter-spacing:.02em;color:var(--accent-color);font-weight:700;animation:fd .5s var(--e) both">Las herramientas</div>
+          <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.4cqw;color:var(--text-primary);margin-top:.4cqw;animation:fu .6s var(--e) .08s both">Nueve piezas, cada una hace un solo trabajo</div>
         </div>
-        <div style="display:flex;align-items:center;gap:1cqw;padding-bottom:.5cqw">
-          <span style="font-size:.92cqw;color:var(--text-secondary);font-weight:600">Toca una tarjeta para abrirla</span>
-          <button onClick="{{ closeModGrid }}" style="width:2.6cqw;height:2.6cqw;border-radius:50%;border:1px solid var(--circle-border);background:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-size:1.2cqw;color:var(--text-secondary);flex:none">✕</button>
+        <div style="display:flex;align-items:center;gap:1cqw">
+          <span style="font-size:.85cqw;color:var(--text-secondary);font-weight:600">Toca una pieza para abrirla · Esc cierra</span>
+          <button onClick="{{ closeModGrid }}" style="width:2.6cqw;height:2.6cqw;border-radius:50%;border:1px solid var(--circle-border);background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;font-size:1.2cqw;color:var(--text-secondary);flex:none">✕</button>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:.9cqw;flex:1;min-height:0">
-        <sc-for list="{{ modules }}" as="m" hint-placeholder-count="9">
-          <button onClick="{{ m.open }}" style="{{ m.st }}">
-            <div style="display:flex;align-items:center;gap:.6cqw">
-              <span style="width:1.7cqw;height:1.7cqw;border-radius:50%;border:1px solid var(--circle-border);background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:.82cqw;font-weight:700;color:var(--accent-color);flex:none">{{ m.n }}</span>
-              <span style="font-family:'Sora',sans-serif;font-size:1.2cqw;font-weight:700">{{ m.name }}</span>
+
+      <div style="position:absolute;left:6cqw;right:6cqw;top:11cqw;bottom:6.2cqw;container-type:size">
+        <div style="position:relative;width:100%;height:100%;transform:scale(1.22);transform-origin:center center">
+          <sc-for list="{{ bigOrbitRings }}" as="ring" hint-placeholder-count="4">
+            <div style="{{ ring.circleSt }}"></div>
+          </sc-for>
+          <div style="{{ centerSt }}">
+            <sc-for list="{{ bigCenterDbs }}" as="db" hint-placeholder-count="3">
+              <div style="{{ db.wrapSt }}">
+                <div style="{{ db.dotSt }}"></div>
+                <div style="{{ db.labelSt }}">{{ db.name }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <sc-for list="{{ bigOrbitRings }}" as="ring" hint-placeholder-count="4">
+            <div style="{{ ring.spinSt }}">
+              <sc-for list="{{ ring.planets }}" as="p" hint-placeholder-count="3">
+                <div style="{{ p.slotSt }}">
+                  <div style="{{ p.counterSt }}">
+                    <div style="{{ p.bornSt }}">
+                      <button onClick="{{ p.pick }}" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="{{ p.dotSt }}">
+                        <span class="material-symbols-outlined" style="{{ p.iconSt }}">{{ p.icon }}</span>
+                        <span style="{{ p.siglaSt }}">{{ p.sigla }}</span>
+                      </button>
+                      <div style="{{ p.nameSt }}">{{ p.name }}</div>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
             </div>
-            <div style="font-size:.74cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">{{ m.who }}</div>
-            <div style="font-size:.9cqw;line-height:1.45;color:var(--text-modal);text-wrap:pretty">{{ m.one }}</div>
-          </button>
-        </sc-for>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:6cqw;bottom:3cqw;display:flex;gap:1.6cqw;font-size:.8cqw;font-weight:700;color:var(--text-secondary);animation:fi .6s var(--e) 1.2s both">
+        <span>Centro · las 3 bases de datos</span><span>Anillo 1 · paneles</span><span>Anillo 2 · puntuales</span><span>Anillo 3 · canales y caja</span><span>Anillo 4 · control</span>
       </div>
     </div>
   </sc-if>
 
-  <!-- DETALLE DE MÓDULO -->
+  <!-- DETALLE DE MÓDULO · ficha de una sola mirada -->
   <sc-if value="{{ det }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;inset:0;z-index:20;background:rgba(247,244,238,.94);backdrop-filter:blur(14px);padding:3cqw;box-sizing:border-box;animation:fi .3s var(--e) both">
-      <div style="width:100%;height:100%;border-radius:var(--radius-card);background:rgba(255,255,255,.96);border:1px solid var(--glass-border);backdrop-filter:blur(25px);box-shadow:0 20px 60px var(--sombra-suave);padding:2.6cqw 3cqw;box-sizing:border-box;display:flex;gap:2.6cqw;animation:pop .4s var(--e) both">
-        <div style="flex:1.15;display:flex;flex-direction:column;min-width:0">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:1.5cqw">
-            <div>
-              <div style="font-size:.85cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-color);font-weight:700">{{ detWho }}</div>
-              <div style="font-family:'Sora',sans-serif;font-size:2.2cqw;font-weight:700;margin-top:.2cqw">{{ detName }}</div>
-            </div>
-            <button onClick="{{ close }}" style="width:2.6cqw;height:2.6cqw;border-radius:50%;border:1px solid var(--circle-border);background:rgba(255,255,255,.5);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;font-size:1.2cqw;color:var(--text-secondary);flex:none">✕</button>
+    <div onClick="{{ close }}" style="position:absolute;inset:0;z-index:20;background:rgba(247,244,238,.72);backdrop-filter:blur(8px);animation:fi .3s var(--e) both"></div>
+    <div style="position:absolute;left:50%;top:50%;width:72cqw;z-index:21;transform:translate(-50%,-50%);border-radius:2cqw;background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.85);box-shadow:0 26px 70px rgba(44,44,44,.22);padding:2.2cqw 2.6cqw;box-sizing:border-box;display:flex;gap:2.2cqw;animation:cardIn .45s var(--e) both">
+      <button onClick="{{ close }}" style="position:absolute;right:1.4cqw;top:1.4cqw;width:2.3cqw;height:2.3cqw;border-radius:50%;border:1px solid var(--circle-border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:1cqw;color:var(--text-secondary)">✕</button>
+      <div style="flex:1.1;min-width:0;display:flex;flex-direction:column;gap:1.1cqw">
+        <div style="display:flex;align-items:center;gap:1cqw">
+          <span style="width:4cqw;height:4cqw;border-radius:50%;background:var(--accent-color);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 8px 20px rgba(184,92,56,.28)"><span class="material-symbols-outlined" style="font-size:2.1cqw">{{ detIcon }}</span></span>
+          <div style="min-width:0">
+            <div style="font-family:'Sora',sans-serif;font-size:.72cqw;font-weight:700;letter-spacing:.14em;color:var(--accent-color)">{{ detSigla }}</div>
+            <div style="font-family:'Sora',sans-serif;font-size:2cqw;font-weight:700;line-height:1.05">{{ detName }}</div>
+            <div style="font-size:.85cqw;color:var(--text-secondary);font-weight:600;margin-top:.25cqw">{{ detWho }}</div>
           </div>
-          <div style="font-size:1.15cqw;line-height:1.55;color:var(--text-modal);margin-top:.9cqw;text-wrap:pretty">{{ detOne }}</div>
-          <div style="margin-top:1.4cqw;display:flex;flex-wrap:wrap;gap:.5cqw">
+        </div>
+        <div style="font-size:1.1cqw;line-height:1.5;color:var(--text-modal);text-wrap:pretty">{{ detOne }}</div>
+        <div style="display:flex;flex-direction:column;gap:.45cqw;animation:fu .5s var(--e) .15s both">
+          <div style="font-size:.72cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);font-weight:800">Qué hace</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.45cqw">
             <sc-for list="{{ detDest }}" as="d" hint-placeholder-count="3">
-              <span style="padding:.5cqw .9cqw;border-radius:var(--radius-pill);background:rgba(184,92,56,.12);border:1px solid rgba(160,79,47,.28);color:var(--accent-hover);font-size:.85cqw;font-weight:700">{{ d }}</span>
-            </sc-for>
-          </div>
-          <div style="margin-top:1.4cqw;display:grid;grid-template-columns:1fr 1fr;gap:1cqw 1.6cqw;overflow:auto;min-height:0">
-            <sc-for list="{{ detCriterios }}" as="c" hint-placeholder-count="5">
-              <div>
-                <div style="font-size:.78cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">{{ c.k }}</div>
-                <div style="font-size:.95cqw;line-height:1.5;color:var(--text-primary);margin-top:.28cqw;text-wrap:pretty">{{ c.v }}</div>
-              </div>
+              <span style="padding:.4cqw .85cqw;border-radius:999px;background:rgba(184,92,56,.1);border:1px solid rgba(160,79,47,.25);color:var(--accent-hover);font-size:.8cqw;font-weight:700">{{ d }}</span>
             </sc-for>
           </div>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:.8cqw;min-width:0">
-          <div style="font-size:.78cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">Momento visual</div>
-          <div style="flex:1;position:relative;border-radius:2cqw;overflow:hidden;border:1px dashed rgba(28,25,23,.16)">
-            <image-slot id="{{ detSlot }}" shape="rect" placeholder="{{ detVis }}"></image-slot>
+        <div style="display:flex;flex-direction:column;gap:.35cqw;animation:fu .5s var(--e) .25s both">
+          <div style="font-size:.72cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);font-weight:800">Con qué se conecta</div>
+          <div style="font-size:.95cqw;line-height:1.5;color:var(--text-primary);text-wrap:pretty">{{ detInter }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.35cqw;animation:fu .5s var(--e) .35s both">
+          <div style="font-size:.72cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);font-weight:800">Qué hace sola</div>
+          <div style="font-size:.95cqw;line-height:1.5;color:var(--text-primary);text-wrap:pretty">{{ detAuto }}</div>
+        </div>
+        <sc-if value="{{ detHasFlows }}">
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:.6cqw;font-size:.85cqw;color:var(--text-secondary);font-weight:600;animation:fu .5s var(--e) .45s both">
+            Aparece en:
+            <sc-for list="{{ detFlows }}" as="f" hint-placeholder-count="2">
+              <button onClick="{{ f.go }}" style="border:none;background:transparent;padding:0;color:var(--accent-hover);font-size:.85cqw;font-weight:700;border-bottom:1px dashed rgba(184,92,56,.5);cursor:pointer">{{ f.name }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:.7cqw">
+        <div style="font-size:.72cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);font-weight:800">Así se ve</div>
+        <div style="flex:1;min-height:15cqw;border-radius:1.4cqw;background:var(--bg-warm);border:1px solid rgba(28,25,23,.1);position:relative;overflow:hidden;animation:slideL .55s var(--e) .2s both">
+          <div style="{{ detMockSt }}">
+            <sc-if value="{{ detMock.venta }}">
+              <div style="position:absolute;inset:0;display:flex;gap:.5cqw;padding:.7cqw;box-sizing:border-box;align-items:flex-end;justify-content:center">
+                <div style="width:4.4cqw;height:5.6cqw;border-radius:.6cqw;background:#fff;border:1px solid rgba(28,25,23,.12);padding:.5cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.3cqw">
+                  <div style="display:flex;gap:.2cqw"><span style="width:.3cqw;height:.3cqw;border-radius:50%;background:rgba(28,25,23,.2)"></span><span style="width:.3cqw;height:.3cqw;border-radius:50%;background:rgba(28,25,23,.2)"></span><span style="width:.3cqw;height:.3cqw;border-radius:50%;background:rgba(28,25,23,.2)"></span></div>
+                  <div style="height:.45cqw;border-radius:.2cqw;background:rgba(28,25,23,.1)"></div>
+                  <div style="height:.45cqw;border-radius:.2cqw;background:rgba(184,92,56,.35)"></div>
+                  <div style="height:.45cqw;border-radius:.2cqw;background:rgba(28,25,23,.1)"></div>
+                  <div style="height:.45cqw;border-radius:.2cqw;background:rgba(28,25,23,.1)"></div>
+                  <div style="margin-top:auto;align-self:flex-end;width:1.8cqw;height:.65cqw;border-radius:.3cqw;background:var(--accent-color)"></div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ detMock.chat }}">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+                <div style="width:3.4cqw;height:6.2cqw;border-radius:.8cqw;background:#fff;border:1px solid rgba(28,25,23,.12);padding:.55cqw .45cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.32cqw;justify-content:flex-end">
+                  <div style="align-self:flex-start;width:75%;height:.6cqw;border-radius:.4cqw;background:rgba(28,25,23,.1)"></div>
+                  <div style="align-self:flex-end;width:65%;height:.6cqw;border-radius:.4cqw;background:rgba(184,92,56,.45)"></div>
+                  <div style="align-self:flex-start;width:55%;height:.6cqw;border-radius:.4cqw;background:rgba(28,25,23,.1)"></div>
+                  <div style="align-self:flex-end;width:72%;height:.6cqw;border-radius:.4cqw;background:var(--accent-color)"></div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ detMock.base }}">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+                <div style="display:flex;flex-direction:column;gap:.35cqw;align-items:center">
+                  <div style="width:5.2cqw;height:1.3cqw;border-radius:999px;background:#fff;border:1px solid rgba(184,92,56,.35)"></div>
+                  <div style="width:5.2cqw;height:1.3cqw;border-radius:999px;background:#fff;border:1px solid rgba(184,92,56,.35)"></div>
+                  <div style="width:5.2cqw;height:1.3cqw;border-radius:999px;background:var(--accent-color)"></div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ detMock.panel }}">
+              <div style="position:absolute;inset:0;padding:.8cqw .9cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.55cqw">
+                <div style="display:flex;gap:.5cqw">
+                  <div style="flex:1;height:1.7cqw;border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.3cqw .45cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:.2cqw"><div style="width:45%;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div><div style="width:70%;height:.42cqw;border-radius:.2cqw;background:var(--accent-color)"></div></div>
+                  <div style="flex:1;height:1.7cqw;border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.3cqw .45cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:.2cqw"><div style="width:45%;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div><div style="width:55%;height:.42cqw;border-radius:.2cqw;background:rgba(184,92,56,.45)"></div></div>
+                </div>
+                <div style="flex:1;border-radius:.6cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.5cqw .6cqw;box-sizing:border-box;display:flex;align-items:flex-end;gap:.35cqw">
+                  <div style="flex:1;height:38%;border-radius:.2cqw .2cqw 0 0;background:rgba(184,92,56,.25)"></div>
+                  <div style="flex:1;height:62%;border-radius:.2cqw .2cqw 0 0;background:rgba(184,92,56,.4)"></div>
+                  <div style="flex:1;height:48%;border-radius:.2cqw .2cqw 0 0;background:rgba(184,92,56,.3)"></div>
+                  <div style="flex:1;height:88%;border-radius:.2cqw .2cqw 0 0;background:var(--accent-color)"></div>
+                  <div style="flex:1;height:70%;border-radius:.2cqw .2cqw 0 0;background:rgba(184,92,56,.5)"></div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ detMock.escaneo }}">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.8cqw">
+                <div style="width:3.4cqw;height:6.2cqw;border-radius:.8cqw;background:#fff;border:1px solid rgba(28,25,23,.12);padding:.5cqw .4cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.35cqw">
+                  <div style="height:2.6cqw;border-radius:.4cqw;background:var(--bg-warm);position:relative;overflow:hidden"><div style="position:absolute;left:.35cqw;right:.35cqw;top:.35cqw;bottom:.35cqw;border:1.5px solid var(--accent-color);border-radius:.3cqw"></div><div style="position:absolute;left:.5cqw;right:.5cqw;top:50%;height:1.5px;background:var(--accent-color);opacity:.8"></div></div>
+                  <div style="height:.5cqw;border-radius:.2cqw;background:rgba(28,25,23,.1)"></div>
+                  <div style="height:.5cqw;border-radius:.2cqw;background:rgba(28,25,23,.1)"></div>
+                  <div style="height:.5cqw;border-radius:.2cqw;background:rgba(184,92,56,.35)"></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:.4cqw">
+                  <div style="width:2.6cqw;height:1.05cqw;border-radius:.35cqw;background:#fff;border:1px solid rgba(28,25,23,.12);display:flex;align-items:center;justify-content:space-between;padding:0 .4cqw;box-sizing:border-box"><span style="width:.9cqw;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:.45cqw;height:.45cqw;border-radius:50%;background:var(--success-color)"></span></div>
+                  <div style="width:2.6cqw;height:1.05cqw;border-radius:.35cqw;background:#fff;border:1px solid rgba(28,25,23,.12);display:flex;align-items:center;justify-content:space-between;padding:0 .4cqw;box-sizing:border-box"><span style="width:.9cqw;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:.45cqw;height:.45cqw;border-radius:50%;background:var(--success-color)"></span></div>
+                  <div style="width:2.6cqw;height:1.05cqw;border-radius:.35cqw;background:#fff;border:1px solid rgba(184,92,56,.5);display:flex;align-items:center;justify-content:space-between;padding:0 .4cqw;box-sizing:border-box"><span style="width:.9cqw;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:.45cqw;height:.45cqw;border-radius:50%;background:var(--warning-color)"></span></div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ detMock.catalogo }}">
+              <div style="position:absolute;inset:0;padding:.7cqw .8cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.45cqw">
+                <div style="display:flex;align-items:center;gap:.4cqw"><span style="width:1.6cqw;height:.4cqw;border-radius:.2cqw;background:rgba(28,25,23,.18)"></span><span style="margin-left:auto;width:2.6cqw;height:.35cqw;border-radius:.2cqw;background:rgba(28,25,23,.1)"></span></div>
+                <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:.4cqw">
+                  <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;flex-direction:column;padding:.3cqw;box-sizing:border-box;gap:.25cqw"><div style="flex:1;border-radius:.3cqw;background:rgba(184,92,56,.18)"></div><div style="height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div></div>
+                  <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;flex-direction:column;padding:.3cqw;box-sizing:border-box;gap:.25cqw"><div style="flex:1;border-radius:.3cqw;background:rgba(184,92,56,.3)"></div><div style="height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div></div>
+                  <div style="border-radius:.45cqw;background:#fff;border:1px dashed rgba(28,25,23,.18);display:flex;flex-direction:column;padding:.3cqw;box-sizing:border-box;gap:.25cqw;opacity:.35"><div style="flex:1;border-radius:.3cqw;background:rgba(28,25,23,.08)"></div><div style="height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div></div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ detMock.produccion }}">
+              <div style="position:absolute;inset:0;padding:.8cqw .9cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.45cqw">
+                <div style="height:.5cqw;width:55%;border-radius:.2cqw;background:rgba(28,25,23,.15)"></div>
+                <div style="flex:1;border-radius:.6cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.5cqw .6cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.3cqw;justify-content:center">
+                  <div style="display:flex;justify-content:space-between"><span style="width:2.2cqw;height:.38cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:1.2cqw;height:.38cqw;border-radius:.2cqw;background:rgba(28,25,23,.18)"></span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="width:2.8cqw;height:.38cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:1cqw;height:.38cqw;border-radius:.2cqw;background:rgba(28,25,23,.18)"></span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="width:1.8cqw;height:.38cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:1.5cqw;height:.42cqw;border-radius:.2cqw;background:var(--accent-color)"></span></div>
+                </div>
+                <div style="align-self:flex-end;height:1cqw;width:3.4cqw;border-radius:999px;background:var(--accent-color);display:flex;align-items:center;justify-content:center"><span style="width:1.6cqw;height:.28cqw;border-radius:.2cqw;background:rgba(255,255,255,.85)"></span></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ detMock.qr }}">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+                <div style="width:6.2cqw;height:4.2cqw;border-radius:.5cqw;background:#fff;border:1px solid rgba(28,25,23,.14);box-shadow:0 4px 10px rgba(44,44,44,.08);display:flex;align-items:center;gap:.6cqw;padding:.5cqw .6cqw;box-sizing:border-box">
+                  <div style="width:3cqw;height:3cqw;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:.12cqw">
+                    <span style="background:var(--text-primary)"></span><span style="background:var(--text-primary)"></span><span style="background:var(--text-primary)"></span><span></span><span style="background:var(--text-primary)"></span>
+                    <span style="background:var(--text-primary)"></span><span></span><span style="background:var(--text-primary)"></span><span></span><span></span>
+                    <span style="background:var(--text-primary)"></span><span style="background:var(--text-primary)"></span><span style="background:var(--text-primary)"></span><span style="background:var(--accent-color)"></span><span style="background:var(--text-primary)"></span>
+                    <span></span><span></span><span style="background:var(--accent-color)"></span><span></span><span style="background:var(--text-primary)"></span>
+                    <span style="background:var(--text-primary)"></span><span></span><span style="background:var(--text-primary)"></span><span style="background:var(--text-primary)"></span><span style="background:var(--text-primary)"></span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:.35cqw;flex:1">
+                    <div style="height:.45cqw;width:85%;border-radius:.2cqw;background:var(--text-primary)"></div>
+                    <div style="height:.35cqw;width:60%;border-radius:.2cqw;background:rgba(28,25,23,.25)"></div>
+                    <div style="height:.6cqw;width:1.4cqw;border-radius:.2cqw;background:var(--accent-color);margin-top:.2cqw"></div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ detMock.hub }}">
+              <div style="position:absolute;inset:0;padding:.9cqw 1cqw;box-sizing:border-box;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:.4cqw">
+                <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;align-items:center;justify-content:center"><span style="width:.5cqw;height:.5cqw;border-radius:50%;background:var(--success-color)"></span></div>
+                <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;align-items:center;justify-content:center"><span style="width:.5cqw;height:.5cqw;border-radius:50%;background:var(--success-color)"></span></div>
+                <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;align-items:center;justify-content:center"><span style="width:.5cqw;height:.5cqw;border-radius:50%;background:var(--success-color)"></span></div>
+                <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;align-items:center;justify-content:center"><span style="width:.5cqw;height:.5cqw;border-radius:50%;background:var(--success-color)"></span></div>
+                <div style="border-radius:.45cqw;background:var(--accent-color);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:1.1cqw;color:#fff">shield</span></div>
+                <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;align-items:center;justify-content:center"><span style="width:.5cqw;height:.5cqw;border-radius:50%;background:var(--warning-color)"></span></div>
+                <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;align-items:center;justify-content:center"><span style="width:.5cqw;height:.5cqw;border-radius:50%;background:var(--success-color)"></span></div>
+                <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;align-items:center;justify-content:center"><span style="width:.5cqw;height:.5cqw;border-radius:50%;background:var(--success-color)"></span></div>
+                <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;align-items:center;justify-content:center"><span style="width:.5cqw;height:.5cqw;border-radius:50%;background:var(--success-color)"></span></div>
+              </div>
+            </sc-if>
           </div>
         </div>
       </div>
@@ -575,19 +727,6 @@ const EXCEL_ACTIVE_TAB = 1;
 // Sistema solar de la escena "El cambio": centro = las 3 bases (no giran, no se tocan);
 // 4 órbitas concéntricas, radio y duración crecientes hacia afuera (más lejos, más lento).
 const CENTER_DBS = [{id:'dbprod', name:'Producción', sigla:'BPR'}, {id:'dbventas', name:'Ventas', sigla:'BVT'}, {id:'dbstock', name:'Stock', sigla:'BST'}];
-// Flujos reales de negocio sobre el sistema solar (entradas alternativas + recorrido
-// compartido). Los ids de "entries"/"path" referencian planetas de los anillos o bases.
-const FLOWS_S1 = [
-  {name:'Venta omnicanal', entries:['agente','app','plat'], path:['dbstock','dbventas','ventas']},
-  {name:'Auditoría inventario', entries:['plat','app'], path:['dbstock','cat']},
-  {name:'Lanzamiento de colección', entries:[], path:['prod','dbprod','stock','dbstock','qr','cat']},
-  {name:'Movimientos de inventario', entries:[], path:['stock','dbstock','cat']}
-];
-// Timing lento a propósito: el flujo debe poder leerse de corrido. Mientras un
-// flujo está activo (ensemble/step/close) TODO el sistema solar se congela;
-// solo en 'interlude' las órbitas vuelven a girar libres, sin nada encendido.
-const S1_ENSEMBLE_HOLD = 1400, S1_STEP_HOLD = 2000, S1_CLOSE_HOLD = 1200, S1_INTERLUDE = 2500;
-
 const ORBIT_RINGS = [
   {r:14, dur:32, dir:'cw',  planets:[{id:'prod', name:'Panel Producción'},{id:'stock', name:'Panel Stock'},{id:'ventas', name:'Panel Ventas'}]},
   {r:22, dur:52, dir:'ccw', planets:[{id:'cat', name:'Catálogo'},{id:'qr', name:'QR'}]},
@@ -735,48 +874,16 @@ const MODULES = [
 ];
 
 class Component extends DCLogic {
-  state = {i:0, flow:0, open:null, hoverRing:null, hoverId:null, s1FlowIdx:0, s1StepIdx:-1, s1Phase:'ensemble', auto:this.props.flujoAuto !== false};
-
-  // Máquina de estados de los flujos de negocio de la escena "El cambio", en 4 fases:
-  // 'ensemble' (todo el flujo en terracota claro, órbitas congeladas) -> 'step'
-  // (protagonista actual en terracota pleno, uno a la vez, órbitas congeladas) ->
-  // 'close' (se sostiene el último paso un poco más) -> 'interlude' (todo apagado,
-  // las órbitas giran libres) -> siguiente flujo. Se pausa por completo mientras el
-  // usuario interactúa a mano (hoverId) o si no está en escena 1.
-  stepFlowS1 = () => {
-    const s = this.state;
-    if (s.i !== 1){ this.flowTimer = setTimeout(this.stepFlowS1, 500); return; }
-    if (s.hoverId != null){ this.flowTimer = setTimeout(this.stepFlowS1, 300); return; }
-    const flow = FLOWS_S1[s.s1FlowIdx];
-    // Grupos, no ids sueltos: las entradas alternativas cuentan como un solo paso.
-    const groups = flow.entries.length ? [flow.entries, ...flow.path.map(id => [id])] : flow.path.map(id => [id]);
-    if (s.s1Phase === 'ensemble'){
-      this.setState({s1Phase:'step', s1StepIdx:0});
-      this.flowTimer = setTimeout(this.stepFlowS1, S1_STEP_HOLD);
-    } else if (s.s1Phase === 'step' && s.s1StepIdx < groups.length - 1){
-      this.setState({s1StepIdx: s.s1StepIdx + 1});
-      this.flowTimer = setTimeout(this.stepFlowS1, S1_STEP_HOLD);
-    } else if (s.s1Phase === 'step'){
-      this.setState({s1Phase:'close'});
-      this.flowTimer = setTimeout(this.stepFlowS1, S1_CLOSE_HOLD);
-    } else if (s.s1Phase === 'close'){
-      this.setState({s1Phase:'interlude', s1StepIdx:-1});
-      this.flowTimer = setTimeout(this.stepFlowS1, S1_INTERLUDE);
-    } else {
-      this.setState({s1FlowIdx:(s.s1FlowIdx+1) % FLOWS_S1.length, s1Phase:'ensemble', s1StepIdx:-1});
-      this.flowTimer = setTimeout(this.stepFlowS1, S1_ENSEMBLE_HOLD);
-    }
-  };
+  state = {i:0, flow:0, open:null, hoverRing:null, hoverId:null, modGrid:false, auto:this.props.flujoAuto !== false};
 
   componentDidMount(){
     this.t = setInterval(() => {
       if (this.state.i === 2 && this.state.auto) this.setState(s => ({flow:(s.flow+1)%4}));
     }, 4200);
-    this.flowTimer = setTimeout(this.stepFlowS1, S1_ENSEMBLE_HOLD);
     this.esc = (ev) => { if (ev.key === 'Escape') this.setState(s => s.open ? {open:null} : {modGrid:false}); };
     window.addEventListener('keydown', this.esc);
   }
-  componentWillUnmount(){ clearInterval(this.t); clearTimeout(this.flowTimer); window.removeEventListener('keydown', this.esc); }
+  componentWillUnmount(){ clearInterval(this.t); window.removeEventListener('keydown', this.esc); }
 
   go(n){ const i = Math.max(0, Math.min(SC.length-1, n)); this.setState({i, open:null, hoverRing:null, hoverId:null, modGrid:false}); }
 
@@ -842,61 +949,10 @@ class Component extends DCLogic {
     const dimmed = (id) => i === 7;
     const pickFn = (id) => () => this.setState({open:id});
 
-    // Flujo activo del sistema solar (escena "El cambio"): 3 niveles por nodo —
-    // 'proto' (protagonista, terracota pleno), 'set' (parte del flujo, terracota
-    // claro) o null (reposo, gris). El hover/tap manual siempre gana como 'proto'.
-    const flowS1 = FLOWS_S1[s.s1FlowIdx];
-    // Cada "paso" es un grupo de ids: las entradas alternativas van TODAS en el
-    // primer grupo (se encienden juntas, son opciones, no una secuencia), el
-    // resto del recorrido son grupos de un solo id.
-    const flowGroupsS1 = flowS1.entries.length
-      ? [flowS1.entries, ...flowS1.path.map(id => [id])]
-      : flowS1.path.map(id => [id]);
-    const flowSeqS1 = flowGroupsS1.flat();
-    const flowIsIdle = s.s1Phase === 'interlude';
-    const flowProtoGroup = (!flowIsIdle && s.s1StepIdx >= 0) ? flowGroupsS1[s.s1StepIdx] : null;
-    const s1Level = (id) => {
-      if (s.hoverId === id) return 'proto';
-      if (flowIsIdle) return null;
-      if (flowProtoGroup && flowProtoGroup.indexOf(id) >= 0) return 'proto';
-      if (flowSeqS1.indexOf(id) >= 0) return 'set';
-      return null;
-    };
-    // Las órbitas se congelan por completo mientras el flujo está contando su
-    // historia (ensemble/step/close); solo respiran libres en 'interlude'.
-    const flowFreeze = !flowIsIdle;
-    // Riel lineal: solo los nombres de los proyectos que toca el flujo activo, en
-    // orden, sincronizado con el mismo nivel (gris/claro/protagonista) que ya
-    // gobierna los planetas — nada de descripciones, solo el recorrido.
     // Nombres legibles de cada nodo (planeta o base), para el riel lineal del flujo.
     const NODE_NAMES = {};
     ORBIT_RINGS.forEach(r => r.planets.forEach(p => { NODE_NAMES[p.id] = p.name; }));
     CENTER_DBS.forEach(d => { NODE_NAMES[d.id] = 'Base '+d.name; });
-    // Riel del flujo activo: las entradas alternativas van juntas en una sola
-    // cápsula punteada (se muestran a la vez, son opciones, no una secuencia);
-    // el resto del recorrido sigue como pasos sueltos unidos por flechas.
-    // Cada paso del flujo (una alternativa sola, o varias juntas) va en la misma
-    // cápsula punteada; la cápsula entera "se enciende" según su nivel — nunca
-    // un paso pelado sin cápsula y otro con ella.
-    const nameSt = (lvl) => ({fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:'1.8cqmin',
-      fontWeight: lvl === 'proto' ? 700 : 600,
-      color: lvl === 'proto' ? '#fff' : (lvl === 'set' ? 'var(--accent-hover)' : 'var(--text-secondary)'),
-      whiteSpace:'nowrap', transition:'color .3s var(--e)'});
-    const arrowSt = {fontSize:'1.5cqmin', color:'var(--text-secondary)', opacity:.4};
-    const capsuleSt = (lvl) => ({display:'inline-flex', alignItems:'center', gap:'.4cqmin',
-      padding:'.3cqmin .8cqmin', borderRadius:'.9cqmin',
-      border:'1px dashed '+(lvl === 'proto' ? 'var(--accent-color)' : 'rgba(184,92,56,.35)'),
-      background: lvl === 'proto' ? 'var(--accent-color)' : (lvl === 'set' ? 'rgba(184,92,56,.12)' : 'rgba(28,25,23,.03)'),
-      opacity: lvl ? 1 : .6, transition:'background .3s var(--e), border-color .3s var(--e), opacity .3s var(--e)'});
-    const dotSepSt = (lvl) => ({fontSize:'1.3cqmin', color: lvl === 'proto' ? 'rgba(255,255,255,.7)' : 'var(--text-secondary)', opacity: lvl === 'proto' ? 1 : .45});
-    const flowRail = flowIsIdle ? [] : flowGroupsS1.map((group, gi) => {
-      const levels = group.map(s1Level);
-      const capLvl = levels.indexOf('proto') >= 0 ? 'proto' : (levels.indexOf('set') >= 0 ? 'set' : null);
-      const items = group.map((id, ei, arr) => ({
-        name: NODE_NAMES[id] || id, st: nameSt(s1Level(id)), showDot: ei < arr.length - 1, dotSepSt: dotSepSt(capLvl)
-      }));
-      return {items, capsuleSt: capsuleSt(capLvl), showArrow: gi < flowGroupsS1.length - 1, arrowSt};
-    });
 
     // --- Escena 2: panorama de los 4 flujos (una fila por flujo, cápsulas del riel) ---
     const panoRows = FLOW_STORY.map((f, fi) => {
@@ -1018,102 +1074,93 @@ class Component extends DCLogic {
         color: k === EXCEL_ACTIVE_TAB ? '#fff' : 'var(--text-secondary)'}
     }));
 
-    // --- Escena "El cambio": sistema solar (derecha) ---
-    const maxR = ORBIT_RINGS[ORBIT_RINGS.length-1].r;
-    const centerSt = {position:'absolute', left:'50%', top:'50%', width:'0', height:'0'};
-    // Los 3 círculos entrelazados (no en triángulo separado): un radio de centro
-    // más chico que el propio radio del círculo hace que se superpongan entre sí,
-    // como un diagrama de Venn, para leerse como interrelacionados. La etiqueta
-    // se ancla en un radio mayor, sobre el mismo ángulo, para no quedar tapada.
-    const centerDbs = CENTER_DBS.map((db, k) => {
-      const ang = (-90 + k*120) * Math.PI/180, cr = 2.1, labelR = 7.2;
-      const lvl = s1Level(db.id);
-      return {name: db.sigla,
-        wrapSt:{position:'absolute', left:0, top:0, width:0, height:0},
-        dotSt:{position:'absolute', left:(cr*Math.cos(ang))+'cqmin', top:(cr*Math.sin(ang))+'cqmin',
-          transform:'translate(-50%,-50%)', width:'6cqmin', height:'6cqmin', borderRadius:'50%',
-          background: lvl === 'proto' ? 'rgba(184,92,56,.85)' : (lvl === 'set' ? 'rgba(184,92,56,.35)' : 'rgba(184,92,56,.16)'),
-          border:'1.5px solid '+(lvl === 'proto' ? 'var(--accent-color)' : 'rgba(184,92,56,.45)'),
-          mixBlendMode:'multiply', zIndex:k+1, transition:'background .45s var(--e), border-color .45s var(--e)',
-          animation:'popc .5s var(--e) '+(k*0.08)+'s both'},
-        labelSt:{position:'absolute', left:(labelR*Math.cos(ang))+'cqmin', top:(labelR*Math.sin(ang))+'cqmin',
-          transform:'translate(-50%,-50%)', zIndex:10,
-          fontFamily:"'Sora',sans-serif", fontSize:'1.8cqmin', fontWeight:700,
-          color: lvl ? 'var(--accent-hover)' : 'var(--text-secondary)', opacity: lvl ? 1 : .55,
-          whiteSpace:'nowrap', transition:'color .45s var(--e), opacity .45s var(--e)',
-          animation:'popc .5s var(--e) '+(k*0.08)+'s both'}};
-    });
-
-    // Profundidad en el mismo plano cenital (sin 3D): sombra y saturación decrecen
-    // hacia afuera, como perspectiva aérea; el anillo interior "se siente" más cerca.
-    // "highlight" da a cada bola un sombreado interno de esfera (luz arriba-izquierda),
-    // más marcado en el anillo cercano y casi plano en el lejano — diferencia las
-    // bolitas entre órbitas además de por posición.
+    // --- Sistema solar: un solo renderizador, dos usos ---
+    //  · escena 1 (ambiental): nace pieza por pieza, gira, nombre solo al pasar el mouse
+    //  · capa "Los 9 módulos": más grande, gira, nombre siempre visible
+    // Profundidad en el mismo plano (sombra, saturación y brillo interno decrecen hacia afuera).
     const DEPTH = [
-      {shadow:'0 4px 7px rgba(28,25,23,.24)', filter:'saturate(1.08)', ring:'rgba(28,25,23,.20)',
+      {shadow:'0 4px 7px rgba(28,25,23,.22)', filter:'saturate(1.08)', ring:'rgba(28,25,23,.20)',
         highlight:'radial-gradient(circle at 32% 26%, rgba(255,255,255,.95), rgba(255,255,255,0) 62%)'},
-      {shadow:'0 3px 5px rgba(28,25,23,.18)', filter:'saturate(1)',    ring:'rgba(28,25,23,.15)',
+      {shadow:'0 3px 5px rgba(28,25,23,.17)', filter:'saturate(1)',    ring:'rgba(28,25,23,.15)',
         highlight:'radial-gradient(circle at 34% 28%, rgba(255,255,255,.72), rgba(255,255,255,0) 60%)'},
-      {shadow:'0 2px 3.5px rgba(28,25,23,.13)', filter:'saturate(.88) brightness(1.03)', ring:'rgba(28,25,23,.10)',
+      {shadow:'0 2px 3.5px rgba(28,25,23,.13)', filter:'saturate(.9) brightness(1.02)', ring:'rgba(28,25,23,.10)',
         highlight:'radial-gradient(circle at 36% 30%, rgba(255,255,255,.5), rgba(255,255,255,0) 58%)'},
-      {shadow:'0 1px 2px rgba(28,25,23,.08)', filter:'saturate(.72) brightness(1.07)', ring:'rgba(28,25,23,.06)',
+      {shadow:'0 1px 2px rgba(28,25,23,.08)', filter:'saturate(.78) brightness(1.05)', ring:'rgba(28,25,23,.06)',
         highlight:'radial-gradient(circle at 38% 32%, rgba(255,255,255,.32), rgba(255,255,255,0) 55%)'}
     ];
-    const flowPills = FLOWS_S1.map((f, fi) => ({
-      name:f.name,
-      pick: () => { clearTimeout(this.flowTimer); this.setState({s1FlowIdx:fi, s1StepIdx:-1, s1Phase:'ensemble'}); this.flowTimer = setTimeout(this.stepFlowS1, S1_ENSEMBLE_HOLD); },
-      st:{padding:'.55cqmin 1.15cqmin', borderRadius:'999px', border:'none', cursor:'pointer',
-        fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:'1.8cqmin', fontWeight:700,
-        background: fi === s.s1FlowIdx ? 'var(--accent-color)' : 'var(--color-perla)',
-        color: fi === s.s1FlowIdx ? '#fff' : 'var(--text-secondary)',
-        transition:'background .25s var(--e), color .25s var(--e)'}
-    }));
-    const orbitRings = ORBIT_RINGS.map((ring, ri) => {
-      const n = ring.planets.length;
-      const depth = DEPTH[ri] || DEPTH[DEPTH.length-1];
-      const paused = s.hoverRing === ri || !!openM || flowFreeze;
-      const spinAnim = (ring.dir === 'cw' ? 'spinCW' : 'spinCCW')+' '+ring.dur+'s linear infinite';
-      const counterAnim = (ring.dir === 'cw' ? 'spinCCW' : 'spinCW')+' '+ring.dur+'s linear infinite';
-      const planets = ring.planets.map((p, pi) => {
-        const ang = (-90 + pi*(360/n)) * Math.PI/180;
-        const x = ring.r * Math.cos(ang), y = ring.r * Math.sin(ang);
-        // 3 niveles: 'proto' (protagonista del flujo, o hover/tap manual) = terracota
-        // pleno; 'set' (parte del flujo activo pero todavía no es su turno) =
-        // terracota claro; null (fuera del flujo) = reposo gris.
-        const lvl = s1Level(p.id);
+    const solar = (opts) => {
+      const born = opts.born;            // coreografía de nacimiento al montar
+      const namesAlways = opts.names;    // nombre visible siempre (capa) o solo en hover (escena 1)
+      const E = 'cubic-bezier(.4,0,.2,1)';
+      const centerDbs = CENTER_DBS.map((db, k) => {
+        const ang = (-90 + k*120) * Math.PI/180, cr = 2.1, labelR = 7.4;
+        const hot = s.hoverId === db.id;
+        return {name: db.sigla,
+          wrapSt:{position:'absolute', left:0, top:0, width:0, height:0},
+          dotSt:{position:'absolute', left:(cr*Math.cos(ang))+'cqmin', top:(cr*Math.sin(ang))+'cqmin',
+            transform:'translate(-50%,-50%)', width:'6cqmin', height:'6cqmin', borderRadius:'50%',
+            background: hot ? 'rgba(184,92,56,.8)' : 'rgba(184,92,56,.18)', border:'1.5px solid rgba(184,92,56,.45)',
+            mixBlendMode:'multiply', zIndex:k+1, transition:'background .45s '+E,
+            animation: born ? 'popc .6s '+E+' '+(0.25+k*0.09)+'s both' : 'none'},
+          labelSt:{position:'absolute', left:(labelR*Math.cos(ang))+'cqmin', top:(labelR*Math.sin(ang))+'cqmin',
+            transform:'translate(-50%,-50%)', zIndex:10, fontFamily:"'Sora',sans-serif", fontSize:'1.8cqmin', fontWeight:700,
+            color:'var(--accent-hover)', opacity:.85, whiteSpace:'nowrap',
+            animation: born ? 'fi .5s '+E+' '+(0.5+k*0.09)+'s both' : 'none'}};
+      });
+      let bornIdx = 0;
+      const orbitRings = ORBIT_RINGS.map((ring, ri) => {
+        const n = ring.planets.length;
+        const depth = DEPTH[ri] || DEPTH[DEPTH.length-1];
+        const paused = s.hoverRing === ri || !!openM;
+        const spinAnim = (ring.dir === 'cw' ? 'spinCW' : 'spinCCW')+' '+ring.dur+'s linear infinite';
+        const counterAnim = (ring.dir === 'cw' ? 'spinCCW' : 'spinCW')+' '+ring.dur+'s linear infinite';
+        const planets = ring.planets.map((p, pi) => {
+          const ang = (-90 + pi*(360/n)) * Math.PI/180;
+          const x = ring.r * Math.cos(ang), y = ring.r * Math.sin(ang);
+          const hot = s.hoverId === p.id;
+          const delay = 0.75 + (bornIdx++) * 0.06;
+          return {
+            name: p.name, icon: ICONS[p.id] || 'circle', sigla: SIGLAS[p.id] || '',
+            showName: namesAlways || hot,
+            pick: (ev) => this.explode(p.id, ev && ev.currentTarget),
+            enter: () => this.setState({hoverRing: ri, hoverId: p.id}),
+            leave: () => this.setState({hoverRing: null, hoverId: null}),
+            slotSt:{position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%) translate('+x+'cqmin,'+y+'cqmin)'},
+            counterSt:{position:'relative', animation: counterAnim, animationPlayState: paused ? 'paused' : 'running',
+              display:'flex', flexDirection:'column', alignItems:'center', gap:'.55cqmin'},
+            bornSt:{animation: born ? 'bornIn .55s '+E+' '+delay.toFixed(2)+'s both' : 'none', display:'flex', flexDirection:'column', alignItems:'center', gap:'.55cqmin'},
+            dotSt:{width:'6.5cqmin', height:'6.5cqmin', borderRadius:'50%', border:'none', padding:0, cursor:'pointer',
+              display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'.15cqmin',
+              backgroundColor: hot ? 'var(--accent-color)' : 'rgba(255,255,255,.88)',
+              backgroundImage: hot ? 'none' : depth.highlight,
+              border:'1.5px solid '+(hot ? 'var(--accent-color)' : 'rgba(184,92,56,.32)'),
+              boxShadow: hot ? '0 0 2.6cqmin rgba(184,92,56,.35)' : depth.shadow,
+              filter: depth.filter,
+              transition:'background-color .3s '+E+', border-color .3s '+E+', box-shadow .3s '+E},
+            iconSt:{fontSize:'2.7cqmin', color: hot ? '#fff' : 'var(--accent-hover)', pointerEvents:'none', transition:'color .3s '+E},
+            siglaSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.5cqmin', fontWeight:700, letterSpacing:'.02em',
+              color: hot ? 'rgba(255,255,255,.92)' : 'var(--text-secondary)', pointerEvents:'none', transition:'color .3s '+E},
+            nameSt:{fontFamily:"'Sora',sans-serif", fontSize: namesAlways ? '1.7cqmin' : '1.6cqmin', fontWeight: hot ? 700 : 600,
+              color: hot ? 'var(--accent-hover)' : 'var(--text-modal)', whiteSpace:'nowrap', pointerEvents:'none',
+              padding: namesAlways ? 0 : '.25cqmin .7cqmin', borderRadius:'999px',
+              background: namesAlways ? 'transparent' : 'rgba(255,255,255,.9)',
+              boxShadow: namesAlways ? 'none' : '0 2px 8px rgba(28,25,23,.1)',
+              animation: namesAlways ? 'none' : 'fd .2s '+E+' both', transition:'color .3s '+E}
+          };
+        });
         return {
-          name: p.name,
-          icon: ICONS[p.id] || 'circle',
-          sigla: SIGLAS[p.id] || '',
-          pick: (ev) => this.explode(p.id, ev && ev.currentTarget),
-          enter: () => this.setState({hoverRing: ri, hoverId: p.id}),
-          leave: () => this.setState({hoverRing: null, hoverId: null}),
-          slotSt:{position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%) translate('+x+'cqmin,'+y+'cqmin)'},
-          counterSt:{position:'relative', animation: counterAnim, animationPlayState: paused ? 'paused' : 'running',
-            display:'flex', flexDirection:'column', alignItems:'center'},
-          dotSt:{width:'6.5cqmin', height:'6.5cqmin', borderRadius:'50%', border:'none', padding:0, cursor:'pointer',
-            display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'.15cqmin',
-            backgroundColor: lvl === 'proto' ? 'var(--accent-color)' : (lvl === 'set' ? 'rgba(184,92,56,.28)' : 'rgba(28,25,23,.05)'),
-            backgroundImage: lvl ? 'none' : depth.highlight,
-            border:'1.5px solid '+(lvl === 'proto' ? 'var(--accent-color)' : (lvl === 'set' ? 'rgba(184,92,56,.4)' : 'rgba(28,25,23,.16)')),
-            boxShadow: lvl === 'proto' ? '0 0 2.4cqmin rgba(184,92,56,.35)' : depth.shadow,
-            filter: depth.filter,
-            transition:'background-color .45s var(--e), border-color .45s var(--e), box-shadow .45s var(--e)'},
-          iconSt:{fontSize:'2.7cqmin', color: lvl === 'proto' ? '#fff' : (lvl === 'set' ? 'var(--accent-hover)' : 'var(--text-secondary)'),
-            pointerEvents:'none', opacity: lvl ? 1 : .7, transition:'color .45s var(--e), opacity .45s var(--e)'},
-          siglaSt:{fontFamily:"'Sora',sans-serif", fontSize:'1.5cqmin', fontWeight:700, letterSpacing:'.02em',
-            color: lvl === 'proto' ? 'rgba(255,255,255,.9)' : (lvl === 'set' ? 'var(--accent-hover)' : 'var(--text-secondary)'),
-            pointerEvents:'none', opacity: lvl ? 1 : .65, transition:'color .45s var(--e), opacity .45s var(--e)'}
+          planets,
+          circleSt:{position:'absolute', left:'50%', top:'50%', width:(ring.r*2)+'cqmin', height:(ring.r*2)+'cqmin',
+            marginLeft:(-ring.r)+'cqmin', marginTop:(-ring.r)+'cqmin', borderRadius:'50%',
+            border:'1px dashed '+depth.ring, animation: born ? 'fi .7s '+E+' '+(0.1+ri*0.08)+'s both' : 'none'},
+          spinSt:{position:'absolute', inset:0, animation:spinAnim, animationPlayState: paused ? 'paused' : 'running'}
         };
       });
-      return {
-        planets,
-        circleSt:{position:'absolute', left:'50%', top:'50%', width:(ring.r*2)+'cqmin', height:(ring.r*2)+'cqmin',
-          marginLeft:(-ring.r)+'cqmin', marginTop:(-ring.r)+'cqmin', borderRadius:'50%',
-          border:'1px dashed '+depth.ring},
-        spinSt:{position:'absolute', inset:0, animation:spinAnim, animationPlayState: paused ? 'paused' : 'running'}
-      };
-    });
+      return {centerDbs, orbitRings};
+    };
+    const centerSt = {position:'absolute', left:'50%', top:'50%', width:'0', height:'0'};
+    const solar1 = solar({born:true, names:false});
+    const solarBig = solar({born:true, names:true});
 
     const etapas = ETAPAS.map((e, k) => ({name:e.name, grupo:e.grupo, color:e.color,
       st:{position:'absolute', left:e.x+'%', top:'7.4cqw', transform:'translateX(-50%)',
@@ -1146,6 +1193,14 @@ class Component extends DCLogic {
         : 'radial-gradient(circle at 50% 50%, rgba(255,90,30,.55) 0%, rgba(255,165,102,.28) 38%, rgba(255,165,102,0) 66%)',
       animation:(setting ? 'setdown 3.4s' : 'rise 2.6s')+' var(--e) both'});
 
+    // Ficha: maqueta por tipo de módulo y flujos en los que aparece
+    const MOCK_BY_ID = {prod:'produccion', stock:'panel', ventas:'panel', cat:'catalogo', qr:'qr', agente:'chat', plat:'venta', app:'escaneo', hub:'hub'};
+    const mk = openM ? (MOCK_BY_ID[openM.id] || 'panel') : 'panel';
+    const detMock = {venta:mk==='venta', chat:mk==='chat', base:mk==='base', panel:mk==='panel', escaneo:mk==='escaneo', catalogo:mk==='catalogo', produccion:mk==='produccion', qr:mk==='qr', hub:mk==='hub'};
+    const detMockSt = {position:'absolute', left:'50%', top:'50%', width:'12.6cqw', height:'8.6cqw', marginLeft:'-6.3cqw', marginTop:'-4.3cqw', transform:'scale(2)', transformOrigin:'center'};
+    const detFlows = openM ? FLOW_STORY.map((f, fi) => ({f, fi})).filter(x => x.f.steps.some(st => st.ids.indexOf(openM.id) >= 0))
+      .map(x => ({name:'Flujo '+(x.fi+1)+' · '+x.f.name, go:() => this.go(FIRST_FLOW_SCENE + x.fi)})) : [];
+
     const crit = openM ? [
       {k:'Quién y dónde', v:openM.donde}, {k:'Interoperabilidad', v:openM.inter},
       {k:'Servicios externos', v:openM.ext}, {k:'Seguridad', v:openM.seg},
@@ -1165,18 +1220,20 @@ class Component extends DCLogic {
     const legendItem = {display:'flex', alignItems:'center', fontSize:'.75cqw', fontWeight:700, color:'var(--text-secondary)', gap:'.3cqw'};
 
     return {
-      s0:i===0, s1:i===1, s2:i===2, s7:i===7, s8:i===8, mapOn, storyOn, modGridOn:!!s.modGrid, modBtnOn: i>=2 && i<=7,
+      s0:i===0, s1:i===1, s2:i===2, s7:i===7, s8:i===8, mapOn, storyOn, modGridOn:!!s.modGrid, modBtnOn: i>=2 && i<=7 && !s.modGrid,
       chromeLogoOn: i!==0 && i!==8,
       orbStyle:orb(false), orbSetStyle:orb(true),
-      excelCols, excelRows, excelTabs, centerSt, centerDbs, orbitRings, flowPills, flowRail,
+      excelCols, excelRows, excelTabs, centerSt, centerDbs:solar1.centerDbs, orbitRings:solar1.orbitRings,
+      bigCenterDbs:solarBig.centerDbs, bigOrbitRings:solarBig.orbitRings,
       mapEyebrow: 'La protección', mapTitle: 'Una puerta. Ocho candados.',
       conns, bases, apps, stages, hubFrameStyle, hubLabelStyle, openHub:() => this.setState({open:'hub'}),
       legend:{nucleo:legendItem, proceso:legendItem, canal:legendItem, db:legendItem},
       flows, flowNote:flow.note, beats, capas:CAPAS, etapas, modules, dots, panoRows, story,
       openModGrid:() => this.setState({modGrid:true}), closeModGrid:() => this.setState({modGrid:false}),
       det:!!openM, detName:openM?openM.name:'', detWho:openM?openM.who:'', detOne:openM?openM.one:'',
-      detDest:openM?openM.dest:[], detCriterios:crit, detVis:openM?openM.vis:'',
-      detSlot:openM?('cap-'+openM.id):'cap',
+      detDest:openM?openM.dest:[], detInter:openM?openM.inter:'', detAuto:openM?openM.auto:'',
+      detIcon:openM?(ICONS[openM.id]||'circle'):'circle', detSigla:openM?(SIGLAS[openM.id]||''):'',
+      detFlows, detHasFlows:detFlows.length>0, detMock, detMockSt,
       next:() => this.go(i+1), prev:() => this.go(i-1), restart:() => this.go(0),
       close:() => this.setState({open:null}),
       onKey:(ev) => { if (ev.key === 'ArrowRight') this.go(i+1); if (ev.key === 'ArrowLeft') this.go(i-1); }
