@@ -508,20 +508,32 @@ button{font:inherit;color:inherit;cursor:pointer}
         <div style="flex:1;min-height:15cqw;border-radius:1.4cqw;background:var(--bg-warm);border:1px solid rgba(28,25,23,.1);position:relative;overflow:hidden;animation:slideL .55s var(--e) .2s both">
           <div style="{{ detMockSt }}">
             <sc-if value="{{ detMock.pos }}">
-              <div style="position:absolute;inset:0;padding:.75cqw .85cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.5cqw">
-                <div style="height:1.3cqw;border-radius:.4cqw;background:#fff;border:1px solid rgba(28,25,23,.12);display:flex;align-items:center;gap:.35cqw;padding:0 .55cqw">
-                  <span class="material-symbols-outlined" style="font-size:.85cqw;color:var(--text-secondary)">search</span>
-                  <span style="width:55%;height:.35cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span>
+              <div style="position:absolute;inset:0;padding:.7cqw .8cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.4cqw">
+                <div style="border-radius:.4cqw .4cqw 0 0;background:#fff;border:1px solid rgba(28,25,23,.1);border-bottom:none;display:grid;grid-template-columns:.5fr .8fr 1.6fr .8fr .9fr .5fr;gap:.2cqw;padding:.3cqw .4cqw;font-size:.5cqw;font-weight:700;color:var(--text-secondary)">
+                  <span>#</span><span>Ref.</span><span>Producto</span><span>Talla</span><span>V. Unit</span><span></span>
                 </div>
-                <div style="flex:1;border-radius:.5cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.5cqw .6cqw;box-sizing:border-box;display:flex;align-items:center;gap:.5cqw">
-                  <span style="width:2cqw;height:2cqw;border-radius:.35cqw;background:rgba(184,92,56,.14);flex:none"></span>
-                  <div style="flex:1;display:flex;flex-direction:column;gap:.25cqw"><span style="width:70%;height:.32cqw;border-radius:.2cqw;background:rgba(28,25,23,.14)"></span><span style="width:40%;height:.3cqw;border-radius:.2cqw;background:var(--success-color);opacity:.55"></span></div>
-                  <span class="material-symbols-outlined" style="font-size:1cqw;color:var(--success-color)">check_circle</span>
+                <div style="flex:1;background:#fff;border:1px solid rgba(28,25,23,.1);border-top:none;border-bottom:none;display:flex;flex-direction:column">
+                  <div style="flex:1;display:grid;grid-template-columns:.5fr .8fr 1.6fr .8fr .9fr .5fr;gap:.2cqw;align-items:center;padding:0 .4cqw;border-bottom:1px solid rgba(28,25,23,.06)">
+                    <span style="height:.3cqw;width:40%;border-radius:.1cqw;background:rgba(28,25,23,.1)"></span>
+                    <span style="height:.3cqw;width:70%;border-radius:.1cqw;background:rgba(28,25,23,.14)"></span>
+                    <span style="height:.3cqw;width:85%;border-radius:.1cqw;background:rgba(184,92,56,.4)"></span>
+                    <span style="height:.32cqw;width:60%;border-radius:.15cqw;background:var(--color-perla);border:1px solid rgba(28,25,23,.08)"></span>
+                    <span style="height:.3cqw;width:65%;border-radius:.1cqw;background:rgba(28,25,23,.12)"></span>
+                    <span style="width:.4cqw;height:.4cqw;border-radius:50%;background:var(--success-color);opacity:.7;justify-self:center"></span>
+                  </div>
+                  <div style="flex:1;display:grid;grid-template-columns:.5fr .8fr 1.6fr .8fr .9fr .5fr;gap:.2cqw;align-items:center;padding:0 .4cqw">
+                    <span style="height:.3cqw;width:40%;border-radius:.1cqw;background:rgba(28,25,23,.1)"></span>
+                    <span style="height:.3cqw;width:70%;border-radius:.1cqw;background:rgba(28,25,23,.14)"></span>
+                    <span style="height:.3cqw;width:75%;border-radius:.1cqw;background:rgba(184,92,56,.4)"></span>
+                    <span style="height:.32cqw;width:60%;border-radius:.15cqw;background:var(--color-perla);border:1px solid rgba(28,25,23,.08)"></span>
+                    <span style="height:.3cqw;width:65%;border-radius:.1cqw;background:rgba(28,25,23,.12)"></span>
+                    <span style="width:.4cqw;height:.4cqw;border-radius:50%;background:var(--warning-color);opacity:.7;justify-self:center"></span>
+                  </div>
                 </div>
-                <div style="display:flex;gap:.35cqw">
-                  <span style="flex:1;height:.95cqw;border-radius:999px;background:var(--color-perla);border:1px solid rgba(28,25,23,.08)"></span>
-                  <span style="flex:1;height:.95cqw;border-radius:999px;background:var(--color-perla);border:1px solid rgba(28,25,23,.08)"></span>
-                  <span style="flex:1.4;height:.95cqw;border-radius:999px;background:var(--accent-color);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:.7cqw;color:#fff">check_circle</span></span>
+                <div style="border-radius:0 0 .4cqw .4cqw;background:#fff;border:1px solid rgba(28,25,23,.1);border-top:none;padding:.4cqw .5cqw;box-sizing:border-box;display:flex;align-items:center;gap:.5cqw">
+                  <div style="flex:1;display:flex;flex-direction:column;gap:.15cqw"><span style="font-size:.42cqw;color:var(--text-secondary);font-weight:700">VALOR TOTAL</span><span style="height:.4cqw;width:55%;border-radius:.15cqw;background:var(--accent-color)"></span></div>
+                  <span style="height:.85cqw;width:2.6cqw;border-radius:.3cqw;background:var(--color-perla);border:1px solid rgba(28,25,23,.1)"></span>
+                  <span style="width:1.9cqw;height:1.9cqw;border-radius:50%;background:var(--accent-color);flex:none;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:1cqw;color:#fff">check_circle</span></span>
                 </div>
               </div>
             </sc-if>
@@ -552,10 +564,15 @@ button{font:inherit;color:inherit;cursor:pointer}
               </div>
             </sc-if>
             <sc-if value="{{ detMock.panel }}">
-              <div style="position:absolute;inset:0;padding:.8cqw .9cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.55cqw">
-                <div style="display:flex;gap:.5cqw">
-                  <div style="flex:1;height:1.7cqw;border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.3cqw .45cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:.2cqw"><div style="width:45%;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div><div style="width:70%;height:.42cqw;border-radius:.2cqw;background:var(--accent-color)"></div></div>
-                  <div style="flex:1;height:1.7cqw;border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.3cqw .45cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:.2cqw"><div style="width:45%;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div><div style="width:55%;height:.42cqw;border-radius:.2cqw;background:rgba(184,92,56,.45)"></div></div>
+              <div style="position:absolute;inset:0;padding:.7cqw .8cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.4cqw">
+                <div style="display:flex;gap:.3cqw">
+                  <span style="padding:.18cqw .5cqw;border-radius:999px;background:var(--accent-color);display:flex;align-items:center;gap:.15cqw"><span class="material-symbols-outlined" style="font-size:.55cqw;color:#fff">trending_up</span><span style="height:.24cqw;width:1.2cqw;border-radius:.15cqw;background:rgba(255,255,255,.85)"></span></span>
+                  <span style="padding:.18cqw .5cqw;border-radius:999px;background:var(--color-perla);display:flex;align-items:center;gap:.15cqw"><span class="material-symbols-outlined" style="font-size:.55cqw;color:var(--text-secondary)">inventory_2</span><span style="height:.24cqw;width:1cqw;border-radius:.15cqw;background:rgba(28,25,23,.15)"></span></span>
+                </div>
+                <div style="display:flex;gap:.35cqw">
+                  <div style="flex:1;height:1.5cqw;border-radius:.4cqw;background:var(--accent-color);padding:.25cqw .4cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:.15cqw"><span style="font-size:.36cqw;color:rgba(255,255,255,.8);font-weight:700">INGRESOS HOY</span><span style="height:.34cqw;width:65%;border-radius:.15cqw;background:#fff"></span></div>
+                  <div style="flex:1;height:1.5cqw;border-radius:.4cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.25cqw .4cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:.15cqw"><span style="font-size:.36cqw;color:var(--text-secondary);font-weight:700">VENTA MES</span><span style="height:.34cqw;width:60%;border-radius:.15cqw;background:rgba(28,25,23,.14)"></span></div>
+                  <div style="flex:1;height:1.5cqw;border-radius:.4cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.25cqw .4cqw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:.15cqw"><span style="font-size:.36cqw;color:var(--text-secondary);font-weight:700">CRECIMIENTO</span><span style="height:.34cqw;width:45%;border-radius:.15cqw;background:var(--success-color);opacity:.7"></span></div>
                 </div>
                 <div style="flex:1;border-radius:.6cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.5cqw .6cqw;box-sizing:border-box;display:flex;align-items:flex-end;gap:.35cqw">
                   <div style="flex:1;height:38%;border-radius:.2cqw .2cqw 0 0;background:rgba(184,92,56,.25)"></div>
@@ -567,33 +584,64 @@ button{font:inherit;color:inherit;cursor:pointer}
               </div>
             </sc-if>
             <sc-if value="{{ detMock.escaneo }}">
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.8cqw">
-                <div style="width:3.4cqw;height:6.2cqw;border-radius:.8cqw;background:#fff;border:1px solid rgba(28,25,23,.12);padding:.5cqw .4cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.35cqw">
-                  <div style="height:2.6cqw;border-radius:.4cqw;background:var(--bg-warm);position:relative;overflow:hidden"><div style="position:absolute;left:.35cqw;right:.35cqw;top:.35cqw;bottom:.35cqw;border:1.5px solid var(--accent-color);border-radius:.3cqw"></div><div style="position:absolute;left:.5cqw;right:.5cqw;top:50%;height:1.5px;background:var(--accent-color);opacity:.8"></div></div>
-                  <div style="height:.5cqw;border-radius:.2cqw;background:rgba(28,25,23,.1)"></div>
-                  <div style="height:.5cqw;border-radius:.2cqw;background:rgba(28,25,23,.1)"></div>
-                  <div style="height:.5cqw;border-radius:.2cqw;background:rgba(184,92,56,.35)"></div>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:.4cqw">
-                  <div style="width:2.6cqw;height:1.05cqw;border-radius:.35cqw;background:#fff;border:1px solid rgba(28,25,23,.12);display:flex;align-items:center;justify-content:space-between;padding:0 .4cqw;box-sizing:border-box"><span style="width:.9cqw;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:.45cqw;height:.45cqw;border-radius:50%;background:var(--success-color)"></span></div>
-                  <div style="width:2.6cqw;height:1.05cqw;border-radius:.35cqw;background:#fff;border:1px solid rgba(28,25,23,.12);display:flex;align-items:center;justify-content:space-between;padding:0 .4cqw;box-sizing:border-box"><span style="width:.9cqw;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:.45cqw;height:.45cqw;border-radius:50%;background:var(--success-color)"></span></div>
-                  <div style="width:2.6cqw;height:1.05cqw;border-radius:.35cqw;background:#fff;border:1px solid rgba(184,92,56,.5);display:flex;align-items:center;justify-content:space-between;padding:0 .4cqw;box-sizing:border-box"><span style="width:.9cqw;height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:.45cqw;height:.45cqw;border-radius:50%;background:var(--warning-color)"></span></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:.55cqw">
+                <div style="width:5.6cqw;height:8cqw;border-radius:.7cqw;background:#fff;border:1px solid rgba(28,25,23,.12);box-shadow:0 6px 16px rgba(44,44,44,.1);padding:.5cqw .45cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.4cqw">
+                  <div style="display:flex;gap:.3cqw">
+                    <span style="flex:1;height:1cqw;border-radius:.3cqw;background:var(--color-perla);border:1px solid rgba(28,25,23,.1);display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-size:.4cqw;color:var(--text-secondary);font-weight:700">UBICACIÓN</span></span>
+                    <span style="flex:1;height:1cqw;border-radius:.3cqw;background:var(--color-perla);border:1px solid rgba(28,25,23,.1);display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-size:.4cqw;color:var(--text-secondary);font-weight:700">TIPOLOGÍA</span></span>
+                  </div>
+                  <div style="display:flex;gap:.3cqw;align-items:center">
+                    <div style="width:1.5cqw;height:1.5cqw;border-radius:.35cqw;background:var(--accent-color);display:flex;align-items:center;justify-content:center"><span style="font-family:'Sora',sans-serif;font-size:.85cqw;font-weight:700;color:#fff">M</span></div>
+                    <div style="display:flex;gap:.15cqw">
+                      <span style="width:.42cqw;height:.42cqw;border-radius:.12cqw;background:rgba(184,92,56,.15);border:1px solid rgba(184,92,56,.3)"></span>
+                      <span style="width:.42cqw;height:.42cqw;border-radius:.12cqw;background:var(--accent-color)"></span>
+                      <span style="width:.42cqw;height:.42cqw;border-radius:.12cqw;background:rgba(184,92,56,.15);border:1px solid rgba(184,92,56,.3)"></span>
+                      <span style="width:.42cqw;height:.42cqw;border-radius:.12cqw;background:rgba(184,92,56,.15);border:1px solid rgba(184,92,56,.3)"></span>
+                    </div>
+                  </div>
+                  <div style="height:.8cqw;border-radius:.3cqw;background:var(--bg-warm);border:1px solid rgba(28,25,23,.1);display:flex;align-items:center;gap:.2cqw;padding:0 .3cqw">
+                    <span class="material-symbols-outlined" style="font-size:.55cqw;color:var(--text-secondary)">search</span>
+                    <span style="width:50%;height:.24cqw;border-radius:.1cqw;background:rgba(28,25,23,.12)"></span>
+                  </div>
+                  <div style="flex:1;border-radius:.4cqw;background:var(--bg-warm);border:1px solid rgba(28,25,23,.08);padding:.3cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.22cqw">
+                    <div style="display:flex;align-items:center;gap:.2cqw"><span style="flex:1;height:.26cqw;border-radius:.1cqw;background:rgba(28,25,23,.12)"></span><span class="material-symbols-outlined" style="font-size:.55cqw;color:var(--success-color)">check_circle</span></div>
+                    <div style="display:flex;align-items:center;gap:.2cqw"><span style="flex:1;height:.26cqw;border-radius:.1cqw;background:rgba(28,25,23,.12)"></span><span class="material-symbols-outlined" style="font-size:.55cqw;color:var(--success-color)">check_circle</span></div>
+                    <div style="display:flex;align-items:center;gap:.2cqw"><span style="flex:1;height:.26cqw;border-radius:.1cqw;background:rgba(184,92,56,.3)"></span><span class="material-symbols-outlined" style="font-size:.55cqw;color:var(--warning-color)">error_med</span></div>
+                  </div>
                 </div>
               </div>
             </sc-if>
             <sc-if value="{{ detMock.catalogo }}">
-              <div style="position:absolute;inset:0;padding:.7cqw .8cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.45cqw">
-                <div style="display:flex;align-items:center;gap:.4cqw"><span style="width:1.6cqw;height:.4cqw;border-radius:.2cqw;background:rgba(28,25,23,.18)"></span><span style="margin-left:auto;width:2.6cqw;height:.35cqw;border-radius:.2cqw;background:rgba(28,25,23,.1)"></span></div>
-                <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:.4cqw">
-                  <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;flex-direction:column;padding:.3cqw;box-sizing:border-box;gap:.25cqw"><div style="flex:1;border-radius:.3cqw;background:rgba(184,92,56,.18)"></div><div style="height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div></div>
-                  <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;flex-direction:column;padding:.3cqw;box-sizing:border-box;gap:.25cqw"><div style="flex:1;border-radius:.3cqw;background:rgba(184,92,56,.3)"></div><div style="height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div></div>
-                  <div style="border-radius:.45cqw;background:#fff;border:1px dashed rgba(28,25,23,.18);display:flex;flex-direction:column;padding:.3cqw;box-sizing:border-box;gap:.25cqw;opacity:.35"><div style="flex:1;border-radius:.3cqw;background:rgba(28,25,23,.08)"></div><div style="height:.3cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></div></div>
+              <div style="position:absolute;inset:0;padding:.65cqw .75cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.4cqw">
+                <div style="flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:.45cqw">
+                  <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;flex-direction:column;padding:.3cqw;box-sizing:border-box;gap:.22cqw">
+                    <div style="flex:1;border-radius:.3cqw;background:rgba(184,92,56,.16)"></div>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                      <span style="height:.28cqw;width:55%;border-radius:.15cqw;background:rgba(28,25,23,.12)"></span>
+                      <span style="display:flex;align-items:center;gap:.1cqw;color:var(--accent-hover)"><span class="material-symbols-outlined" style="font-size:.55cqw">auto_awesome</span><span style="font-size:.4cqw;font-weight:800">IA</span></span>
+                    </div>
+                  </div>
+                  <div style="border-radius:.45cqw;background:#fff;border:1px solid rgba(28,25,23,.1);display:flex;flex-direction:column;padding:.3cqw;box-sizing:border-box;gap:.22cqw">
+                    <div style="flex:1;border-radius:.3cqw;background:rgba(184,92,56,.3)"></div>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                      <span style="height:.28cqw;width:55%;border-radius:.15cqw;background:rgba(28,25,23,.12)"></span>
+                      <span style="display:flex;align-items:center;gap:.1cqw;color:var(--accent-hover)"><span class="material-symbols-outlined" style="font-size:.55cqw">auto_awesome</span><span style="font-size:.4cqw;font-weight:800">IA</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="height:1cqw;border-radius:999px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;gap:.25cqw;flex:none">
+                  <span class="material-symbols-outlined" style="font-size:.6cqw;color:#fff">cloud_upload</span>
+                  <span style="height:.28cqw;width:2.2cqw;border-radius:.15cqw;background:rgba(255,255,255,.85)"></span>
                 </div>
               </div>
             </sc-if>
             <sc-if value="{{ detMock.produccion }}">
-              <div style="position:absolute;inset:0;padding:.8cqw .9cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.45cqw">
-                <div style="height:.5cqw;width:55%;border-radius:.2cqw;background:rgba(28,25,23,.15)"></div>
+              <div style="position:absolute;inset:0;padding:.8cqw .9cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.4cqw">
+                <div style="display:flex;gap:.3cqw">
+                  <span style="width:1.3cqw;height:1.3cqw;border-radius:.35cqw;background:var(--color-perla);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:.75cqw;color:var(--text-secondary)">forms_add_on</span></span>
+                  <span style="width:1.3cqw;height:1.3cqw;border-radius:.35cqw;background:var(--accent-color);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:.75cqw;color:#fff">paid</span></span>
+                  <span style="width:1.3cqw;height:1.3cqw;border-radius:.35cqw;background:var(--color-perla);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:.75cqw;color:var(--text-secondary)">manufacturing</span></span>
+                </div>
                 <div style="flex:1;border-radius:.6cqw;background:#fff;border:1px solid rgba(28,25,23,.1);padding:.5cqw .6cqw;box-sizing:border-box;display:flex;flex-direction:column;gap:.3cqw;justify-content:center">
                   <div style="display:flex;justify-content:space-between"><span style="width:2.2cqw;height:.38cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:1.2cqw;height:.38cqw;border-radius:.2cqw;background:rgba(28,25,23,.18)"></span></div>
                   <div style="display:flex;justify-content:space-between"><span style="width:2.8cqw;height:.38cqw;border-radius:.2cqw;background:rgba(28,25,23,.12)"></span><span style="width:1cqw;height:.38cqw;border-radius:.2cqw;background:rgba(28,25,23,.18)"></span></div>
