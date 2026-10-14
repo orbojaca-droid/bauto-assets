@@ -344,69 +344,73 @@ button{font:inherit;color:inherit;cursor:pointer}
     </div>
   </sc-if>
 
-  <!-- ESCENA 7 · SEGURIDAD (MAPA) -->
-  <sc-if value="{{ mapOn }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;inset:0;display:flex;flex-direction:column">
+  <!-- ESCENA 7 · SEGURIDAD (ACORDEÓN DE 3 NIVELES) -->
+  <sc-if value="{{ secOn }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;inset:0;padding:6cqw 6cqw 7cqw;box-sizing:border-box;display:flex;flex-direction:column">
+      <div style="flex:none">
+        <div style="font-size:1cqw;letter-spacing:.02em;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">La protección</div>
+        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;line-height:1.15;color:var(--text-primary);margin-top:.5cqw;animation:fu .7s var(--e) .1s both">Tres niveles. Cada uno, con sus llaves.</div>
+      </div>
 
-      <div style="padding:6cqw 6cqw 0;box-sizing:border-box;display:flex;flex-direction:column;gap:1.1cqw;flex:none">
-        <div>
-          <div style="font-size:1cqw;letter-spacing:.02em;color:var(--accent-color);font-weight:700;animation:fd .6s var(--e) both">{{ mapEyebrow }}</div>
-          <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.6cqw;line-height:1.15;color:var(--text-primary);max-width:60cqw;text-wrap:pretty;margin-top:.5cqw;animation:fu .6s var(--e) .08s both">{{ mapTitle }}</div>
-        </div>
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:1cqw;margin-top:1.6cqw">
+        <sc-for list="{{ secBands }}" as="b" hint-placeholder-count="3">
+          <div style="{{ b.outerSt }}">
+            <div onClick="{{ b.pick }}" style="{{ b.cardSt }}">
 
-          <div style="display:flex;flex-direction:column;gap:.75cqw">
-            <div style="display:flex;flex-wrap:wrap;gap:.5cqw">
-              <sc-for list="{{ capas }}" as="c" hint-placeholder-count="8">
-                <span style="padding:.5cqw .85cqw;border-radius:var(--radius-nav);background:rgba(184,92,56,.10);color:var(--accent-hover);font-size:.8cqw;font-weight:700">{{ c }}</span>
-              </sc-for>
-            </div>
-            <div style="display:flex;align-items:center;gap:.7cqw">
-              <span style="font-size:.8cqw;letter-spacing:.18em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">Latido de cada herramienta</span>
-              <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:.5cqw;width:13cqw">
-                <sc-for list="{{ beats }}" as="b" hint-placeholder-count="9">
-                  <span style="{{ b.st }}"></span>
-                </sc-for>
+              <div style="{{ b.headSt }}">
+                <div style="flex:none;width:17cqw;display:flex;align-items:center;gap:1.1cqw">
+                  <span style="{{ b.numSt }}">{{ b.num }}</span>
+                  <div>
+                    <div style="font-size:.72cqw;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--text-secondary)">{{ b.eyebrow }}</div>
+                    <div style="font-family:'Sora',sans-serif;font-size:1.25cqw;font-weight:700;color:var(--text-primary);margin-top:.15cqw;white-space:nowrap">{{ b.name }}</div>
+                  </div>
+                </div>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:.55cqw">
+                  <div style="font-size:1.05cqw;line-height:1.35;color:var(--text-modal);font-weight:500">{{ b.phrase }}</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:.4cqw">
+                    <sc-for list="{{ b.chips }}" as="c" hint-placeholder-count="3">
+                      <button onClick="{{ c.pick }}" style="{{ c.st }}">
+                        <span class="material-symbols-outlined" style="{{ c.iconSt }}">{{ c.icon }}</span>{{ c.name }}
+                      </button>
+                    </sc-for>
+                  </div>
+                </div>
               </div>
+
+              <div style="{{ b.bodySt }}">
+                <div style="{{ b.keysGridSt }}">
+                  <sc-for list="{{ b.keys }}" as="k" hint-placeholder-count="4">
+                    <div style="{{ k.st }}">
+                      <div style="position:relative;width:3cqw;height:3cqw;flex:none">
+                        <svg viewBox="0 0 40 40" style="position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)">
+                          <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(184,92,56,.16)" stroke-width="1.2"></circle>
+                          <circle cx="20" cy="20" r="18.5" fill="none" stroke="#B85C38" stroke-width="1.6" stroke-linecap="round" pathLength="1" style="{{ k.ringSt }}"></circle>
+                        </svg>
+                        <span class="material-symbols-outlined" style="{{ k.iconSt }}">{{ k.icon }}</span>
+                      </div>
+                      <div>
+                        <div style="font-family:'Sora',sans-serif;font-size:1.05cqw;font-weight:700;color:var(--text-primary);line-height:1.2">{{ k.title }}</div>
+                        <div style="font-size:.88cqw;line-height:1.4;color:var(--text-secondary);margin-top:.25cqw">{{ k.text }}</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="{{ b.extrasSt }}">
+                  <span style="font-size:.72cqw;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--text-secondary)">Además</span>
+                  <sc-for list="{{ b.extras }}" as="x" hint-placeholder-count="3">
+                    <span style="display:inline-flex;align-items:center;gap:.35cqw;padding:.3cqw .75cqw;border-radius:999px;background:rgba(184,92,56,.09);color:var(--accent-hover);font-size:.82cqw;font-weight:700">
+                      <span class="material-symbols-outlined" style="font-size:.95cqw">{{ x.icon }}</span>{{ x.text }}
+                    </span>
+                  </sc-for>
+                </div>
+              </div>
+
             </div>
           </div>
+        </sc-for>
       </div>
 
-      <div style="position:relative;margin:2.2cqw 6cqw 3.6cqw;flex:1;min-height:0">
-
-        <div onClick="{{ openHub }}" style="{{ hubFrameStyle }}"></div>
-        <span onClick="{{ openHub }}" style="{{ hubLabelStyle }}">HUB · Seguridad</span>
-
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:visible">
-          <sc-for list="{{ conns }}" as="c" hint-placeholder-count="7">
-            <line x1="{{ c.x1 }}" y1="{{ c.y1 }}" x2="{{ c.x2 }}" y2="{{ c.y2 }}" stroke="{{ c.stroke }}" stroke-width="{{ c.w }}" stroke-dasharray="{{ c.dash }}" vector-effect="non-scaling-stroke"></line>
-          </sc-for>
-        </svg>
-
-        <sc-for list="{{ bases }}" as="b" hint-placeholder-count="3">
-          <div style="{{ b.barSt }}"></div>
-        </sc-for>
-        <sc-for list="{{ bases }}" as="b" hint-placeholder-count="3">
-          <button onClick="{{ b.pick }}" style="{{ b.labelSt }}">
-            <span style="font-family:'Sora',sans-serif;font-size:.92cqw;font-weight:700;line-height:1">{{ b.name }}</span>
-            <span style="{{ b.panelSt }}">→ {{ b.panel }}</span>
-          </button>
-        </sc-for>
-
-        <sc-for list="{{ stages }}" as="st" hint-placeholder-count="5">
-          <div style="{{ st.st }}">
-            <span style="width:1px;height:.7cqw;background:rgba(28,25,23,.2)"></span>
-            <span style="font-size:.66cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700;white-space:nowrap">{{ st.name }}</span>
-          </div>
-        </sc-for>
-
-        <sc-for list="{{ apps }}" as="n" hint-placeholder-count="5">
-          <button onClick="{{ n.pick }}" style="{{ n.st }}">
-            <span style="font-family:'Sora',sans-serif;font-size:.95cqw;font-weight:700;line-height:1.1">{{ n.name }}</span>
-            <span style="font-size:.66cqw;color:{{ n.subColor }};font-weight:700;margin-top:.2cqw;line-height:1.15;letter-spacing:.06em;text-transform:uppercase">{{ n.who }}</span>
-          </button>
-        </sc-for>
-
-      </div>
+      <div style="flex:none;margin-top:1.1cqw;font-size:.8cqw;font-weight:700;color:var(--text-secondary);text-align:right;animation:fi .6s var(--e) .9s both">Toca un nivel para verlo · o avanza con →</div>
     </div>
   </sc-if>
 
@@ -804,44 +808,6 @@ const ICONS = {plat:'timeline', app:'smartphone', cat:'storefront', qr:'qr_code_
 // que usa PLAT/PROD de 4). El resto sí coincide exacto con el HUB real.
 const SIGLAS = {plat:'PLA', app:'APP', cat:'CAT', qr:'QR', agente:'AGT', prod:'PRO', stock:'STK', ventas:'VTA', hub:'HUB'};
 
-// Pines (tier: nucleo = trabaja sin parar, proceso = interviene en un solo momento, canal = atiende al cliente)
-const APPS = [
-  {id:'qr', tier:'proceso', name:'QR', who:'Etiquetado', x:14, y:14,
-   fn:'Imprime la identidad física de cada prenda: etiqueta con referencia y talla. Lee las referencias de la base de inventario y recibe los lotes del taller.'},
-  {id:'plat', tier:'nucleo', name:'Platform', who:'Caja y administración', x:45, y:4,
-   fn:'La consola central: vende, mueve prendas entre etapas y audita. Escribe en la base de inventario y deja el histórico en la base de ventas.'},
-  {id:'app', tier:'nucleo', name:'AppBauto', who:'Tienda, en el celular', x:66, y:4,
-   fn:'Escanea, cuenta y concilia el inventario físico desde el teléfono, y escribe el ajuste en la base de inventario.'},
-  {id:'cat', tier:'proceso', name:'Catalogue', who:'Web pública', x:85, y:14,
-   fn:'Lee las existencias activas de la base de inventario y reconstruye la web sola: solo muestra lo que de verdad hay en tienda.'},
-  {id:'agente', tier:'canal', name:'Agente', who:'Cliente en WhatsApp', x:85, y:90,
-   fn:'Consulta la base de inventario en vivo antes de responder, para no prometer nunca una prenda que no existe.'}
-];
-
-const BASES = [
-  {id:'bprod', name:'Base de Producción', sub:'Telas compradas, costeo y lotes', panel:'Panel Producción', panelId:'prod', x1:4, x2:27, y:44,
-   fn:'Guarda las compras de tela, el costeo de cada diseño y los lotes fabricados. Dentro de ella vive el panel Producción, que costea y aprueba los lotes.'},
-  {id:'binv', name:'Base de Inventario', sub:'Stock por etapa, movimientos e inconsistencias', panel:'Panel Stock', panelId:'stock', x1:8, x2:96, y:60,
-   fn:'Es la fuente de verdad: aquí vive el stock por etapa de cada prenda. Dentro de ella vive el panel Stock, que la diagnostica, alerta y concilia desde adentro.'},
-  {id:'bventas', name:'Base de Ventas', sub:'Histórico, métricas y liquidaciones', panel:'Panel Ventas', panelId:'ventas', x1:73, x2:92, y:76,
-   fn:'Guarda el histórico de ventas y las liquidaciones. Dentro de ella vive el panel Ventas, que dibuja los gráficos y calcula las comisiones.'}
-];
-
-const STAGES = [
-  {name:'Corte', x:14}, {name:'Confección', x:32}, {name:'Alistamiento', x:50}, {name:'Bodega', x:68}, {name:'Tienda', x:88}
-];
-
-// Cada conector queda etiquetado con las dos entidades que une, para poder resaltarlo cuando ambas participan en un flujo
-const CONNS = [
-  {ids:['qr','binv'], x1:14, y1:18, x2:14, y2:60},
-  {ids:['plat','binv'], x1:45, y1:8, x2:45, y2:60},
-  {ids:['app','binv'], x1:66, y1:8, x2:66, y2:60},
-  {ids:['cat','binv'], x1:85, y1:18, x2:85, y2:60},
-  {ids:['agente','binv'], x1:85, y1:86, x2:85, y2:60},
-  {ids:['bprod','binv'], x1:16, y1:44, x2:16, y2:60},
-  {ids:['binv','bventas'], x1:82, y1:60, x2:82, y2:76}
-];
-
 const FLOWS = [
   {name:'Lanzamiento de colección', keys:['bprod','qr','binv','cat'],
    note:'Se compra la tela y se costea el diseño en la base de Producción. Al aprobar el lote, las prendas nacen en Corte dentro de la base de Inventario, QR imprime sus etiquetas y la web se reconstruye sola.'},
@@ -853,15 +819,40 @@ const FLOWS = [
    note:'Antes de responder, el asistente consulta las existencias reales en la base de Inventario. Si hace falta, entrega la conversación a una persona.'}
 ];
 
-const CAPAS = ['Puerta de 4 factores','Pases de un solo uso','Dos pasos por correo','Ubicación autorizada','Excepciones de viaje','Apagado central','Protección de paneles','Salud del sistema'];
-
-const ETAPAS = [
-  {name:'Corte', grupo:'Producción', color:'#5E8B9D', x:10},
-  {name:'Confección', grupo:'Producción', color:'#6E6E6E', x:30},
-  {name:'Alistamiento', grupo:'Producción', color:'#A89078', x:50},
-  {name:'Bodega', grupo:'Ubicación', color:'#8A6E9B', x:70},
-  {name:'Tienda', grupo:'Ubicación', color:'#D4A24E', x:90}
+// Seguridad real, calibrada contra 0. HUB/README.md y el código (Login, Totp, EmailCode,
+// Geolocalizacion, ExcepcionUbicacion, Sesion, Aprobaciones). Nivel 2 y 3 exigen haber pasado el 1.
+const SEG_LEVELS = [
+  {num:'1', eyebrow:'Nivel 1', name:'Puerta grande',
+   phrase:'Cuatro llaves distintas para entrar. Desde aquí se controla todo lo demás.',
+   chips:['hub'],
+   keys:[
+     {icon:'password', title:'Contraseña', text:'La clave maestra de la puerta grande.'},
+     {icon:'location_on', title:'Ubicación', text:'Solo a menos de 500 m de un lugar autorizado.'},
+     {icon:'phonelink_lock', title:'Google Authenticator', text:'Un código que cambia cada 30 segundos en el celular.'},
+     {icon:'mark_email_read', title:'Código al correo', text:'Seis dígitos que llegan al correo en el momento.'}
+   ],
+   extras:[{icon:'power_settings_new', text:'Apagado central'}, {icon:'flight', text:'Excepciones de viaje'}, {icon:'schedule', text:'La sesión caduca a medianoche'}]},
+  {num:'2', eyebrow:'Nivel 2', name:'Puerta propia',
+   phrase:'Cada herramienta pide su propia clave, la ubicación y un código al correo.',
+   chips:['plat','app'],
+   keys:[
+     {icon:'password', title:'Clave propia', text:'Cada herramienta tiene su contraseña.'},
+     {icon:'location_on', title:'Ubicación autorizada', text:'El mismo radio de 500 m del lugar autorizado.'},
+     {icon:'mark_email_read', title:'Código al correo', text:'Seis dígitos nuevos cada vez que se entra.'}
+   ],
+   extras:[{icon:'login', text:'Antes: entrar por el Nivel 1'}, {icon:'power_settings_new', text:'Recibe el apagado central'}, {icon:'schedule', text:'La sesión caduca a medianoche'}]},
+  {num:'3', eyebrow:'Nivel 3', name:'Aprobación por toque',
+   phrase:'Un toque desde el celular da un pase de un solo uso; después se oculta y se protege solo.',
+   chips:['prod','qr','stock','ventas','cat','agente'],
+   keys:[
+     {icon:'touch_app', title:'Un toque', text:'Se aprueba en AppBAUTO, desde el celular.'},
+     {icon:'looks_one', title:'Pase de un solo uso', text:'Se gasta al primer uso y no se puede repetir.'},
+     {icon:'pin_drop', title:'Ubicación del aprobador', text:'Se mide en el celular que aprueba.'},
+     {icon:'visibility_off', title:'Se oculta y se protege solo', text:'El panel se vuelve a cerrar por sí mismo.'}
+   ],
+   extras:[{icon:'login', text:'Antes: entrar por el Nivel 1'}, {icon:'schedule', text:'La sesión caduca a medianoche'}]}
 ];
+const SEG_CHIP_NAMES = {hub:'HUB', plat:'Platform', app:'AppBAUTO', prod:'Producción', qr:'QR', stock:'Stock', ventas:'Ventas', cat:'Catalogue', agente:'Agente'};
 
 const MODULES = [
   {id:'prod', name:'Panel Producción', who:'Vive dentro de la base de Producción · Taller', one:'Costear cada diseño y convertir un lote fabricado en inventario real.',
@@ -937,7 +928,7 @@ const MODULES = [
 ];
 
 class Component extends DCLogic {
-  state = {i:0, flow:0, open:null, hoverRing:null, hoverId:null, modGrid:false, auto:this.props.flujoAuto !== false};
+  state = {i:0, secLvl:0, secShow:true, flow:0, open:null, hoverRing:null, hoverId:null, modGrid:false, auto:this.props.flujoAuto !== false};
 
   componentDidMount(){
     this.t = setInterval(() => {
@@ -946,9 +937,42 @@ class Component extends DCLogic {
     this.esc = (ev) => { if (ev.key === 'Escape') this.setState(s => s.open ? {open:null} : {modGrid:false}); };
     window.addEventListener('keydown', this.esc);
   }
-  componentWillUnmount(){ clearInterval(this.t); window.removeEventListener('keydown', this.esc); }
+  componentWillUnmount(){ clearInterval(this.t); clearTimeout(this.secT); window.removeEventListener('keydown', this.esc); }
 
-  go(n){ const i = Math.max(0, Math.min(SC.length-1, n)); this.setState({i, open:null, hoverRing:null, hoverId:null, modGrid:false}); }
+  /**
+   * @BAUTO_REFACTOR 2026-10-14
+   * @Modulo: PRESENTACION / animacion
+   * @Propósito: Cambiar de escena; al entrar a Seguridad (7) abre el nivel correcto (1 al avanzar, 3 al volver
+   *             desde el Cierre) y retrasa la entrada de las llaves para que se vea cómo se "arma" el nivel.
+   * @Capa: Funcional
+   * @Riesgo_Evaluado: Bajo
+   */
+  go(n){
+    const i = Math.max(0, Math.min(SC.length-1, n));
+    const from = this.state.i;
+    this.setState({i, secLvl: i === 7 ? (from > 7 ? 2 : 0) : this.state.secLvl, secShow:false, open:null, hoverRing:null, hoverId:null, modGrid:false});
+    if (i === 7){
+      clearTimeout(this.secT);
+      this.secT = setTimeout(() => { if (this.state.i === 7) this.setState({secShow:true}); }, 1000);
+    }
+  }
+
+  // En la escena de Seguridad, avanzar/retroceder recorre los 3 niveles antes de cambiar de escena.
+  /**
+   * @BAUTO_REFACTOR 2026-10-14
+   * @Modulo: PRESENTACION / animacion
+   * @Propósito: Flecha adelante/atrás de la escena 7: recorre los 3 niveles de seguridad antes de cambiar de escena.
+   * @Capa: Funcional
+   * @Riesgo_Evaluado: Bajo
+   */
+  adv(d){
+    const {i, secLvl} = this.state;
+    if (i === 7){
+      const t = secLvl + d;
+      if (t >= 0 && t <= 2) { this.setState({secLvl:t}); return; }
+    }
+    this.go(i + d);
+  }
 
   // Clic en un planeta: estallido con GSAP (si cargó desde CDN; si no, abre directo)
   // y al terminar abre la misma ficha de detalle que ya usan los demás módulos.
@@ -963,54 +987,21 @@ class Component extends DCLogic {
     }
   }
 
-  pinStyle(n, active, dim, d){
-    const tierBg = n.tier === 'nucleo' ? (active?'rgba(184,92,56,.16)':'rgba(184,92,56,.09)')
-      : n.tier === 'proceso' ? (active?'rgba(184,92,56,.14)':'rgba(255,255,255,.62)')
-      : (active?'rgba(184,92,56,.12)':'rgba(255,255,255,.5)');
-    const tierBorder = n.tier === 'nucleo' ? '1.5px solid '+(active?'rgba(184,92,56,.65)':'rgba(184,92,56,.4)')
-      : n.tier === 'proceso' ? '1.5px dashed '+(active?'rgba(184,92,56,.65)':'rgba(184,92,56,.4)')
-      : '1.5px solid '+(active?'rgba(184,92,56,.5)':'var(--circle-border)');
-    return {position:'absolute', left:n.x+'%', top:n.y+'%', transform:'translate(-50%,-50%)', zIndex:4,
-      minWidth:'9.4cqw', padding:'.68cqw .9cqw', boxSizing:'border-box',
-      display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center',
-      borderRadius:'999px', background:tierBg, border:tierBorder,
-      boxShadow: active ? '0 8px 22px rgba(184,92,56,.2)' : '0 4px 12px rgba(44,44,44,.06)',
-      opacity: dim ? .34 : 1, transition:'all .4s var(--e)',
-      animation:'popc .5s var(--e) both', animationDelay:d+'s'};
-  }
-
-  bandBarStyle(b, active, dim, d){
-    return {position:'absolute', left:b.x1+'%', width:(b.x2-b.x1)+'%', top:b.y+'%', transform:'translateY(-50%)', zIndex:2,
-      height:'3.2cqw', borderRadius:'999px',
-      background: active ? 'rgba(184,92,56,.22)' : 'rgba(184,92,56,.15)',
-      border:'1px solid '+(active?'rgba(184,92,56,.4)':'rgba(184,92,56,.22)'),
-      border:'1px solid '+(active?'rgba(184,92,56,.5)':'var(--glass-border)'),
-      opacity: dim ? .34 : 1, transition:'all .4s var(--e)', animation:'fi .5s var(--e) '+d+'s both'};
-  }
-
-  bandLabelStyle(b, active, dim, d){
-    const cx = (b.x1+b.x2)/2, wide = (b.x2-b.x1) > 40, rightSide = !wide && b.x1 > 50;
-    const anchorX = wide ? cx : (rightSide ? b.x2 : b.x1);
-    const xForm = wide ? 'translate(-50%,-100%)' : (rightSide ? 'translate(-100%,-100%)' : 'translateY(-100%)');
-    return {position:'absolute', left:anchorX+'%', top:(b.y-9)+'%',
-      transform: xForm, zIndex:4,
-      padding:'.5cqw .9cqw', boxSizing:'border-box', textAlign:'left', whiteSpace:'nowrap',
-      display:'flex', alignItems:'center', gap:'.5cqw', borderRadius:'999px',
-      background: active ? 'rgba(255,255,255,.94)' : 'rgba(255,255,255,.8)',
-      border:'1px solid '+(active?'rgba(184,92,56,.5)':'var(--glass-border)'),
-      backdropFilter:'blur(20px)', boxShadow: active ? '0 10px 26px rgba(184,92,56,.18)' : '0 5px 14px rgba(44,44,44,.07)',
-      opacity: dim ? .34 : 1, transition:'all .4s var(--e)', animation:'fi .5s var(--e) '+d+'s both'};
-  }
-
+  /**
+   * @BAUTO_REFACTOR 2026-10-14
+   * @Modulo: PRESENTACION / animacion
+   * @Propósito: Valores de render de todas las escenas. Cambio: la escena 7 pasa del mapa de ocho candados al
+   *             acordeón de 3 niveles (secBands: proyectos, frase de seguridad y llaves por nivel); se elimina el
+   *             código del mapa viejo (apps, bases, conexiones, etapas, latidos, capas).
+   * @Capa: Estética
+   * @Riesgo_Evaluado: Bajo
+   */
   renderVals(){
     const s = this.state, i = s.i;
-    const mapOn = i === 7;
+    const secOn = i === 7;
     const flow = FLOWS[s.flow];
     const openM = s.open ? MODULES.find(m => m.id === s.open) : null;
 
-    const inFlow = (id) => false;
-    const dimmed = (id) => i === 7;
-    const pickFn = (id) => () => this.setState({open:id});
 
     // Nombres legibles de cada nodo (planeta o base), para el riel lineal del flujo.
     const NODE_NAMES = {};
@@ -1086,29 +1077,6 @@ class Component extends DCLogic {
       steps: storySteps
     };
 
-    const apps = APPS.map((n, k) => ({...n, pick:pickFn(n.id),
-      subColor: n.tier==='nucleo' ? 'var(--accent-hover)' : 'var(--text-secondary)',
-      st:this.pinStyle(n, inFlow(n.id), dimmed(n.id), 0.12+k*0.06)}));
-
-    const bases = BASES.map((b, k) => ({...b, pick:pickFn(b.panelId),
-      barSt:this.bandBarStyle(b, inFlow(b.id), dimmed(b.id), k*0.08),
-      labelSt:this.bandLabelStyle(b, inFlow(b.id), dimmed(b.id), 0.1+k*0.08),
-      panelSt:{display:'inline-flex', padding:'.3cqw .6cqw', borderRadius:'999px',
-        background:'rgba(184,92,56,.12)', border:'1px solid rgba(160,79,47,.26)', color:'var(--accent-hover)',
-        fontSize:'.64cqw', fontWeight:700, whiteSpace:'nowrap'}}));
-
-    const conns = CONNS.map(c => {
-      const active = false;
-      return {x1:c.x1, y1:c.y1, x2:c.x2, y2:c.y2,
-        stroke: active ? 'var(--accent-color)' : 'rgba(28,25,23,.16)',
-        w: active ? 2.2 : 1, dash: 'none'};
-    });
-
-    const stages = STAGES.map((st, k) => ({name:st.name,
-      st:{position:'absolute', left:st.x+'%', top:'60%', transform:'translate(-50%,0)', zIndex:3,
-        display:'flex', flexDirection:'column', alignItems:'center', gap:'.3cqw',
-        animation:'fi .5s var(--e) '+(0.3+k*0.05)+'s both'}}));
-
     const flows = FLOWS.map((f, k) => ({name:f.name, pick:() => this.setState({flow:k, auto:false}),
       st:{textAlign:'left', padding:'.6cqw 1.05cqw', borderRadius:'999px', fontSize:'.9cqw', fontWeight:700,
         border:'1px solid '+(k === s.flow ? 'var(--accent-hover)' : 'var(--color-gris-claro)'),
@@ -1116,9 +1084,47 @@ class Component extends DCLogic {
         color:k === s.flow ? 'var(--accent-hover)' : 'var(--text-secondary)',
         transition:'all .3s var(--e)'}}));
 
-    const beats = Array.from({length:9}).map((_, k) => ({st:{width:'1.05cqw', height:'1.05cqw', borderRadius:'50%',
-      background: k === 5 ? 'var(--warning-color)' : 'var(--success-color)',
-      animation:'beat 1.8s ease-in-out infinite', animationDelay:(k*0.16)+'s', display:'block'}}));
+    // --- Escena 7: acordeón de seguridad (3 niveles) ---
+    const secBands = SEG_LEVELS.map((lv, k) => {
+      const active = s.secLvl === k;
+      const on = active && s.secShow;
+      const E = 'var(--e)';
+      return {
+        num:lv.num, eyebrow:lv.eyebrow, name:lv.name, phrase:lv.phrase,
+        pick:() => this.setState({secLvl:k, secShow:true}),
+        outerSt:{flexGrow: active ? 3.3 : 1, flexShrink:1, flexBasis:0, minHeight:'5.6cqw', transition:'flex-grow .8s '+E,
+          animation:'fu .6s '+E+' '+(0.2+k*0.12)+'s both'},
+        cardSt:{height:'100%', boxSizing:'border-box', borderRadius:'2cqw', overflow:'hidden', cursor:'pointer',
+          display:'flex', flexDirection:'column', backdropFilter:'blur(25px)',
+          background: active ? 'rgba(255,255,255,.84)' : 'var(--glass-bg)',
+          border:'1px solid '+(active ? 'rgba(184,92,56,.45)' : 'var(--glass-border)'),
+          boxShadow: active ? '0 14px 36px rgba(184,92,56,.14)' : '0 4px 14px rgba(44,44,44,.05)',
+          opacity: active ? 1 : .5, transition:'all .7s '+E},
+        headSt:{flex: active ? '0 0 5.6cqw' : '1 1 auto', minHeight:0, boxSizing:'border-box', display:'flex', alignItems:'center', gap:'2cqw', padding:'0 2.2cqw'},
+        numSt:{fontFamily:"'Sora',sans-serif", fontSize:'2.8cqw', fontWeight:700, lineHeight:1,
+          color: active ? 'var(--accent-color)' : 'rgba(184,92,56,.5)', transition:'color .6s '+E},
+        chips: lv.chips.map(id => ({name:SEG_CHIP_NAMES[id], icon:ICONS[id], pick:() => this.setState({open:id}),
+          iconSt:{fontSize:'.95cqw'},
+          st:{display:'inline-flex', alignItems:'center', gap:'.3cqw', padding:'.32cqw .75cqw', borderRadius:'999px', lineHeight:1,
+            border:'1px solid '+(active ? 'rgba(184,92,56,.35)' : 'rgba(28,25,23,.1)'),
+            background: active ? 'rgba(184,92,56,.1)' : 'rgba(255,255,255,.55)',
+            color: active ? 'var(--accent-hover)' : 'var(--text-modal)',
+            fontSize:'.78cqw', fontWeight:700, transition:'all .6s '+E}})),
+        bodySt:{flex: active ? '1 1 0' : '0 0 0', minHeight:0, overflow:'hidden', margin:'0 2.2cqw', padding: active ? '1.5cqw 0 1.5cqw' : 0, boxSizing:'border-box',
+          borderTop:'1px solid '+(active ? 'rgba(184,92,56,.14)' : 'transparent'), display:'flex', flexDirection:'column', justifyContent:'space-between', gap:'1.2cqw'},
+        keysGridSt:{display:'grid', gridTemplateColumns:'repeat('+lv.keys.length+',1fr)', gap:'1.8cqw'},
+        keys: lv.keys.map((key, ki) => ({title:key.title, text:key.text, icon:key.icon,
+          st:{display:'flex', gap:'1cqw', alignItems:'flex-start', opacity: on ? 1 : 0, transform: on ? 'none' : 'translateY(1cqw)',
+            transition:'opacity .6s '+E+' '+(on ? .3+ki*.14 : 0)+'s, transform .6s '+E+' '+(on ? .3+ki*.14 : 0)+'s'},
+          ringSt:{strokeDasharray:1, strokeDashoffset: on ? 0 : 1,
+            transition:'stroke-dashoffset 1s '+E+' '+(on ? .4+ki*.14 : 0)+'s'},
+          iconSt:{position:'absolute', left:0, top:0, width:'100%', height:'100%', display:'flex',
+            alignItems:'center', justifyContent:'center', fontSize:'1.45cqw', color:'var(--accent-color)'}})),
+        extras: lv.extras,
+        extrasSt:{display:'flex', alignItems:'center', flexWrap:'wrap', gap:'.6cqw', opacity: on ? 1 : 0,
+          transition:'opacity .6s '+E+' '+(on ? .3+lv.keys.length*.14+.1 : 0)+'s'}
+      };
+    });
 
     // --- Escena "El cambio": Excel (izquierda) ---
     const excelCols = EXCEL_COLS;
@@ -1226,11 +1232,6 @@ class Component extends DCLogic {
     const solar1 = solar({born:true, names:false});
     const solarBig = solar({born:true, names:true});
 
-    const etapas = ETAPAS.map((e, k) => ({name:e.name, grupo:e.grupo, color:e.color,
-      st:{position:'absolute', left:e.x+'%', top:'7.4cqw', transform:'translateX(-50%)',
-        display:'flex', flexDirection:'column', alignItems:'center', gap:'.4cqw',
-        animation:'fux .6s var(--e) both', animationDelay:(0.2+k*0.12)+'s'}}));
-
     const modules = MODULES.map((m, k) => ({n:k+1, name:m.name, who:m.who, one:m.one,
       open:() => this.setState({open:m.id}),
       st:{textAlign:'left', display:'flex', flexDirection:'column', gap:'.42cqw', justifyContent:'center',
@@ -1276,36 +1277,22 @@ class Component extends DCLogic {
       {k:'Automatismos', v:openM.auto}
     ] : [];
 
-    const hubActive = i === 7;
-    const hubFrameStyle = {position:'absolute', left:'-2.2cqw', right:'-2.2cqw', top:'-2.2cqw', bottom:'-2.2cqw',
-      border:'1.5px dashed '+(hubActive?'rgba(184,92,56,.55)':'rgba(184,92,56,.3)'), borderRadius:'2cqw',
-      cursor:'pointer', transition:'all .4s var(--e)', zIndex:0,
-      animation: hubActive ? 'breathe 2.6s ease-in-out infinite' : 'none'};
-    const hubLabelStyle = {position:'absolute', left:'50%', top:'-2.2cqw', transform:'translate(-50%,-50%)',
-      padding:'.4cqw 1cqw', borderRadius:'999px', background:'var(--bg-color)',
-      border:'1px dashed '+(hubActive?'rgba(184,92,56,.55)':'rgba(184,92,56,.35)'),
-      color:'var(--accent-hover)', fontSize:'.78cqw', fontWeight:700, zIndex:5, whiteSpace:'nowrap', cursor:'pointer'};
-
-    const legendItem = {display:'flex', alignItems:'center', fontSize:'.75cqw', fontWeight:700, color:'var(--text-secondary)', gap:'.3cqw'};
-
     return {
-      s0:i===0, s1:i===1, s2:i===2, s7:i===7, s8:i===8, mapOn, storyOn, modGridOn:!!s.modGrid, modBtnOn: i>=2 && i<=7 && !s.modGrid,
+      s0:i===0, s1:i===1, s2:i===2, s7:i===7, s8:i===8, secOn, storyOn, modGridOn:!!s.modGrid, modBtnOn: i>=2 && i<=7 && !s.modGrid,
       chromeLogoOn: i!==0 && i!==8,
       orbStyle:orb(false), orbSetStyle:orb(true),
       excelCols, excelRows, excelTabs, centerSt, centerDbs:solar1.centerDbs, orbitRings:solar1.orbitRings,
       bigCenterDbs:solarBig.centerDbs, bigOrbitRings:solarBig.orbitRings,
-      mapEyebrow: 'La protección', mapTitle: 'Una puerta. Ocho candados.',
-      conns, bases, apps, stages, hubFrameStyle, hubLabelStyle, openHub:() => this.setState({open:'hub'}),
-      legend:{nucleo:legendItem, proceso:legendItem, canal:legendItem, db:legendItem},
-      flows, flowNote:flow.note, beats, capas:CAPAS, etapas, modules, dots, panoRows, story,
+      secBands,
+      flows, flowNote:flow.note, modules, dots, panoRows, story,
       openModGrid:() => this.setState({modGrid:true}), closeModGrid:() => this.setState({modGrid:false}),
       det:!!openM, detName:openM?openM.name:'', detWho:openM?openM.who:'', detOne:openM?openM.one:'',
       detDest:openM?openM.dest:[], detInter:openM?openM.inter:'', detAuto:openM?openM.auto:'',
       detIcon:openM?(ICONS[openM.id]||'circle'):'circle', detSigla:openM?(SIGLAS[openM.id]||''):'',
       detFlows, detHasFlows:detFlows.length>0, detMock, detMockSt,
-      next:() => this.go(i+1), prev:() => this.go(i-1), restart:() => this.go(0),
+      next:() => this.adv(1), prev:() => this.adv(-1), restart:() => this.go(0),
       close:() => this.setState({open:null}),
-      onKey:(ev) => { if (ev.key === 'ArrowRight') this.go(i+1); if (ev.key === 'ArrowLeft') this.go(i-1); }
+      onKey:(ev) => { if (ev.key === 'ArrowRight') this.adv(1); if (ev.key === 'ArrowLeft') this.adv(-1); }
     };
   }
 }
