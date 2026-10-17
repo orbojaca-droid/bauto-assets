@@ -1005,7 +1005,8 @@ class Component extends DCLogic {
    *             con granulación generada en un shader (sin imágenes) y un halo cálido; la luna usa los mapas de la NASA
    *             (LRO, dominio público) iluminada desde el sol. Redibuja a ~30 cuadros por segundo. Si Three.js o WebGL
    *             fallan, activa heroFlat y la plantilla vuelve a mostrar los discos planos.
-   *             2026-10-16 (movimiento): el sol gira, respira y su plasma hierve; la luna orbita, cambia de fase y se balancea.
+   *             2026-10-16 (movimiento): el sol gira, respira y su plasma hierve; la luna sube/baja y se acerca/aleja sin
+   *             salirse del eje central, cambia de fase y se balancea. Con ?diag=1 en la URL muestra un indicador de diagnóstico.
    * @Capa: Estética
    * @Riesgo_Evaluado: Bajo
    */
@@ -1095,7 +1096,12 @@ class Component extends DCLogic {
 
     sunC.style.transition = 'opacity 1.6s var(--e) .3s'; sunC.style.opacity = 1;
 
-    const h = {sunR, moonR, geos:[sunGeo, glowGeo, moonGeo], mats:[sunMat, glowMat, moonMat], maps:[cMap, hMap], raf:0, ro:null, last:0};
+    const h = {sunR, moonR, geos:[sunGeo, glowGeo, moonGeo], mats:[sunMat, glowMat, moonMat], maps:[cMap, hMap], raf:0, ro:null, last:0, diag:null, diagT:0, frames:0};
+    if (/[?&]diag=1/.test(location.search)){
+      h.diag = document.createElement('div');
+      h.diag.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99;font:12px monospace;background:#1C1917;color:#fff;padding:6px 10px;border-radius:6px';
+      document.body.appendChild(h.diag);
+    }
     const draw = (t) => {
       sunMat.uniforms.uTime.value = t; glowMat.uniforms.uTime.value = t;
       // Sol: gira sobre su eje inclinado, respira y su plasma hierve. Luna: recorre una pequeña órbita, sus fases
@@ -1103,7 +1109,8 @@ class Component extends DCLogic {
       sunMesh.rotation.y = t*0.13; sunMesh.rotation.x = 0.25;
       sunMesh.scale.setScalar(1 + 0.012*Math.sin(t*1.1));
       const orb = t*2*Math.PI/26;
-      moonMesh.position.set(1.3*Math.cos(orb), 0.75*Math.sin(orb), 0);
+      moonMesh.position.set(0, 0.6*Math.sin(orb), 0);
+      moonMesh.scale.setScalar(1 + 0.03*Math.cos(orb));
       moonMesh.rotation.y = -Math.PI/2 + Math.sin(t*0.35)*0.14;
       moonMesh.rotation.x = Math.sin(t*0.27)*0.07;
       const ph = 1.75*Math.sin(t*2*Math.PI/44);
@@ -1120,8 +1127,14 @@ class Component extends DCLogic {
     if (window.ResizeObserver){ h.ro = new ResizeObserver(size); h.ro.observe(sunC); }
     size();
     this.hr = h;
+    if (h.diag) h.diag.textContent = '3D activo · reducir movimiento: ' + (reduce ? 'SÍ (cuadro quieto)' : 'no') + ' · cuadros/s: -';
     if (reduce) return;
-    const loop = (now) => { h.raf = requestAnimationFrame(loop); if (now - h.last < 32) return; h.last = now; draw(now/1000); };
+    const loop = (now) => {
+      h.raf = requestAnimationFrame(loop);
+      if (now - h.last < 32) return;
+      h.last = now; draw(now/1000); h.frames++;
+      if (h.diag && now - h.diagT >= 1000){ h.diag.textContent = '3D activo · reducir movimiento: no · cuadros/s: ' + h.frames; h.frames = 0; h.diagT = now; }
+    };
     h.raf = requestAnimationFrame(loop);
   }
 
@@ -1137,6 +1150,7 @@ class Component extends DCLogic {
     if (!h) return;
     cancelAnimationFrame(h.raf);
     if (h.ro) h.ro.disconnect();
+    if (h.diag) h.diag.remove();
     h.geos.forEach(g => g.dispose()); h.mats.forEach(m => m.dispose()); h.maps.forEach(m => m.dispose());
     h.sunR.dispose(); h.moonR.dispose();
     this.hr = null;
