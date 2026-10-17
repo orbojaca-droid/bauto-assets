@@ -51,7 +51,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes bornIn{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
 @keyframes slideL{from{opacity:0;transform:translateX(1.2cqw)}to{opacity:1;transform:none}}
 @keyframes excelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes halo{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.7)}}
+@keyframes fuSoft{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fiRule{from{opacity:0;transform:scaleX(.4)}to{opacity:.7;transform:none}}
+@keyframes glowBreath{0%,100%{opacity:1}50%{opacity:.84}}
 @keyframes travel{0%{left:10%}18%{left:10%}25%{left:30%}43%{left:30%}50%{left:50%}68%{left:50%}75%{left:70%}88%{left:70%}95%{left:90%}100%{left:90%}}
 </style>
 </helmet>
@@ -700,25 +702,16 @@ button{font:inherit;color:inherit;cursor:pointer}
     </div>
   </sc-if>
 
-  <!-- ESCENA 8 · CIERRE (la luna que crece en nueve pasos) -->
+  <!-- ESCENA 8 · CIERRE SERENO: logo, titular y frase, con fundidos largos sobre una luz cálida que respira -->
   <sc-if value="{{ s8 }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.7cqw">
-      <img src="assets/logo-bauto.png" alt="BAUTO" style="width:17cqw;animation:fi 1.1s var(--e) .3s both;position:relative" />
-      <div style="font-family:'Sora',sans-serif;font-size:2.4cqw;font-weight:700;color:var(--text-primary);animation:fu .9s var(--e) .7s both;text-align:center;line-height:1.15">No es un salto. Es un paso a la vez.</div>
-      <div style="font-size:1.2cqw;color:var(--text-modal);animation:fu .9s var(--e) 1s both;text-align:center;max-width:46cqw;line-height:1.6">Cada herramienta entra cuando tú estés listo. El Excel te acompaña hasta entonces.</div>
-      <div style="position:relative;width:15cqw;height:15cqw;flex:none;margin-top:.2cqw">
-        <div id="moonGlow" style="position:absolute;inset:-85%;border-radius:50%;background:radial-gradient(circle,rgba(206,218,238,.95) 0%,rgba(188,203,226,.6) 22%,rgba(180,195,220,.26) 42%,rgba(180,195,220,.08) 58%,rgba(180,195,220,0) 70%);opacity:0;pointer-events:none"></div>
-        <div style="{{ halo1St }}"></div>
-        <div style="{{ halo2St }}"></div>
-        <canvas id="moon3d" style="position:relative;width:100%;height:100%;display:block;filter:drop-shadow(0 0 1.4cqw rgba(150,172,212,.7))"></canvas>
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <div style="position:absolute;left:50%;top:40%;width:86cqw;height:86cqw;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,176,128,.30) 0%,rgba(255,176,128,.14) 28%,rgba(255,176,128,0) 62%);opacity:0;pointer-events:none;animation:fi 3s var(--e) .1s forwards,glowBreath 14s ease-in-out 3.1s infinite"></div>
+      <div style="position:absolute;inset:0;padding-bottom:5.6cqw;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.9cqw">
+        <img src="assets/logo-bauto.png" alt="BAUTO" style="width:22cqw;opacity:0;animation:fuSoft 1.4s var(--e) .3s forwards" />
+        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:2.4cqw;line-height:1.12;letter-spacing:-.02em;text-align:center;color:var(--text-primary);padding:0 4cqw;margin-top:.6cqw;opacity:0;animation:fuSoft 1.2s var(--e) 1.5s forwards">No es un salto. Es un paso a la vez.</div>
+        <div style="width:5cqw;height:1px;background:var(--accent-color);opacity:0;animation:fiRule 1.2s var(--e) 2.6s forwards"></div>
+        <div style="font-family:'Lora',serif;font-style:italic;font-weight:600;font-size:2.5cqw;color:var(--accent-color);opacity:0;animation:fuSoft 1.4s var(--e) 3.4s forwards">¡Vamos que vamos!</div>
       </div>
-      <div style="display:flex;gap:.75cqw;position:relative">
-        <sc-for list="{{ cierreSteps }}" as="d" hint-placeholder-count="9">
-          <i style="{{ d.st }}"></i>
-        </sc-for>
-      </div>
-      <div style="{{ vamosSt }}">¡Vamos que vamos!</div>
-      <button onClick="{{ restart }}" style="{{ againSt }}">Ver otra vez</button>
     </div>
   </sc-if>
 
@@ -740,6 +733,11 @@ button{font:inherit;color:inherit;cursor:pointer}
       </sc-for>
     </div>
     <div style="display:flex;align-items:center;gap:.7cqw">
+      <sc-if value="{{ s8 }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ restart }}" title="Ver otra vez desde el inicio" aria-label="Ver otra vez desde el inicio" style="width:2.7cqw;height:2.7cqw;border-radius:50%;border:1px solid var(--circle-border);background:rgba(255,255,255,.5);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;margin-right:.3cqw">
+          <span class="material-symbols-outlined" style="font-size:1.5cqw;color:var(--text-primary)">replay</span>
+        </button>
+      </sc-if>
       <button onClick="{{ prev }}" style="width:2.7cqw;height:2.7cqw;border-radius:50%;border:1px solid var(--circle-border);background:rgba(255,255,255,.5);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center">
         <span style="width:.62cqw;height:.62cqw;border-left:2px solid var(--text-primary);border-bottom:2px solid var(--text-primary);transform:rotate(45deg) translate(1px,-1px)"></span>
       </button>
@@ -946,7 +944,7 @@ const MODULES = [
 ];
 
 class Component extends DCLogic {
-  state = {i:0, secLvl:0, secShow:true, moonStep:0, moonDone:false, heroFlat:false, flow:0, open:null, hoverRing:null, hoverId:null, modGrid:false, auto:this.props.flujoAuto !== false};
+  state = {i:0, secLvl:0, secShow:true, heroFlat:false, flow:0, open:null, hoverRing:null, hoverId:null, modGrid:false, auto:this.props.flujoAuto !== false};
 
   /**
    * @BAUTO_REFACTOR 2026-10-16
@@ -965,7 +963,7 @@ class Component extends DCLogic {
     window.addEventListener('keydown', this.esc);
     this.heroT = setTimeout(() => this.heroStart(), 120);
   }
-  componentWillUnmount(){ clearInterval(this.t); clearTimeout(this.secT); clearTimeout(this.moonT); this.moonStop(); clearTimeout(this.heroT); this.heroStop(); window.removeEventListener('keydown', this.esc); }
+  componentWillUnmount(){ clearInterval(this.t); clearTimeout(this.secT); clearTimeout(this.heroT); this.heroStop(); window.removeEventListener('keydown', this.esc); }
 
   /**
    * @BAUTO_REFACTOR 2026-10-14
@@ -978,11 +976,9 @@ class Component extends DCLogic {
   go(n){
     const i = Math.max(0, Math.min(SC.length-1, n));
     const from = this.state.i;
-    this.setState({i, secLvl: i === 7 ? (from > 7 ? 2 : 0) : this.state.secLvl, secShow:false, moonStep:0, moonDone:false, open:null, hoverRing:null, hoverId:null, modGrid:false});
+    this.setState({i, secLvl: i === 7 ? (from > 7 ? 2 : 0) : this.state.secLvl, secShow:false, open:null, hoverRing:null, hoverId:null, modGrid:false});
     if (from === 0 && i !== 0) this.heroStop();
     if (i === 0){ clearTimeout(this.heroT); this.heroT = setTimeout(() => this.heroStart(), 80); }
-    if (from === 8 && i !== 8) this.moonStop();
-    if (i === 8){ clearTimeout(this.moonT); this.moonT = setTimeout(() => this.moonStart(), 80); }
     if (i === 7){
       clearTimeout(this.secT);
       this.secT = setTimeout(() => { if (this.state.i === 7) this.setState({secShow:true}); }, 1000);
@@ -1165,119 +1161,6 @@ class Component extends DCLogic {
     this.hr = null;
   }
 
-  /**
-   * @BAUTO_REFACTOR 2026-10-16
-   * @Modulo: PRESENTACION / animacion
-   * @Propósito: Cierre (escena 8): luna 3D con mapas reales de la NASA (LRO, dominio público). Una luz que gira
-   *             produce las fases reales, de filo a luna llena en nueve pasos, uno por herramienta; al terminar
-   *             aparecen la frase de Tomás y el botón. Si Three.js o WebGL no están disponibles, muestra directo el final.
-   *             2026-10-16 (corrección): empieza en luna nueva y no arranca hasta que las texturas cargaron (antes, con red
-   *             lenta, se veía una esfera lisa y encendida de golpe); la secuencia ya no se omite con "reducir movimiento".
-   * @Capa: Estética
-   * @Riesgo_Evaluado: Bajo
-   */
-  moonStart(){
-    this.moonStop();
-    const canvas = document.getElementById('moon3d');
-    if (!canvas) return;
-    const N = 9;
-    let renderer;
-    try {
-      if (!window.THREE) throw new Error('sin Three.js');
-      renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
-    } catch (e) { this.setState({moonStep:N, moonDone:true}); return; }
-    const glow = document.getElementById('moonGlow');
-    renderer.setClearColor(0x000000, 0);
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(24, 1, 0.1, 30);
-    camera.position.set(0, 0, 5);
-    const loader = new THREE.TextureLoader();
-    let pending = 2;
-    const ready = () => { draw(); if (--pending === 0) { canvas.style.opacity = 1; m.timer = setTimeout(startSequence, 900); } };
-    const colorMap = loader.load('assets/moon-color-2k.jpg', ready, undefined, ready);
-    colorMap.encoding = THREE.sRGBEncoding;
-    colorMap.anisotropy = renderer.capabilities.getMaxAnisotropy();
-    const heightMap = loader.load('assets/moon-height.jpg', ready, undefined, ready);
-    canvas.style.opacity = 0;
-    canvas.style.transition = 'opacity .9s var(--e)';
-    const geometry = new THREE.SphereGeometry(1, 128, 128);
-    const material = new THREE.MeshStandardMaterial({map:colorMap, bumpMap:heightMap, bumpScale:0.16, roughness:1, metalness:0});
-    material.color.setScalar(1.12);
-    const moon = new THREE.Mesh(geometry, material);
-    scene.add(moon);
-    const sun = new THREE.DirectionalLight(0xfff4e6, 2.3);
-    const amb = new THREE.AmbientLight(0x8fa2c8, 0.16);
-    scene.add(sun); scene.add(amb);
-
-    // angle: 0 = luna llena, 180° = luna nueva; la luz entra por la derecha (luna creciente).
-    const m = {renderer, geometry, material, colorMap, heightMap, raf:0, idle:0, timer:0, ro:null, angle:178*Math.PI/180, wobble:0};
-    const draw = () => {
-      sun.position.set(Math.sin(m.angle)*5, 1.1*Math.sin(m.angle), Math.cos(m.angle)*5);
-      moon.rotation.y = -Math.PI/2 + m.wobble;
-      const lit = (1 + Math.cos(m.angle))/2;
-      amb.intensity = 0.05 + 0.11*lit;
-      if (glow) glow.style.opacity = (0.1 + 0.9*lit).toFixed(3);
-      renderer.render(scene, camera);
-    };
-    const resize = () => {
-      const w = canvas.clientWidth, h = canvas.clientHeight;
-      if (!w || !h) return;
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.setSize(w, h, false);
-      camera.aspect = w/h; camera.updateProjectionMatrix();
-      draw();
-    };
-    if (window.ResizeObserver){ m.ro = new ResizeObserver(resize); m.ro.observe(canvas); }
-    resize();
-    this.mn = m;
-
-    const target = (k) => (150*(1 - k/(N-1)))*Math.PI/180;
-    const ease = (t) => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
-    const breathe = (now) => { m.wobble = Math.sin(now/2600)*0.035; draw(); m.idle = requestAnimationFrame(breathe); };
-    const finish = () => {
-      m.angle = 0; draw();
-      this.setState({moonStep:N, moonDone:true});
-      m.idle = requestAnimationFrame(breathe);
-    };
-    let k = 0, from = m.angle, start = 0;
-    draw();
-    const begin = () => {
-      from = k === 0 ? m.angle : target(k-1);
-      start = performance.now();
-      this.setState({moonStep:k+1});
-      m.raf = requestAnimationFrame(tick);
-    };
-    const tick = (now) => {
-      const t = Math.min(1, (now - start)/560);
-      m.angle = from + (target(k) - from)*ease(t);
-      draw();
-      if (t < 1){ m.raf = requestAnimationFrame(tick); return; }
-      k++;
-      if (k >= N){ m.timer = setTimeout(finish, 250); return; }
-      m.timer = setTimeout(begin, 280);
-    };
-    // La secuencia arranca solo cuando las texturas ya cargaron (ver ready); si no, se vería una esfera lisa y encendida.
-    const startSequence = () => { m.timer = setTimeout(begin, 200); };
-  }
-
-  /**
-   * @BAUTO_REFACTOR 2026-10-16
-   * @Modulo: PRESENTACION / animacion
-   * @Propósito: Detener la luna del Cierre y liberar WebGL (animaciones, observador de tamaño, geometría, material y texturas).
-   * @Capa: Técnica
-   * @Riesgo_Evaluado: Bajo
-   */
-  moonStop(){
-    const m = this.mn;
-    if (!m) return;
-    cancelAnimationFrame(m.raf); cancelAnimationFrame(m.idle); clearTimeout(m.timer);
-    if (m.ro) m.ro.disconnect();
-    m.geometry.dispose(); m.material.dispose(); m.colorMap.dispose(); m.heightMap.dispose();
-    m.renderer.dispose();
-    this.mn = null;
-  }
-
   // Clic en un planeta: estallido con GSAP (si cargó desde CDN; si no, abre directo)
   // y al terminar abre la misma ficha de detalle que ya usan los demás módulos.
   explode(id, el){
@@ -1296,7 +1179,7 @@ class Component extends DCLogic {
    * @Modulo: PRESENTACION / animacion
    * @Propósito: Valores de render de todas las escenas. Cambio (2026-10-16, apertura): heroFlat/heroReal alternan entre los
    *             discos planos (respaldo) y el sol y la luna 3D. Cambio (2026-10-14, Cierre): nueve siglas que se encienden
-   *             a tiempos distintos (cierreSteps). Cambio: la escena 7 pasa del mapa de ocho candados al
+   *             a tiempos distintos (cierre sereno, sin luna). Cambio: la escena 7 pasa del mapa de ocho candados al
    *             acordeón de 3 niveles (secBands: proyectos, frase de seguridad y llaves por nivel); se elimina el
    *             código del mapa viejo (apps, bases, conexiones, etapas, latidos, capas).
    * @Capa: Estética
@@ -1431,23 +1314,6 @@ class Component extends DCLogic {
           transition:'opacity .6s '+E+' '+(on ? .3+lv.keys.length*.14+.1 : 0)+'s'}
       };
     });
-
-    // --- Escena 8: puntos de avance, frase y botón que aparecen cuando la luna llega a luna llena ---
-    const cDone = !!s.moonDone;
-    const cierreSteps = Array.from({length:9}).map((_, k) => ({
-      st:{width:'.55cqw', height:'.55cqw', borderRadius:'50%', display:'block',
-        background: k < s.moonStep ? 'var(--accent-color)' : 'rgba(28,25,23,.13)',
-        transform: k < s.moonStep ? 'scale(1.35)' : 'none', transition:'background .5s var(--e), transform .5s var(--e)'}}));
-    const haloSt = (delay) => ({position:'absolute', left:'-6%', right:'-6%', top:'-6%', bottom:'-6%', borderRadius:'50%',
-      border:'1px solid rgba(160,178,210,.55)', opacity:0, pointerEvents:'none',
-      animation: cDone ? 'halo 4.2s var(--e) '+delay+'s infinite' : 'none'});
-    const halo1St = haloSt(0), halo2St = haloSt(2.1);
-    const vamosSt = {fontFamily:"'Lora',serif", fontStyle:'italic', fontWeight:600, fontSize:'2.5cqw', color:'var(--accent-color)',
-      textAlign:'center', position:'relative', opacity: cDone ? 1 : 0, transform: cDone ? 'none' : 'translateY(1cqw)',
-      transition:'opacity 1s var(--e), transform 1s var(--e)'};
-    const againSt = {marginTop:'.2cqw', height:'3.2cqw', padding:'0 1.8cqw', borderRadius:'var(--radius-pill)', border:'1px solid transparent',
-      background:'var(--accent-color)', color:'#fff', fontSize:'1cqw', fontWeight:700, position:'relative',
-      opacity: cDone ? 1 : 0, pointerEvents: cDone ? 'auto' : 'none', transition:'opacity .9s var(--e)'};
 
     // --- Escena "El cambio": Excel (izquierda) ---
     const excelCols = EXCEL_COLS;
@@ -1607,7 +1473,7 @@ class Component extends DCLogic {
       excelCols, excelRows, excelTabs, centerSt, centerDbs:solar1.centerDbs, orbitRings:solar1.orbitRings,
       bigCenterDbs:solarBig.centerDbs, bigOrbitRings:solarBig.orbitRings,
       heroFlat:!!s.heroFlat, heroReal:!s.heroFlat,
-      secBands, cierreSteps, halo1St, halo2St, vamosSt, againSt,
+      secBands,
       flows, flowNote:flow.note, modules, dots, panoRows, story,
       openModGrid:() => this.setState({modGrid:true}), closeModGrid:() => this.setState({modGrid:false}),
       det:!!openM, detName:openM?openM.name:'', detWho:openM?openM.who:'', detOne:openM?openM.one:'',
