@@ -995,6 +995,8 @@ class Component extends DCLogic {
    * @Propósito: Cierre (escena 8): luna 3D con mapas reales de la NASA (LRO, dominio público). Una luz que gira
    *             produce las fases reales, de filo a luna llena en nueve pasos, uno por herramienta; al terminar
    *             aparecen la frase de Tomás y el botón. Si Three.js o WebGL no están disponibles, muestra directo el final.
+   *             2026-10-16 (corrección): empieza en luna nueva y no arranca hasta que las texturas cargaron (antes, con red
+   *             lenta, se veía una esfera lisa y encendida de golpe); la secuencia ya no se omite con "reducir movimiento".
    * @Capa: Estética
    * @Riesgo_Evaluado: Bajo
    */
@@ -1016,10 +1018,14 @@ class Component extends DCLogic {
     const camera = new THREE.PerspectiveCamera(24, 1, 0.1, 30);
     camera.position.set(0, 0, 5);
     const loader = new THREE.TextureLoader();
-    const colorMap = loader.load('assets/moon-color-2k.jpg', () => draw());
+    let pending = 2;
+    const ready = () => { draw(); if (--pending === 0) { canvas.style.opacity = 1; m.timer = setTimeout(startSequence, 900); } };
+    const colorMap = loader.load('assets/moon-color-2k.jpg', ready, undefined, ready);
     colorMap.encoding = THREE.sRGBEncoding;
     colorMap.anisotropy = renderer.capabilities.getMaxAnisotropy();
-    const heightMap = loader.load('assets/moon-height.jpg', () => draw());
+    const heightMap = loader.load('assets/moon-height.jpg', ready, undefined, ready);
+    canvas.style.opacity = 0;
+    canvas.style.transition = 'opacity .9s var(--e)';
     const geometry = new THREE.SphereGeometry(1, 128, 128);
     const material = new THREE.MeshStandardMaterial({map:colorMap, bumpMap:heightMap, bumpScale:0.16, roughness:1, metalness:0});
     material.color.setScalar(1.12);
@@ -1030,11 +1036,13 @@ class Component extends DCLogic {
     scene.add(sun); scene.add(amb);
 
     // angle: 0 = luna llena, 180° = luna nueva; la luz entra por la derecha (luna creciente).
-    const m = {renderer, geometry, material, colorMap, heightMap, raf:0, idle:0, timer:0, ro:null, angle:150*Math.PI/180, wobble:0};
+    const m = {renderer, geometry, material, colorMap, heightMap, raf:0, idle:0, timer:0, ro:null, angle:178*Math.PI/180, wobble:0};
     const draw = () => {
       sun.position.set(Math.sin(m.angle)*5, 1.1*Math.sin(m.angle), Math.cos(m.angle)*5);
       moon.rotation.y = -Math.PI/2 + m.wobble;
-      if (glow) glow.style.opacity = (0.18 + 0.82*(1 + Math.cos(m.angle))/2).toFixed(3);
+      const lit = (1 + Math.cos(m.angle))/2;
+      amb.intensity = 0.05 + 0.11*lit;
+      if (glow) glow.style.opacity = (0.1 + 0.9*lit).toFixed(3);
       renderer.render(scene, camera);
     };
     const resize = () => {
@@ -1057,11 +1065,10 @@ class Component extends DCLogic {
       this.setState({moonStep:N, moonDone:true});
       if (!reduce) m.idle = requestAnimationFrame(breathe);
     };
-    if (reduce){ finish(); return; }
-    let k = 0, from = target(0) + 0.35, start = 0;
+    let k = 0, from = m.angle, start = 0;
     draw();
     const begin = () => {
-      from = k === 0 ? target(0) + 0.35 : target(k-1);
+      from = k === 0 ? m.angle : target(k-1);
       start = performance.now();
       this.setState({moonStep:k+1});
       m.raf = requestAnimationFrame(tick);
@@ -1075,7 +1082,8 @@ class Component extends DCLogic {
       if (k >= N){ m.timer = setTimeout(finish, 250); return; }
       m.timer = setTimeout(begin, 280);
     };
-    m.timer = setTimeout(begin, 1500);
+    // La secuencia arranca solo cuando las texturas ya cargaron (ver ready); si no, se vería una esfera lisa y encendida.
+    const startSequence = () => { m.timer = setTimeout(begin, 200); };
   }
 
   /**
