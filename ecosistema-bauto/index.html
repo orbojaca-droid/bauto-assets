@@ -53,7 +53,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes excelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes halo{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.7)}}
 @keyframes travel{0%{left:10%}18%{left:10%}25%{left:30%}43%{left:30%}50%{left:50%}68%{left:50%}75%{left:70%}88%{left:70%}95%{left:90%}100%{left:90%}}
-@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
 </style>
 </helmet>
 
@@ -949,6 +948,15 @@ const MODULES = [
 class Component extends DCLogic {
   state = {i:0, secLvl:0, secShow:true, moonStep:0, moonDone:false, heroFlat:false, flow:0, open:null, hoverRing:null, hoverId:null, modGrid:false, auto:this.props.flujoAuto !== false};
 
+  /**
+   * @BAUTO_REFACTOR 2026-10-16
+   * @Modulo: PRESENTACION / animacion
+   * @Propósito: Arranque del componente. Contexto: se eliminó de la hoja de estilos la regla global de "reducir movimiento" del
+   *             sistema, que congelaba todas las animaciones en equipos que la traían activa (un HP de presentación); la
+   *             presentación se mueve igual en cualquier equipo.
+   * @Capa: Funcional
+   * @Riesgo_Evaluado: Bajo
+   */
   componentDidMount(){
     this.t = setInterval(() => {
       if (this.state.i === 2 && this.state.auto) this.setState(s => ({flow:(s.flow+1)%4}));
@@ -1173,7 +1181,6 @@ class Component extends DCLogic {
     const canvas = document.getElementById('moon3d');
     if (!canvas) return;
     const N = 9;
-    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let renderer;
     try {
       if (!window.THREE) throw new Error('sin Three.js');
@@ -1231,7 +1238,7 @@ class Component extends DCLogic {
     const finish = () => {
       m.angle = 0; draw();
       this.setState({moonStep:N, moonDone:true});
-      if (!reduce) m.idle = requestAnimationFrame(breathe);
+      m.idle = requestAnimationFrame(breathe);
     };
     let k = 0, from = m.angle, start = 0;
     draw();
