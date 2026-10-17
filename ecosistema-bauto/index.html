@@ -69,8 +69,14 @@ button{font:inherit;color:inherit;cursor:pointer}
     <div style="position:absolute;inset:0;overflow:hidden;background:#FFFEFB">
 
       <div style="position:absolute;inset:0;z-index:1">
+        <sc-if value="{{ heroFlat }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;left:50%;top:38%;width:19.8cqw;height:19.8cqw;margin:-9.9cqw 0 0 -9.9cqw;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFA566 0%,#FF5A1E 100%);box-shadow:0 8px 30px rgba(255,90,30,.38);animation:fi 1.3s var(--e) .3s both"></div>
         <div style="position:absolute;left:50%;top:59%;width:14.3cqw;height:14.3cqw;margin:-7.15cqw 0 0 -7.15cqw;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(247,250,253,.98) 0%,rgba(186,200,217,.95) 100%);border:1px solid rgba(255,255,255,.9);box-shadow:0 8px 24px rgba(150,170,200,.42);z-index:2;animation:fi 1.3s var(--e) .55s both"></div>
+        </sc-if>
+        <sc-if value="{{ heroReal }}" hint-placeholder-val="{{ true }}">
+          <canvas id="heroSun" aria-hidden="true" style="position:absolute;left:50%;top:38%;width:40cqw;height:40cqw;margin:-20cqw 0 0 -20cqw;display:block;opacity:0"></canvas>
+          <canvas id="heroMoon" aria-hidden="true" style="position:absolute;left:50%;top:59%;width:22cqw;height:22cqw;margin:-11cqw 0 0 -11cqw;display:block;z-index:2;opacity:0;filter:drop-shadow(0 8px 20px rgba(150,170,200,.45))"></canvas>
+        </sc-if>
       </div>
 
       <div style="position:absolute;left:0;top:0;width:50%;height:100%;background:rgba(255,255,255,.32);backdrop-filter:blur(24px);border-right:1px solid rgba(255,255,255,.55);z-index:3"></div>
@@ -941,7 +947,7 @@ const MODULES = [
 ];
 
 class Component extends DCLogic {
-  state = {i:0, secLvl:0, secShow:true, moonStep:0, moonDone:false, flow:0, open:null, hoverRing:null, hoverId:null, modGrid:false, auto:this.props.flujoAuto !== false};
+  state = {i:0, secLvl:0, secShow:true, moonStep:0, moonDone:false, heroFlat:false, flow:0, open:null, hoverRing:null, hoverId:null, modGrid:false, auto:this.props.flujoAuto !== false};
 
   componentDidMount(){
     this.t = setInterval(() => {
@@ -949,8 +955,9 @@ class Component extends DCLogic {
     }, 4200);
     this.esc = (ev) => { if (ev.key === 'Escape') this.setState(s => s.open ? {open:null} : {modGrid:false}); };
     window.addEventListener('keydown', this.esc);
+    this.heroT = setTimeout(() => this.heroStart(), 120);
   }
-  componentWillUnmount(){ clearInterval(this.t); clearTimeout(this.secT); clearTimeout(this.moonT); this.moonStop(); window.removeEventListener('keydown', this.esc); }
+  componentWillUnmount(){ clearInterval(this.t); clearTimeout(this.secT); clearTimeout(this.moonT); this.moonStop(); clearTimeout(this.heroT); this.heroStop(); window.removeEventListener('keydown', this.esc); }
 
   /**
    * @BAUTO_REFACTOR 2026-10-14
@@ -964,6 +971,8 @@ class Component extends DCLogic {
     const i = Math.max(0, Math.min(SC.length-1, n));
     const from = this.state.i;
     this.setState({i, secLvl: i === 7 ? (from > 7 ? 2 : 0) : this.state.secLvl, secShow:false, moonStep:0, moonDone:false, open:null, hoverRing:null, hoverId:null, modGrid:false});
+    if (from === 0 && i !== 0) this.heroStop();
+    if (i === 0){ clearTimeout(this.heroT); this.heroT = setTimeout(() => this.heroStart(), 80); }
     if (from === 8 && i !== 8) this.moonStop();
     if (i === 8){ clearTimeout(this.moonT); this.moonT = setTimeout(() => this.moonStart(), 80); }
     if (i === 7){
@@ -987,6 +996,139 @@ class Component extends DCLogic {
       if (t >= 0 && t <= 2) { this.setState({secLvl:t}); return; }
     }
     this.go(i + d);
+  }
+
+  /**
+   * @BAUTO_REFACTOR 2026-10-16
+   * @Modulo: PRESENTACION / animacion
+   * @Propósito: Apertura (escena 1): sol y luna realistas con la misma composición de siempre. El sol es una esfera
+   *             con granulación generada en un shader (sin imágenes) y un halo cálido; la luna usa los mapas de la NASA
+   *             (LRO, dominio público) iluminada desde el sol. Redibuja a ~30 cuadros por segundo. Si Three.js o WebGL
+   *             fallan, activa heroFlat y la plantilla vuelve a mostrar los discos planos.
+   * @Capa: Estética
+   * @Riesgo_Evaluado: Bajo
+   */
+  heroStart(){
+    this.heroStop();
+    const sunC = document.getElementById('heroSun'), moonC = document.getElementById('heroMoon');
+    if (!sunC || !moonC) return;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let sunR, moonR;
+    try {
+      if (!window.THREE) throw new Error('sin Three.js');
+      sunR = new THREE.WebGLRenderer({canvas:sunC, antialias:true, alpha:true});
+      moonR = new THREE.WebGLRenderer({canvas:moonC, antialias:true, alpha:true});
+    } catch (e) { if (sunR) sunR.dispose(); this.setState({heroFlat:true}); return; }
+    sunR.setClearColor(0x000000, 0); moonR.setClearColor(0x000000, 0);
+    moonR.outputEncoding = THREE.sRGBEncoding;
+
+    const noiseGLSL = [
+      'float hash(vec3 p){ p = fract(p*0.3183099 + .1); p *= 17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }',
+      'float noise(vec3 x){ vec3 i=floor(x); vec3 f=fract(x); f=f*f*(3.0-2.0*f);',
+      '  return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x), mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),',
+      '             mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x), mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y), f.z); }',
+      'float fbm(vec3 p){ float a=.5, s=0.0; for(int i=0;i<4;i++){ s+=a*noise(p); p=p*2.03+vec3(1.7,9.2,3.1); a*=.5; } return s; }'
+    ].join('\n');
+    const sunMat = new THREE.ShaderMaterial({
+      uniforms:{uTime:{value:0}},
+      vertexShader:'varying vec3 vObj; varying vec3 vN; void main(){ vObj = position; vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader:[
+        'uniform float uTime; varying vec3 vObj; varying vec3 vN;',
+        noiseGLSL,
+        'void main(){',
+        '  vec3 p = normalize(vObj); float t = uTime;',
+        '  vec3 w = vec3(fbm(p*2.0+vec3(0.0,t*.05,0.0)), fbm(p*2.0+vec3(5.2,1.3,t*.04)), 0.5);',
+        '  float gran = fbm(p*12.0 + w*1.2 + vec3(0.0,0.0,t*.07));',
+        '  float cells = fbm(p*30.0 + vec3(t*.06));',
+        '  float v = 0.12 + gran*.52 + cells*.36;',
+        '  float mu = clamp(dot(normalize(vN), vec3(0.0,0.0,1.0)), 0.0, 1.0);',
+        '  float limb = pow(mu, .55);',
+        '  vec3 deep = vec3(0.98,0.34,0.09); vec3 mid = vec3(1.0,0.353,0.118); vec3 warm = vec3(1.0,0.65,0.40); vec3 hot = vec3(1.0,0.90,0.66);',
+        '  vec3 col = mix(deep, mid, smoothstep(.26,.44,v));',
+        '  col = mix(col, warm, smoothstep(.42,.60,v));',
+        '  col = mix(col, hot, smoothstep(.58,.82,v)*limb);',
+        '  col = mix(col, hot, pow(mu, 2.4)*.32);',
+        '  col *= mix(.82, 1.08, limb);',
+        '  gl_FragColor = vec4(col, 1.0);',
+        '}'
+      ].join('\n')
+    });
+    const glowMat = new THREE.ShaderMaterial({
+      transparent:true, depthWrite:false, uniforms:{uTime:{value:0}},
+      vertexShader:'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader:[
+        'uniform float uTime; varying vec2 vUv;',
+        'void main(){ float r = length(vUv - .5) * 40.0; float a = 1.0 - smoothstep(9.0, 19.5, r);',
+        '  a = pow(a, 2.0) * .6 * (0.93 + .07*sin(uTime*.9));',
+        '  gl_FragColor = vec4(1.0, .42, .14, a); }'
+      ].join('\n')
+    });
+    const sunScene = new THREE.Scene();
+    const sunCam = new THREE.OrthographicCamera(-20, 20, 20, -20, 0.1, 40); sunCam.position.set(0, 0, 10);
+    const sunGeo = new THREE.SphereGeometry(9.9, 96, 96), glowGeo = new THREE.PlaneGeometry(40, 40);
+    const sunMesh = new THREE.Mesh(sunGeo, sunMat);
+    const glow = new THREE.Mesh(glowGeo, glowMat); glow.position.z = -3;
+    sunScene.add(glow); sunScene.add(sunMesh);
+
+    const moonScene = new THREE.Scene();
+    const moonCam = new THREE.OrthographicCamera(-11, 11, 11, -11, 0.1, 40); moonCam.position.set(0, 0, 10);
+    const loader = new THREE.TextureLoader();
+    let pending = 2;
+    const reveal = () => {
+      if (--pending > 0) return;
+      moonC.style.transition = 'opacity 1.6s var(--e) .55s'; moonC.style.opacity = 1;
+      draw(performance.now()/1000);
+    };
+    const cMap = loader.load('assets/moon-color-2k.jpg', reveal, undefined, reveal); cMap.encoding = THREE.sRGBEncoding;
+    const hMap = loader.load('assets/moon-height.jpg', reveal, undefined, reveal);
+    const moonMat = new THREE.MeshStandardMaterial({map:cMap, bumpMap:hMap, bumpScale:0.16, roughness:1, metalness:0});
+    moonMat.color.setScalar(1.12);
+    const moonGeo = new THREE.SphereGeometry(7.15, 128, 128);
+    const moonMesh = new THREE.Mesh(moonGeo, moonMat);
+    moonScene.add(moonMesh);
+    const sunLight = new THREE.DirectionalLight(0xfff1de, 2.4); sunLight.position.set(0, 4.2, 3.6);
+    const amb = new THREE.AmbientLight(0x9fb0d0, 0.34);
+    moonScene.add(sunLight); moonScene.add(amb);
+
+    sunC.style.transition = 'opacity 1.6s var(--e) .3s'; sunC.style.opacity = 1;
+
+    const h = {sunR, moonR, geos:[sunGeo, glowGeo, moonGeo], mats:[sunMat, glowMat, moonMat], maps:[cMap, hMap], raf:0, ro:null, last:0};
+    const draw = (t) => {
+      sunMat.uniforms.uTime.value = t; glowMat.uniforms.uTime.value = t;
+      sunMesh.rotation.y = t*0.03; sunMesh.rotation.x = 0.25;
+      moonMesh.rotation.y = -Math.PI/2 + Math.sin(t/2.6)*0.035;
+      sunR.render(sunScene, sunCam); moonR.render(moonScene, moonCam);
+    };
+    const size = () => {
+      [[sunR, sunC], [moonR, moonC]].forEach(([r, c]) => {
+        const w = c.clientWidth, hh = c.clientHeight; if (!w || !hh) return;
+        r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5)); r.setSize(w, hh, false);
+      });
+      draw(performance.now()/1000);
+    };
+    if (window.ResizeObserver){ h.ro = new ResizeObserver(size); h.ro.observe(sunC); }
+    size();
+    this.hr = h;
+    if (reduce) return;
+    const loop = (now) => { h.raf = requestAnimationFrame(loop); if (now - h.last < 32) return; h.last = now; draw(now/1000); };
+    h.raf = requestAnimationFrame(loop);
+  }
+
+  /**
+   * @BAUTO_REFACTOR 2026-10-16
+   * @Modulo: PRESENTACION / animacion
+   * @Propósito: Detener el sol y la luna de la apertura y liberar WebGL (bucle, observador, geometrías, materiales, texturas).
+   * @Capa: Técnica
+   * @Riesgo_Evaluado: Bajo
+   */
+  heroStop(){
+    const h = this.hr;
+    if (!h) return;
+    cancelAnimationFrame(h.raf);
+    if (h.ro) h.ro.disconnect();
+    h.geos.forEach(g => g.dispose()); h.mats.forEach(m => m.dispose()); h.maps.forEach(m => m.dispose());
+    h.sunR.dispose(); h.moonR.dispose();
+    this.hr = null;
   }
 
   /**
@@ -1119,7 +1261,8 @@ class Component extends DCLogic {
   /**
    * @BAUTO_REFACTOR 2026-10-14
    * @Modulo: PRESENTACION / animacion
-   * @Propósito: Valores de render de todas las escenas. Cambio (2026-10-14, Cierre): nueve siglas que se encienden
+   * @Propósito: Valores de render de todas las escenas. Cambio (2026-10-16, apertura): heroFlat/heroReal alternan entre los
+   *             discos planos (respaldo) y el sol y la luna 3D. Cambio (2026-10-14, Cierre): nueve siglas que se encienden
    *             a tiempos distintos (cierreSteps). Cambio: la escena 7 pasa del mapa de ocho candados al
    *             acordeón de 3 niveles (secBands: proyectos, frase de seguridad y llaves por nivel); se elimina el
    *             código del mapa viejo (apps, bases, conexiones, etapas, latidos, capas).
@@ -1430,6 +1573,7 @@ class Component extends DCLogic {
       orbStyle:orb(false),
       excelCols, excelRows, excelTabs, centerSt, centerDbs:solar1.centerDbs, orbitRings:solar1.orbitRings,
       bigCenterDbs:solarBig.centerDbs, bigOrbitRings:solarBig.orbitRings,
+      heroFlat:!!s.heroFlat, heroReal:!s.heroFlat,
       secBands, cierreSteps, halo1St, halo2St, vamosSt, againSt,
       flows, flowNote:flow.note, modules, dots, panoRows, story,
       openModGrid:() => this.setState({modGrid:true}), closeModGrid:() => this.setState({modGrid:false}),
