@@ -1005,7 +1005,7 @@ class Component extends DCLogic {
    *             con granulación generada en un shader (sin imágenes) y un halo cálido; la luna usa los mapas de la NASA
    *             (LRO, dominio público) iluminada desde el sol. Redibuja a ~30 cuadros por segundo. Si Three.js o WebGL
    *             fallan, activa heroFlat y la plantilla vuelve a mostrar los discos planos.
-   *             2026-10-16 (movimiento): el sol gira, respira y su plasma hierve; la luna sube/baja y se acerca/aleja sin
+   *             2026-10-16 (movimiento; no respeta "reducir movimiento" del sistema: confirmado en un HP que lo traía activo): el sol gira, respira y su plasma hierve; la luna sube/baja y se acerca/aleja sin
    *             salirse del eje central, cambia de fase y se balancea. Con ?diag=1 en la URL muestra un indicador de diagnóstico.
    * @Capa: Estética
    * @Riesgo_Evaluado: Bajo
@@ -1127,13 +1127,14 @@ class Component extends DCLogic {
     if (window.ResizeObserver){ h.ro = new ResizeObserver(size); h.ro.observe(sunC); }
     size();
     this.hr = h;
-    if (h.diag) h.diag.textContent = '3D activo · reducir movimiento: ' + (reduce ? 'SÍ (cuadro quieto)' : 'no') + ' · cuadros/s: -';
-    if (reduce) return;
+    // El sol y la luna se mueven siempre: son el corazón de la apertura y su movimiento es lento y suave. Se ignora a propósito
+    // "reducir movimiento" del sistema (un equipo de presentación lo trae activado sin que nadie lo note).
+    if (h.diag) h.diag.textContent = '3D activo · reducir movimiento del sistema: ' + (reduce ? 'SÍ (ignorado en sol y luna)' : 'no') + ' · cuadros/s: -';
     const loop = (now) => {
       h.raf = requestAnimationFrame(loop);
       if (now - h.last < 32) return;
       h.last = now; draw(now/1000); h.frames++;
-      if (h.diag && now - h.diagT >= 1000){ h.diag.textContent = '3D activo · reducir movimiento: no · cuadros/s: ' + h.frames; h.frames = 0; h.diagT = now; }
+      if (h.diag && now - h.diagT >= 1000){ h.diag.textContent = '3D activo · reducir movimiento del sistema: ' + (reduce ? 'SÍ (ignorado)' : 'no') + ' · cuadros/s: ' + h.frames; h.frames = 0; h.diagT = now; }
     };
     h.raf = requestAnimationFrame(loop);
   }
